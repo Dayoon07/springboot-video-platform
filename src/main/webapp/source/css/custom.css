@@ -1,0 +1,4 @@
+@charset "UTF-8";
+aside {
+	transition: transform 0.3s ease-in-out;
+}
