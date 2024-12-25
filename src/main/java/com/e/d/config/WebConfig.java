@@ -7,10 +7,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/youtubeProject/**")
-			.addResourceLocations("file:///C:/youtubeProject/");
-	}
-	
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/youtubeProject/**")
+            .addResourceLocations("file:///C:/youtubeProject/");
+
+        registry.addResourceHandler("/youtubeProject/profile-img/**")
+            .addResourceLocations("file:///C:/youtubeProject/profile-img/");
+    }
 }

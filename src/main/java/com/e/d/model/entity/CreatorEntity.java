@@ -32,8 +32,15 @@ public class CreatorEntity {
 	@Column(name = "bio")
 	private String bio;
 	
-	@Column(name = "profile_img", nullable = false)
+	@Column(name = "tel", nullable = false)
+	private String tel;
+	
+	@Column(name = "profile_img")
 	private String profileImg;
+	
+	@Lob
+	@Column(name = "profile_img_path")
+	private String profileImgPath;
 	
 	@Column(name = "subscribe")
 	private long subscribe;
