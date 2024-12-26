@@ -14,5 +14,8 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addResourceHandler("/youtubeProject/profile-img/**")
             .addResourceLocations("file:///C:/youtubeProject/profile-img/");
+        
+        registry.addResourceHandler("/youtubeProject/video-img/**")
+        	.addResourceLocations("file:///C:/youtubeProject/video-img/");
     }
 }

@@ -18,15 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.e.d.model.entity.CreatorEntity;
+import com.e.d.model.entity.VideosEntity;
 import com.e.d.model.repository.CommentRepository;
 import com.e.d.model.repository.CreatorRepository;
 import com.e.d.model.repository.SubscriptionsRepository;
-import com.e.d.model.repository.VideoImgRepository;
 import com.e.d.model.repository.VideosRepository;
 import com.e.d.model.service.CommentService;
 import com.e.d.model.service.CreatorService;
 import com.e.d.model.service.SubscriptionsService;
-import com.e.d.model.service.VideoImgService;
 import com.e.d.model.service.VideosService;
 
 import jakarta.servlet.http.HttpSession;
@@ -41,13 +40,11 @@ public class MainController {
 	private final CommentRepository commentRepository;
 	private final CreatorRepository creatorRepository;
 	private final SubscriptionsRepository subscriptionsRepository;
-	private final VideoImgRepository videoImgRepository;
 	private final VideosRepository videosRepository;
 	
 	private final CommentService commentService;
 	private final CreatorService creatorService;
 	private final SubscriptionsService subscriptionsService;
-	private final VideoImgService videoImgService;
 	private final VideosService videosService;
 
 	@GetMapping("/")
@@ -138,18 +135,70 @@ public class MainController {
 	@GetMapping("/channel/{creatorName}")
 	public String creatorProfile(@PathVariable String creatorName, Model model) {
 		Optional<CreatorEntity> creator = creatorRepository.findByCreatorName(creatorName);
-		if (creator.isPresent()) {
+		List<VideosEntity> video = videosRepository.findByCreatorVal(creator.get().getCreatorId());
+		if (creator.isPresent() && !(video.isEmpty())) {
 			model.addAttribute("creator", creator.get());
+			model.addAttribute("creatorVideosList", video);
 		}
 		return "creator/channel";
 	}
 
 	@GetMapping("/you")
-	public String heyYouYeahahYou() {
-		
-		
-		
+	public String heyYouYeahahYou(HttpSession session, Model model) {
+		CreatorEntity me = (CreatorEntity) session.getAttribute("creatorSession");
+		model.addAttribute("you", me);
 		return "creator/you";
+	}
+	
+	@GetMapping("/upload")
+	public String moveOnUploadForm(HttpSession session) {
+		if (session.getAttribute("creatorSession") != null) {			
+			return "video/upload";
+		} else {
+			return "creator/login";
+		}
+	}
+	
+	@PostMapping("/uploadVideo")
+	public String upload(@RequestParam long creatorId,
+			@RequestParam String title,
+			@RequestParam String more,
+			@RequestParam MultipartFile imgPath,
+			@RequestParam MultipartFile videoPath) {
+		
+		String uuidTest = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm"));
+		String imgName = uuidTest + imgPath.getOriginalFilename().trim().replaceAll(" ", "_");
+		String videoName = uuidTest + videoPath.getOriginalFilename().trim().replaceAll(" ", "_");
+	    
+		String videoImgUploadDir = "C:/youtubeProject/video-img/";
+	    File imgDir = new File(videoImgUploadDir);
+	    if (!imgDir.exists()) imgDir.mkdirs();
+	    
+	    String videoUploadDir = "C:/youtubeProject/";
+	    File videoDir = new File(videoUploadDir);
+	    if (!videoDir.exists()) videoDir.mkdirs();
+	    
+	    try {
+	    	imgPath.transferTo(new File(videoImgUploadDir + imgName));
+	    	videoPath.transferTo(new File(videoUploadDir + videoName));
+	    	
+	    	VideosEntity videoBuilder = VideosEntity.builder()
+	    			.creator(creatorRepository.findById(creatorId).get().getCreatorName())
+	    			.creatorVal(creatorId)
+	    			.title(title)
+	    			.more(more)
+	    			.videoName(videoName)
+	    			.videoPath("/youtubeProject/" + videoName)
+	    			.imgName(imgName)
+	    			.imgPath("/youtubeProject/video-img/" + imgName)
+	    			.createAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분")))
+	    			.build();
+	    	videosRepository.save(videoBuilder);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+		
+		return "redirect:/";
 	}
 	
 }

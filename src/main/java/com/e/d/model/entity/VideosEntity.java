@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class VideosEntity {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "video_id", nullable = false)
@@ -29,8 +29,21 @@ public class VideosEntity {
 	@Column(name = "more")
 	private String more;
 	
-	@Column(name = "datetime", nullable = false)
-	private String datetime;
+	@Column(name = "video_name", nullable = false)
+	private String videoName;
+	
+	@Lob
+	@Column(name = "video_path", nullable = false)
+	private String videoPath;
+	
+	@Column(name = "img_name", nullable = false)
+	private String imgName;
+	
+	@Column(name = "img_path", nullable = false)
+	private String imgPath;
+	
+	@Column(name = "create_at", nullable = false)
+	private String createAt;
 	
 	@Column(name = "views")
 	private long views;
