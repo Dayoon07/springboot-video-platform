@@ -48,7 +48,8 @@ public class MainController {
 	private final VideosService videosService;
 
 	@GetMapping("/")
-	public String index() {
+	public String index(Model model) {
+		model.addAttribute("allVideo", videosRepository.findAll());
 		return "index";
 	}
 	
@@ -134,13 +135,15 @@ public class MainController {
 	
 	@GetMapping("/channel/{creatorName}")
 	public String creatorProfile(@PathVariable String creatorName, Model model) {
-		Optional<CreatorEntity> creator = creatorRepository.findByCreatorName(creatorName);
-		List<VideosEntity> video = videosRepository.findByCreatorVal(creator.get().getCreatorId());
-		if (creator.isPresent() && !(video.isEmpty())) {
-			model.addAttribute("creator", creator.get());
-			model.addAttribute("creatorVideosList", video);
-		}
-		return "creator/channel";
+	    CreatorEntity creator = creatorRepository.findByCreatorName(creatorName)
+	                                              .orElseThrow(() -> new IllegalArgumentException("Creator not found"));
+	    List<VideosEntity> videos = videosRepository.findByCreatorVal(creator.getCreatorId());
+	    
+	    videos.getLast().getCreateAt().substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")));
+	    
+	    model.addAttribute("creator", creator);
+	    model.addAttribute("creatorVideosList", videos);
+	    return "creator/channel";
 	}
 
 	@GetMapping("/you")
@@ -192,6 +195,7 @@ public class MainController {
 	    			.imgName(imgName)
 	    			.imgPath("/youtubeProject/video-img/" + imgName)
 	    			.createAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분")))
+	    			.frontProfileImg(creatorRepository.findById(creatorId).get().getProfileImgPath())
 	    			.build();
 	    	videosRepository.save(videoBuilder);
 	    } catch (Exception e) {
@@ -199,6 +203,17 @@ public class MainController {
 	    }
 		
 		return "redirect:/";
+	}
+	
+	@GetMapping("/watch")
+	public String watchTheVideo(@RequestParam long videoId, Model model) {
+		Optional<VideosEntity> list = videosRepository.findById(videoId);
+		if (!(list.isEmpty())) {
+			model.addAttribute("watchTheVideo", list.get());
+			return "video/watch";
+		} else {
+			return "redirect:/";
+		}
 	}
 	
 }
