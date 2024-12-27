@@ -8,10 +8,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -81,10 +82,10 @@ public class MainController {
 				if (!(creatorPassword.isEmpty()) && creatorList.get().getCreatorPassword().equals(creatorPassword)) {
 					CreatorEntity creator = creatorList.get();
 					session.setAttribute("creatorSession", creator);
+					log.info(creatorName + "이 로그인함 ( 고유 번호 : " + creatorList.get().getCreatorId() + " )");
 				}
 			}
 		}
-		log.info(creatorName + "이 로그인함 ( 고유 번호 : " + creatorList.get().getCreatorId() + " )");
 		return "redirect:/";
 	}
 	
@@ -139,8 +140,6 @@ public class MainController {
 	                                              .orElseThrow(() -> new IllegalArgumentException("Creator not found"));
 	    List<VideosEntity> videos = videosRepository.findByCreatorVal(creator.getCreatorId());
 	    
-	    videos.getLast().getCreateAt().substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")));
-	    
 	    model.addAttribute("creator", creator);
 	    model.addAttribute("creatorVideosList", videos);
 	    return "creator/channel";
@@ -163,57 +162,101 @@ public class MainController {
 	}
 	
 	@PostMapping("/uploadVideo")
-	public String upload(@RequestParam long creatorId,
+	public String upload(@RequestParam String creatorName,
 			@RequestParam String title,
 			@RequestParam String more,
 			@RequestParam MultipartFile imgPath,
 			@RequestParam MultipartFile videoPath) {
 		
+		Optional<CreatorEntity> user = creatorRepository.findByCreatorName(creatorName);
+		
+		if (user.get().getCreatorName().isEmpty() && user.get().getCreatorName() == null) {
+			return "index";
+		}
+		
 		String uuidTest = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm"));
 		String imgName = uuidTest + imgPath.getOriginalFilename().trim().replaceAll(" ", "_");
 		String videoName = uuidTest + videoPath.getOriginalFilename().trim().replaceAll(" ", "_");
-	    
+		    
 		String videoImgUploadDir = "C:/youtubeProject/video-img/";
-	    File imgDir = new File(videoImgUploadDir);
-	    if (!imgDir.exists()) imgDir.mkdirs();
-	    
-	    String videoUploadDir = "C:/youtubeProject/";
-	    File videoDir = new File(videoUploadDir);
-	    if (!videoDir.exists()) videoDir.mkdirs();
-	    
-	    try {
-	    	imgPath.transferTo(new File(videoImgUploadDir + imgName));
-	    	videoPath.transferTo(new File(videoUploadDir + videoName));
-	    	
-	    	VideosEntity videoBuilder = VideosEntity.builder()
-	    			.creator(creatorRepository.findById(creatorId).get().getCreatorName())
-	    			.creatorVal(creatorId)
-	    			.title(title)
-	    			.more(more)
-	    			.videoName(videoName)
-	    			.videoPath("/youtubeProject/" + videoName)
-	    			.imgName(imgName)
-	    			.imgPath("/youtubeProject/video-img/" + imgName)
-	    			.createAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분")))
-	    			.frontProfileImg(creatorRepository.findById(creatorId).get().getProfileImgPath())
-	    			.build();
-	    	videosRepository.save(videoBuilder);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-		
+		File imgDir = new File(videoImgUploadDir);
+		if (!imgDir.exists()) imgDir.mkdirs();
+		    
+		String videoUploadDir = "C:/youtubeProject/";
+		File videoDir = new File(videoUploadDir);
+		if (!videoDir.exists()) videoDir.mkdirs();
+		    
+		try {
+			imgPath.transferTo(new File(videoImgUploadDir + imgName));
+			videoPath.transferTo(new File(videoUploadDir + videoName));
+		    	
+			VideosEntity videoBuilder = VideosEntity.builder()
+					.creator(user.get().getCreatorName())
+					.creatorVal(user.get().getCreatorId())
+					.title(title)
+					.more(more)
+					.videoName(videoName)
+					.videoPath("/youtubeProject/" + videoName)
+					.imgName(imgName)
+					.imgPath("/youtubeProject/video-img/" + imgName)
+					.createAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분")))
+					.frontProfileImg(user.get().getProfileImgPath())
+					.v(UUID.randomUUID().toString().replaceAll("-", ""))
+					.build();
+		    videosRepository.save(videoBuilder);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return "redirect:/";
 	}
 	
 	@GetMapping("/watch")
-	public String watchTheVideo(@RequestParam long videoId, Model model) {
-		Optional<VideosEntity> list = videosRepository.findById(videoId);
+	public String watchTheVideo(@RequestParam String v, Model model) {
+		Optional<VideosEntity> list = videosRepository.findByV(v);
+		Optional<CreatorEntity> creator = creatorRepository.findById(list.get().getCreatorVal());
 		if (!(list.isEmpty())) {
 			model.addAttribute("watchTheVideo", list.get());
+			model.addAttribute("videoCreatorProfileInfo", creator.get());
+			model.addAttribute("recentVideo", videosRepository.findAll(Sort.by(Direction.DESC, "videoId")));
 			return "video/watch";
 		} else {
 			return "redirect:/";
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

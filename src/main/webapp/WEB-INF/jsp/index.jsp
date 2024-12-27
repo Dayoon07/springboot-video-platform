@@ -23,16 +23,22 @@
         		<div class="flex flex-col gap-2 py-3">
 	                <div class="relative group">
 	                    <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-	                        <a href="${ cl }/watch?videoId=${ video.videoId }">
+	                        <a href="${ cl }/watch?v=${ video.v }">
 	                        	<img src="${ video.imgPath }" alt="Video thumbnail" class="w-full h-full object-cover">
 	                        </a>
 	                    </div>
 	                </div>
 	                <div class="flex gap-2">
-	                    <img src="${ video.frontProfileImg }" class="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0">
+	                    <a href="${ cl }/channel/${ video.creator }">
+	                    	<img src="${ video.frontProfileImg }" class="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0">
+	                    </a>
 	                    <div class="flex-1 min-w-0">
-	                        <h3 class="font-medium text-sm line-clamp-2">${ video.title }</h3>
-	                        <p class="text-sm text-gray-600">${ video.creator }</p>
+	                        <a href="${ cl }/watch?v=${ video.v }" class="font-medium text-sm line-clamp-2 hover:underline">
+	                        	${ video.title }
+	                        </a>
+	                        <a href="${ cl }/channel/${ video.creator }" class="text-sm text-gray-600 hover:underline">
+		                        ${ video.creator }
+							</a>
 	                        <div class="text-sm text-gray-600">
 	                        	조회수 ${ video.views == 0 ? "없음" : video.views } | 	${ video.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
 	                        	 ? video.createAt.substring(6, 13) : video.createAt.substring(0, 13) }

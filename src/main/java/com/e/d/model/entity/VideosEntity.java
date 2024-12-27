@@ -49,6 +49,9 @@ public class VideosEntity {
 	@Column(name = "front_profile_img", nullable = false)
 	private String frontProfileImg;
 	
+	@Column(name = "v", unique = true, nullable = false)
+	private String v;
+	
 	@Column(name = "views")
 	private long views;
 	

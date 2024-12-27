@@ -17,9 +17,14 @@
     <div class="max-w-3xl mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg">
 	    <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">영상 업로드</h1>
 	    <form action="${ cl }/uploadVideo" method="post" enctype="multipart/form-data" class="space-y-6">
-	    	<input type="hidden" name="creatorId" value="${ sessionScope.creatorSession.creatorId }">
 	        <div class="flex">
 	        	<div class="space-y-6 w-3/6 px-2">
+	        		<div>
+		                <label for="creatorName" class="block text-lg font-semibold mb-2 text-gray-700">제작자 이름</label>
+		                <input type="text" id="creatorName" name="creatorName" class="w-full p-3 bg-gray-50 rounded-lg border border-gray-300 
+		                	text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400" 
+		                	value="${ sessionScope.creatorSession.creatorName }" readonly required>
+		            </div>
 		            <div>
 		                <label for="title" class="block text-lg font-semibold mb-2 text-gray-700">영상 제목</label>
 		                <input type="text" id="title" name="title" placeholder="영상 제목을 입력하세요" class="w-full p-3 bg-gray-50 rounded-lg border 

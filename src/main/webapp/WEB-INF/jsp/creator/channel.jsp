@@ -21,8 +21,12 @@
         <div class="ml-5"> 
             <h1 class="text-3xl font-semibold">${ creator.creatorName }</h1>
             <p class="text-lg py-2 text-gray-700 truncate max-w-xl">
-                bio 필드의 값, 30자 substring으로 자르고 뒤에 ...붙인 뒤에 더보기 - 
-                ${ creator.bio }
+            	<c:if test="${ creator.bio.length() >= 50 }">
+	                ${ creator.bio.substring(0, 50) }
+            	</c:if>
+            	<c:if test="${ creator.bio.length() < 50 }">
+            		${ creator.bio }
+            	</c:if>
             </p>
             <button class="px-6 py-2 mt-3 bg-red-600 text-black rounded-full hover:bg-red-500 transition duration-300">
                 구독
@@ -37,26 +41,33 @@
     <div class="max-w-4xl py-10 mx-auto">
         <h1 class="py-3">인기 동영상</h1>
         <div class="flex">
-            <c:forEach var="cvl" items="${ creatorVideosList }">
-            	<div class="flex flex-col gap-2 py-3">
-	                <div class="relative group">
-	                    <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-	                        <img src="${ cvl.imgPath }" alt="Video thumbnail" class="w-full h-full object-cover">
-	                    </div>
-	                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
-	                        <i data-lucide="play-circle" class="w-12 h-12 text-white"></i>
-	                    </div>
-	                </div>
-	                <div class="flex gap-2">
-	                    <div class="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0"></div>
-	                    <div class="flex-1 min-w-0">
-	                        <h3 class="font-medium text-sm line-clamp-2">${ cvl.title }</h3>
-	                        <p class="text-sm text-gray-600">${ cvl.more }</p>
-	                        <div class="text-sm text-gray-600">${ cvl.views } | ${ cvl.createAt }</div>
-	                    </div>
-	                </div>
-	            </div>
-            </c:forEach>
+        	<c:if test="${ not empty creatorVideosList }">
+        		<c:forEach var="cvl" items="${ creatorVideosList }">
+	            	<div class="flex flex-col gap-2 py-3">
+		                <div class="relative group">
+		                    <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
+		                        <a href="${ cl }/watch?v=${ cvl.v }">
+		                        	<img src="${ cvl.imgPath }" alt="Video thumbnail" class="w-full h-full object-cover">
+		                        </a>
+		                    </div>
+		                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+		                        <i data-lucide="play-circle" class="w-12 h-12 text-white"></i>
+		                    </div>
+		                </div>
+		                <div class="flex gap-2">
+		                    <div class="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0"></div>
+		                    <div class="flex-1 min-w-0">
+		                        <h3 class="font-medium text-sm line-clamp-2">${ cvl.title }</h3>
+		                        <p class="text-sm text-gray-600">${ cvl.more }</p>
+		                        <div class="text-sm text-gray-600">${ cvl.views } | ${ cvl.createAt }</div>
+		                    </div>
+		                </div>
+		            </div>
+	            </c:forEach>
+        	</c:if>
+        	<c:if test="${ empty creatorVideosList }">
+        		제작한 영상이 없습니다.
+        	</c:if>
         </div>
     </div>
 	

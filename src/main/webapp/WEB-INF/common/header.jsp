@@ -25,7 +25,7 @@
 				<c:if test="${ not empty sessionScope.creatorSession }">
 				  	<a href="${ cl }/upload" class="btn text-white hover:text-black hover:bg-white border-2 border-white rounded-lg px-4 py-2 mx-2 transition-all duration-300">업로드</a>
 					<a href="${ cl }/you" class="text-white text-xl">${ sessionScope.creatorSession.creatorName }</a>
-				  	<img src="${ sessionScope.creatorSession.profileImgPath }" class="w-10 h-10 border-gray-100 border-2 rounded-full cursor-pointer">
+				  	<img src="${ sessionScope.creatorSession.profileImgPath }" id="profile" class="w-10 h-10 border-gray-100 border-2 rounded-full cursor-pointer">
 				</c:if>
 	        </div>
 	    </div>
@@ -33,7 +33,6 @@
 	
 	<div class="fixed top-0 left-0 w-full h-full z-40 bg-black opacity-50 hidden" id="sidebar-drop" onclick="closeSide()"></div>
 	
-	<!-- hidden lg:block -->
 	<aside id="sidebar" class="w-64 h-full fixed left-0 top-0 py-2 bg-black text-white z-50 transform -translate-x-full transition-transform">
 	    <div class="w-full bg-black flex items-center p-4" style="height: 56px;">
 	        <button class="text-white text-3xl mr-5 cursor-pointer" onclick="closeSide()">&#9776;</button>
@@ -44,7 +43,7 @@
 	    <ul class="space-y-2 pt-2">
 	        <li><a href="${ cl }/" class="block py-2 px-4 rounded-md hover:bg-gray-700">홈</a></li>
 	        <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-700">구독</a></li>
-	        <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-700">내 페이지</a></li>
+	        <li><a href="${ cl }/you" class="block py-2 px-4 rounded-md hover:bg-gray-700">내 페이지</a></li>
 	        <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-700">좋아요를 누른 영상</a></li>
 	        <c:if test="${ not empty sessionScope.creatorSession }">
 	        	<li><a href="${ cl }/channel/${ sessionScope.creatorSession.creatorName }" class="block py-2 px-4 rounded-md hover:bg-gray-700">내 채널</a></li>
