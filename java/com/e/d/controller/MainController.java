@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,6 +49,9 @@ public class MainController {
 	private final CreatorService creatorService;
 	private final SubscriptionsService subscriptionsService;
 	private final VideosService videosService;
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncode;
 
 	@GetMapping("/")
 	public String index(Model model) {
@@ -75,8 +80,8 @@ public class MainController {
 	
 	@PostMapping("/loginF")
 	public String login(
-			@RequestParam("creatorName") String creatorName,
-			@RequestParam("creatorPassword") String creatorPassword,
+			@RequestParam String creatorName,
+			@RequestParam String creatorPassword,
 			HttpSession session) {
 		Optional<CreatorEntity> creatorList = creatorRepository.findByCreatorNameAndCreatorPassword(creatorName, creatorPassword);
 		
@@ -99,7 +104,7 @@ public class MainController {
 	}
 	
 	@PostMapping("/logout")
-	public String logout(@RequestParam("creatorId") long creatorId, HttpSession session) {
+	public String logout(@RequestParam long creatorId, HttpSession session) {
 		CreatorEntity creator = creatorRepository.findById(creatorId).orElse(null);
 		if (creator.getCreatorId() == creatorId) {
 			session.invalidate();
@@ -114,7 +119,7 @@ public class MainController {
 						@RequestParam String creatorPassword, 
 						@RequestParam String bio, 
 						@RequestParam String tel, 
-						@RequestParam("profileImgPath") MultipartFile profileImgPath) {
+						@RequestParam MultipartFile profileImgPath) {
 	    String fileName = profileImgPath.getOriginalFilename().trim();
 	    String uploadDir = "C:/youtubeProject/profile-img/";
 	    File dir = new File(uploadDir);
@@ -155,10 +160,13 @@ public class MainController {
 	}
 
 	@GetMapping("/you")
-	public String heyYouYeahahYou(HttpSession session, Model model) {
-		CreatorEntity me = (CreatorEntity) session.getAttribute("creatorSession");
-		model.addAttribute("you", me);
-		return "creator/you";
+	public String showCreatorProfile(HttpSession session, Model model) {
+	    CreatorEntity me = (CreatorEntity) session.getAttribute("creatorSession");
+	    if (me == null || me.getCreatorName() == null || me.getCreatorName().isEmpty()) {
+	        return "creator/you";
+	    }
+	    model.addAttribute("you", me);
+	    return "creator/you";
 	}
 	
 	@GetMapping("/upload")
@@ -220,13 +228,17 @@ public class MainController {
 	}
 	
 	@GetMapping("/watch")
-	public String watchTheVideo(@RequestParam String v, Model model) {
+	public String watchTheVideo(@RequestParam String v, Model model, HttpSession session) {
 		Optional<VideosEntity> list = videosRepository.findByV(v);
 		Optional<CreatorEntity> creator = creatorRepository.findById(list.get().getCreatorVal());
+		CreatorEntity creatorList = (CreatorEntity) session.getAttribute("creatorSession");
 		if (!(list.isEmpty())) {
 			model.addAttribute("watchTheVideo", list.get());
 			model.addAttribute("videoCreatorProfileInfo", creator.get());
 			model.addAttribute("recentVideo", videosRepository.findAll(Sort.by(Direction.DESC, "videoId")));
+			if (creatorList != null) {
+				list.get().incrementVideoViews();
+			}
 			return "video/watch";
 		} else if (list.isEmpty()) {
 			return "redirect:/";

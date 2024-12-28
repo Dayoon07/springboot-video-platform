@@ -64,4 +64,8 @@ public class VideosEntity {
 	@Column(name = "comment_count")
 	private long commentCount;
 	
+	public void incrementVideoViews() {
+		this.views++;
+	}
+	
 }

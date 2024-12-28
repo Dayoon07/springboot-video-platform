@@ -14,6 +14,13 @@ function closeSide() {
 }
 
 const profile = document.getElementById("profile");
+const profileDropdown = document.getElementById("profileDropdown");
+const profileDropdownMenu = document.getElementById("profileDropdownMenu");
 profile.addEventListener("click", () => {
-	
+	profileDropdownMenu.classList.remove("hidden");
+	profileDropdown.classList.remove("hidden");
+});
+profileDropdownMenu.addEventListener("click", () => {
+	profileDropdownMenu.classList.add("hidden");
+	profileDropdown.classList.add("hidden");
 });

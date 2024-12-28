@@ -31,11 +31,9 @@
 		        <div class="flex items-center space-x-3 mt-2">
 		            <a href="${ cl }/channel/${ videoCreatorProfileInfo.creatorName }" class="flex items-center">
 		                <img src="${ videoCreatorProfileInfo.profileImgPath }" alt="${ videoCreatorProfileInfo.creatorName } 프로필" class="w-10 h-10 rounded-full border-2 border-gray-300">
-						<div>
-							<span class="ml-2 text-sm font-semibold text-gray-900">${ videoCreatorProfileInfo.creatorName }</span>
-							<span class="ml-2 text-sm text-gray-600">${ videoCreatorProfileInfo.subscribe } 구독자</span>
-						</div>
+						<span class="ml-2 text-sm font-semibold text-gray-900">${ videoCreatorProfileInfo.creatorName }</span>
 		            </a>
+					<span class="ml-2 text-sm text-gray-600">구독자 ${ videoCreatorProfileInfo.subscribe }명</span>
 		        </div>
 		
 		        <div class="text-sm text-gray-600 mt-2">
@@ -99,10 +97,10 @@
 		        </div>
 		    </div>
 		</div>
-	    <div class="w-96 border rounded-lg overflow-y-scroll px-4" style="height: 1100px;">
+	    <div class="w-96 border rounded-lg overflow-y-scroll" style="height: 1100px;">
 	    	<c:forEach var="rec" items="${ recentVideo }" varStatus="recentStatus">
 	    		<c:if test="${ recentStatus.index < 20 }">
-	    			<div class="flex flex-col gap-2 py-3">
+	    			<div class="flex flex-col gap-2 p-4 hover:bg-gray-200">
 		                <div class="relative group">
 		                    <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
 		                        <a href="${ cl }/watch?v=${ rec.v }">

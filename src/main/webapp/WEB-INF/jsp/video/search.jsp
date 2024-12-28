@@ -15,38 +15,28 @@
 <body>
 	<jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 	
-	<div class="max-w-7xl mx-auto p-4">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        
-        	<c:forEach var="searchVideos" items="${ searchList }">
-        		<div class="flex flex-col gap-2 p-2 rounded-lg hover:bg-gray-200">
-	                <div class="relative group">
-	                    <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-	                        <a href="${ cl }/watch?v=${ searchVideos.v }">
-	                        	<img src="${ searchVideos.imgPath }" alt="Video thumbnail" class="w-full h-full object-cover">
-	                        </a>
-	                    </div>
-	                </div>
-	                <div class="flex gap-2">
-	                    <a href="${ cl }/channel/${ searchVideos.creator }">
-	                    	<img src="${ searchVideos.frontProfileImg }" class="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0">
-	                    </a>
-	                    <div class="flex-1 min-w-0">
-	                        <a href="${ cl }/watch?v=${ video.v }" class="font-medium text-sm line-clamp-2 hover:underline">
-	                        	${ searchVideos.title }
-	                        </a>
-	                        <a href="${ cl }/channel/${ searchVideos.creator }" class="text-sm text-gray-600 hover:underline">
-		                        ${ searchVideos.creator }
-							</a>
-	                        <div class="text-sm text-gray-600">
-	                        	조회수 ${ searchVideos.views == 0 ? "없음" : searchVideos.views } | ${ searchVideos.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
-	                        	 ? searchVideos.createAt.substring(6, 13) : searchVideos.createAt.substring(0, 13) }
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>
-        	</c:forEach>
-        </div>
+	<div class="max-w-6xl mx-auto p-4">
+		<c:forEach var="searchVideos" items="${ searchList }">
+			<div class="flex justify-start" style="height: 250px;">
+				<div class="pr-2">
+					<img src="${ searchVideos.imgPath }" width="375" class="h-full rounded-lg object-cover">
+				</div>
+				<div class="pl-2 py-2">
+					<h1 class="text-2xl">${ searchVideos.title }</h1>
+					<p class="text-gray-500">
+						<span>조회수 ${ searchVideos.views == 0 ? "없음" : searchVideos.views } | </span>
+						<span>${ searchVideos.createAt }</span>
+					</p>
+					<div class="flex items-center my-2">
+						<img src="${ searchVideos.frontProfileImg }" class="w-8 h-8 rounded-full object-cover">
+						<p class="text-gray-500 ml-3">${ searchVideos.creator }</p>
+					</div>
+					<div class="text-gray-500">
+						${ searchVideos.more.length() >= 50 ? searchVideos.more.substring(0, 50) : searchVideos.more }
+					</div>
+				</div>
+			</div>
+		</c:forEach>
     </div>
 	
 	<jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
