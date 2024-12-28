@@ -8,7 +8,8 @@
 <head>
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" hidden="${ cl }/source/css/custom.css">
+    <link rel="icon" href="${ cl }/source/img/videoPlayer-icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="${ cl }/source/css/custom.css">
 	<title>whynot</title>
 </head>
 <body>

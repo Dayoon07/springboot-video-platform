@@ -5,5 +5,4 @@
 <c:set var="cl" value="${ pageContext.request.contextPath }" />
 	
 	<script src="https://cdn.tailwindcss.com"></script>
-	<script src="${ cl }/source/js/sidebar.js"></script>
-	<script src="${ cl }/source/js/profileDropdown.js"></script>
+	<script src="${ cl }/source/js/script.js"></script>

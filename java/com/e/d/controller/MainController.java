@@ -50,8 +50,17 @@ public class MainController {
 
 	@GetMapping("/")
 	public String index(Model model) {
-		model.addAttribute("allVideo", videosRepository.findAll());
+		List<VideosEntity> videos = videosRepository.findAll(Sort.by(Direction.DESC, "videoId"));
+		model.addAttribute("allVideo", videos);
 		return "index";
+	}
+	
+	@GetMapping("/search")
+	public String searchMethod(@RequestParam String t, Model model) {
+		List<VideosEntity> searchList = videosRepository.searchByTitleIgnoreCaseContaining(t);
+		model.addAttribute("searchList", searchList);
+		model.addAttribute("searchWord", t);
+		return "video/search";
 	}
 	
 	@GetMapping("/login")
@@ -174,9 +183,9 @@ public class MainController {
 			return "index";
 		}
 		
-		String uuidTest = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm"));
-		String imgName = uuidTest + imgPath.getOriginalFilename().trim().replaceAll(" ", "_");
-		String videoName = uuidTest + videoPath.getOriginalFilename().trim().replaceAll(" ", "_");
+		String uuidTest = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
+		String imgName = uuidTest + "-" + imgPath.getOriginalFilename().trim().replaceAll(" ", "_");
+		String videoName = uuidTest + "-" + videoPath.getOriginalFilename().trim().replaceAll(" ", "_");
 		    
 		String videoImgUploadDir = "C:/youtubeProject/video-img/";
 		File imgDir = new File(videoImgUploadDir);
@@ -219,6 +228,8 @@ public class MainController {
 			model.addAttribute("videoCreatorProfileInfo", creator.get());
 			model.addAttribute("recentVideo", videosRepository.findAll(Sort.by(Direction.DESC, "videoId")));
 			return "video/watch";
+		} else if (list.isEmpty()) {
+			return "redirect:/";
 		} else {
 			return "redirect:/";
 		}

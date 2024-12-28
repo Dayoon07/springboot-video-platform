@@ -12,4 +12,5 @@ import com.e.d.model.entity.VideosEntity;
 public interface VideosRepository extends JpaRepository<VideosEntity, Long> {
 	List<VideosEntity> findByCreatorVal(long creatorVal);
 	Optional<VideosEntity> findByV(String v);
+	List<VideosEntity> searchByTitleIgnoreCaseContaining(String title);
 }

@@ -12,10 +12,10 @@
 		        </a>
 	        </div>
 	
-	        <div class="flex items-center space-x-4">
-	            <input type="text" class="w-96 p-2 rounded bg-gray-800 text-white" placeholder="Search...">
-	            <button class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded">검색</button>
-	        </div>
+	        <form action="${ cl }/search" method="get" autocomplete="on" class="flex items-center space-x-4">
+	            <input type="text" name="t" class="w-96 p-2 rounded bg-gray-800 text-white" placeholder="검색" required>
+	            <button type="submit" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded">검색</button>
+	        </form>
 	
 	        <div class="flex items-center space-x-4 font-semibold">
 	            <c:if test="${ empty sessionScope.creatorSession }">

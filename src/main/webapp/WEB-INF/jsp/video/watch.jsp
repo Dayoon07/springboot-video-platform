@@ -1,3 +1,5 @@
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
@@ -8,8 +10,9 @@
 <head>
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="${ cl }/source/img/videoPlayer-icon.png" type="image/x-icon">
     <link rel="stylesheet" href="${ cl }/source/css/custom.css">
-	<title>${ watchTheVideo.title }</title>
+	<title>${ watchTheVideo.title } - whynot</title>
 </head>
 <body>
 	<jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
@@ -25,29 +28,26 @@
 		    <div class="mt-5">
 		        <h1 class="text-2xl font-bold">${ watchTheVideo.title }</h1>
 		        
-		        <!-- Creator Info -->
 		        <div class="flex items-center space-x-3 mt-2">
 		            <a href="${ cl }/channel/${ videoCreatorProfileInfo.creatorName }" class="flex items-center">
 		                <img src="${ videoCreatorProfileInfo.profileImgPath }" alt="${ videoCreatorProfileInfo.creatorName } 프로필" class="w-10 h-10 rounded-full border-2 border-gray-300">
-		                <div>
-		                    <span class="ml-2 text-sm font-semibold text-gray-900">${ videoCreatorProfileInfo.creatorName }</span>
-		                    <span class="ml-2 text-sm text-gray-600">${ videoCreatorProfileInfo.subscribe } 구독자</span>
-		                </div>
+						<div>
+							<span class="ml-2 text-sm font-semibold text-gray-900">${ videoCreatorProfileInfo.creatorName }</span>
+							<span class="ml-2 text-sm text-gray-600">${ videoCreatorProfileInfo.subscribe } 구독자</span>
+						</div>
 		            </a>
 		        </div>
 		
-		        <!-- Video Stats -->
 		        <div class="text-sm text-gray-600 mt-2">
 		            조회수: ${ watchTheVideo.views } | 업로드 날짜: ${ watchTheVideo.createAt }
 		        </div>
 		
-		        <!-- Like, Dislike, Subscribe Buttons -->
 		        <div class="flex items-center space-x-3 mt-3">
 		            <button class="px-6 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition flex items-center space-x-2">
-		                <span>👍</span> <span class="ml-1">${ watchTheVideo.likes }</span>
+		                <span class="ml-1">좋아요 ${ watchTheVideo.likes }</span>
 		            </button>
 		            <button class="px-6 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition flex items-center space-x-2">
-		                <span>👎</span> <span class="ml-1">${ watchTheVideo.unlikes }</span>
+		                <span class="ml-1">싫어요 ${ watchTheVideo.unlikes }</span>
 		            </button>
 		            <button class="px-6 py-2 bg-red-600 text-white rounded-full hover:bg-red-500 transition">
 		                구독
@@ -55,12 +55,10 @@
 		        </div>
 		    </div>
 		
-		    <!-- Video Description -->
 		    <div class="mt-5 p-4 bg-gray-100 rounded-lg">
 		        <p class="text-gray-800">${ watchTheVideo.more }</p>
 		    </div>
 		
-		    <!-- Comments Section -->
 		    <div class="mt-10">
 		        <h2 class="text-lg font-bold mb-3">댓글</h2>
 		        <form action="/addComment" method="post" class="mb-5">
@@ -101,7 +99,7 @@
 		        </div>
 		    </div>
 		</div>
-	    <div class="w-96 px-4">
+	    <div class="w-96 border rounded-lg overflow-y-scroll px-4" style="height: 1100px;">
 	    	<c:forEach var="rec" items="${ recentVideo }" varStatus="recentStatus">
 	    		<c:if test="${ recentStatus.index < 20 }">
 	    			<div class="flex flex-col gap-2 py-3">
@@ -134,7 +132,6 @@
 	    	</c:forEach>
 	    </div>
 	</div>
-	
 	
 	<jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
 </body>

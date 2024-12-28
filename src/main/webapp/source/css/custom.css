@@ -2,3 +2,6 @@
 aside {
 	transition: transform 0.3s ease-in-out;
 }
+#recent-videos {
+    max-height: none; /* 기본 높이 초기화 */
+}
