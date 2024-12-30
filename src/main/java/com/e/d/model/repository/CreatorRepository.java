@@ -11,4 +11,5 @@ import com.e.d.model.entity.CreatorEntity;
 public interface CreatorRepository extends JpaRepository<CreatorEntity, Long> {
 	Optional<CreatorEntity> findByCreatorNameAndCreatorPassword(String creatorName, String creatorPassword);
 	Optional<CreatorEntity> findByCreatorName(String creatorName);
+	Optional<CreatorEntity> findByProfileImgPath(String profileImgPath);
 }

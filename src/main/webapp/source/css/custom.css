@@ -5,3 +5,9 @@ aside {
 #recent-videos {
     max-height: none; /* 기본 높이 초기화 */
 }
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}

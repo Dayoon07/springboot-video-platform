@@ -2,6 +2,8 @@ package com.e.d.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.e.d.model.entity.CommentEntity;
 import com.e.d.model.entity.CreatorEntity;
 import com.e.d.model.entity.VideosEntity;
 import com.e.d.model.repository.CommentRepository;
@@ -163,7 +166,7 @@ public class MainController {
 	public String showCreatorProfile(HttpSession session, Model model) {
 	    CreatorEntity me = (CreatorEntity) session.getAttribute("creatorSession");
 	    if (me == null || me.getCreatorName() == null || me.getCreatorName().isEmpty()) {
-	        return "creator/you";
+	        return "creator/login";
 	    }
 	    model.addAttribute("you", me);
 	    return "creator/you";
@@ -229,25 +232,52 @@ public class MainController {
 	
 	@GetMapping("/watch")
 	public String watchTheVideo(@RequestParam String v, Model model, HttpSession session) {
-		Optional<VideosEntity> list = videosRepository.findByV(v);
-		Optional<CreatorEntity> creator = creatorRepository.findById(list.get().getCreatorVal());
-		CreatorEntity creatorList = (CreatorEntity) session.getAttribute("creatorSession");
-		if (!(list.isEmpty())) {
-			model.addAttribute("watchTheVideo", list.get());
-			model.addAttribute("videoCreatorProfileInfo", creator.get());
-			model.addAttribute("recentVideo", videosRepository.findAll(Sort.by(Direction.DESC, "videoId")));
-			if (creatorList != null) {
-				list.get().incrementVideoViews();
-			}
-			return "video/watch";
-		} else if (list.isEmpty()) {
-			return "redirect:/";
-		} else {
-			return "redirect:/";
-		}
+	    Optional<VideosEntity> list = videosRepository.findByV(v);
+	    if (list.isPresent()) {
+	        VideosEntity video = list.get();
+	        Optional<CreatorEntity> creator = creatorRepository.findById(video.getCreatorVal());
+	        List<CommentEntity> comment = commentRepository.findByCommentVideoOrderByCommentIdDesc(list.get().getVideoId());
+	        CreatorEntity creatorList = (CreatorEntity) session.getAttribute("creatorSession");
+	        
+	        model.addAttribute("watchTheVideo", video);
+	        model.addAttribute("videoCreatorProfileInfo", creator.orElse(null));
+	        model.addAttribute("recentVideo", videosRepository.findAll(Sort.by(Direction.DESC, "videoId")));
+	        model.addAttribute("watchTheVideoCommentList", comment);
+
+	        if (creatorList != null) {
+	            video.incrementVideoViews();
+	            videosRepository.save(video); // 변경사항을 저장
+	        }
+	        return "video/watch";
+	    }
+	    return "redirect:/";
 	}
 	
-	
+	@PostMapping("/commentAdd")
+	public String addVideoComment(@RequestParam long commentVideo,
+	                              @RequestParam String commentContent,
+	                              @RequestParam long creatorId) throws UnsupportedEncodingException {
+	    VideosEntity video = videosRepository.findById(commentVideo)
+	            .orElseThrow(() -> new IllegalArgumentException("videoId가 비어있습니다"));
+	    
+	    Optional<CreatorEntity> creator = creatorRepository.findById(creatorId);
+	    
+	    if (creator.isPresent()) {
+	    	CommentEntity comment = CommentEntity.builder()
+		            .commentVideo(commentVideo)
+		            .commenter(creator.get().getCreatorName())
+		            .commentUserid(creatorId)
+		            .commenterProfile(creator.get().getProfileImg() != null ? creator.get().getProfileImg() : "없음")
+		            .commenterProfilepath(creator.get().getProfileImgPath() != null ? creator.get().getProfileImgPath() : "없음")
+		            .commentContent(commentContent)
+		            .datetime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+		            .build();
+
+		    commentRepository.save(comment);
+	    }
+
+	    return "redirect:/watch?v=" + URLEncoder.encode(video.getV(), "UTF-8");
+	}
 	
 	
 	

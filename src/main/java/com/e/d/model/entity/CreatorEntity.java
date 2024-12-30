@@ -28,7 +28,6 @@ public class CreatorEntity {
 	@Column(name = "create_at", nullable = false)
 	private String createAt;
 	
-	@Lob
 	@Column(name = "bio")
 	private String bio;
 	
@@ -38,7 +37,6 @@ public class CreatorEntity {
 	@Column(name = "profile_img")
 	private String profileImg;
 	
-	@Lob
 	@Column(name = "profile_img_path")
 	private String profileImgPath;
 	

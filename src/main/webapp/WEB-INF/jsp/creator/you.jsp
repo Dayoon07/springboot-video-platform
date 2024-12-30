@@ -11,6 +11,7 @@
     <link rel="icon" href="${ cl }/source/img/videoPlayer-icon.png" type="image/x-icon">
     <link rel="stylesheet" href="${ cl }/source/css/custom.css">
 	<title>whynot</title>
+	
 </head>
 <body>
 	<jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
@@ -29,37 +30,110 @@
 	            <a href="${ cl }/channel/${ you.creatorName }">${ you.creatorName } | 채널 보기</a>
 	        </div>
 	    </div>
-	    <div class="max-w-4xl py-10 mx-auto">
-	        <h1 class="py-3">기록</h1>
-	        <div class="flex">
-	            <%
-	            	for (int i = 1; i < 5; i++) {
-	            %>
-	            	<div class="flex flex-col gap-2 py-3">
-		                <div class="relative group">
-		                    <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-		                        <img src="/api/placeholder/320/180" alt="Video thumbnail" class="w-full h-full object-cover">
-		                    </div>
-		                    <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
-		                        <i data-lucide="play-circle" class="w-12 h-12 text-white"></i>
-		                    </div>
-		                </div>
-		                <div class="flex gap-2">
-		                    <div class="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0"></div>
-		                    <div class="flex-1 min-w-0">
-		                        <h3 class="font-medium text-sm line-clamp-2">Building a Modern Web Application from Scratch</h3>
-		                        <p class="text-sm text-gray-600">Tech Tutorials</p>
-		                        <div class="text-sm text-gray-600">125K views | 2 days ago</div>
-		                    </div>
-		                </div>
-		            </div>
-	            <%
-	            	}
-	            %>
-	        </div>
-	    </div>
 	</c:if>
 	
+	<div class="max-w-7xl mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg">
+        
+        <div class="mb-6">
+            <ul class="flex space-x-4 border-b">
+                <li class="tab-item cursor-pointer px-4 py-2 text-lg font-semibold text-gray-700 hover:text-blue-500" data-tab="dashboard">대시보드</li>
+                <li class="tab-item cursor-pointer px-4 py-2 text-lg font-semibold text-gray-700 hover:text-blue-500" data-tab="video-management">영상 관리</li>
+                <li class="tab-item cursor-pointer px-4 py-2 text-lg font-semibold text-gray-700 hover:text-blue-500" data-tab="comment-management">댓글 관리</li>
+                <li class="tab-item cursor-pointer px-4 py-2 text-lg font-semibold text-gray-700 hover:text-blue-500" data-tab="analytics">영상 분석</li>
+                <li class="tab-item cursor-pointer px-4 py-2 text-lg font-semibold text-gray-700 hover:text-blue-500" data-tab="settings">설정</li>
+            </ul>
+        </div>
+
+        <div class="tab-content active" id="dashboard">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">대시보드</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-gray-100 p-6 rounded-lg shadow-lg text-center">
+                    <p class="text-lg font-semibold text-gray-700">총 조회수</p>
+                    <p class="text-3xl font-bold text-gray-800">1,234,567</p>
+                </div>
+                <div class="bg-gray-100 p-6 rounded-lg shadow-lg text-center">
+                    <p class="text-lg font-semibold text-gray-700">좋아요 수</p>
+                    <p class="text-3xl font-bold text-gray-800">12,345</p>
+                </div>
+                <div class="bg-gray-100 p-6 rounded-lg shadow-lg text-center">
+                    <p class="text-lg font-semibold text-gray-700">댓글 수</p>
+                    <p class="text-3xl font-bold text-gray-800">678</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="video-management">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">영상 관리</h2>
+            <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
+                <table class="min-w-full table-auto">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 text-left text-lg font-semibold text-gray-700">영상 제목</th>
+                            <th class="px-6 py-3 text-left text-lg font-semibold text-gray-700">업로드 날짜</th>
+                            <th class="px-6 py-3 text-left text-lg font-semibold text-gray-700">조회수</th>
+                            <th class="px-6 py-3 text-left text-lg font-semibold text-gray-700">상태</th>
+                            <th class="px-6 py-3 text-left text-lg font-semibold text-gray-700">설정</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="px-6 py-4 text-gray-700">영상 제목 1</td>
+                            <td class="px-6 py-4 text-gray-700">2024-12-25</td>
+                            <td class="px-6 py-4 text-gray-700">1,234</td>
+                            <td class="px-6 py-4 text-gray-700">공개</td>
+                            <td class="px-6 py-4 text-gray-700">
+                                <button class="text-blue-600 hover:text-blue-400">편집</button>
+                                <button class="text-red-600 hover:text-red-400 ml-4">삭제</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="tab-content" id="comment-management">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">댓글 관리</h2>
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <div class="flex items-center space-x-4 mb-4">
+                    <img src="https://via.placeholder.com/50" alt="User Avatar" class="w-12 h-12 rounded-full">
+                    <div>
+                        <p class="font-semibold text-gray-800">사용자 이름</p>
+                        <p class="text-sm text-gray-600">2024-12-30</p>
+                    </div>
+                </div>
+                <p class="text-gray-700 mb-4">이 영상은 정말 유익합니다! 많은 사람들이 이 영상을 봤으면 좋겠어요.</p>
+                <div class="flex space-x-4">
+                    <button class="text-blue-600 hover:text-blue-400">답글</button>
+                    <button class="text-red-600 hover:text-red-400">삭제</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="analytics">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">영상 분석</h2>
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <div class="h-72 bg-gray-200 rounded-lg">
+                    <p class="text-center py-32 text-gray-500">그래프를 여기에 표시하세요.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-content" id="settings">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">설정</h2>
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <p class="text-lg text-gray-700">기본 업로드 설정</p>
+                    <button class="text-blue-600 hover:text-blue-400">편집</button>
+                </div>
+                <div class="flex justify-between items-center mb-4">
+                    <p class="text-lg text-gray-700">계정 정보</p>
+                    <button class="text-blue-600 hover:text-blue-400">편집</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    	
 	<jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
 </body>
 </html>

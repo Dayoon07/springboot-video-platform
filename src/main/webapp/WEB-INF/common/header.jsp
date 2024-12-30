@@ -41,6 +41,7 @@
 				  		</div><hr>
 				  		
 				  		<div>
+				  			<a href="${ cl }/you" class="block w-full text-lg py-2 px-4 hover:bg-gray-200">내 페이지</a>
 				  			<a href="${ cl }/notice" class="block w-full text-lg py-2 px-4 hover:bg-gray-200">문의하기</a>
 				  			<form action="${ cl }/logout" method="post" autocomplete="off">
 						    	<input type="hidden" id="creatorId" name="creatorId" value="${ sessionScope.creatorSession.creatorId }" required>
@@ -64,29 +65,28 @@
 			</a>
 		</div>
 	    <ul class="space-y-2 pt-4 px-4">
-		    <li><a href="${ cl }/" class="block py-2 px-4 rounded-md hover:bg-gray-700">홈</a></li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-700">구독</a></li>
-		    <li><a href="${ cl }/you" class="block py-2 px-4 rounded-md hover:bg-gray-700">내 페이지</a></li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-700">좋아요를 누른 영상</a></li>
+		    <li><a href="${ cl }/" class="block py-2 px-4 rounded-md hover:bg-gray-800">홈</a></li>
+		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">구독</a></li>
+		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">좋아요를 누른 영상</a></li>
 		    <c:if test="${ not empty sessionScope.creatorSession }">
-		        <li><a href="${ cl }/channel/${ sessionScope.creatorSession.creatorName }" class="block py-2 px-4 rounded-md hover:bg-gray-700">내 채널</a></li>
+		        <li><a href="${ cl }/channel/${ sessionScope.creatorSession.creatorName }" class="block py-2 px-4 rounded-md hover:bg-gray-800">내 채널</a></li>
 		    </c:if>
 		    <hr class="my-2 border-gray-600">
 		    <li class="font-semibold text-gray-400 uppercase">탐색</li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-700">음악</a></li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-700">영화</a></li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-700">게임</a></li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-700">스포츠</a></li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-700">교육</a></li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-700">팟캐스트</a></li>
+		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">음악</a></li>
+		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">영화</a></li>
+		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">게임</a></li>
+		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">스포츠</a></li>
+		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">교육</a></li>
+		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">팟캐스트</a></li>
 		    <hr class="my-2 border-gray-600">
 		    <li class="font-semibold text-gray-400 uppercase">내 콘텐츠</li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-700">내 영상</a></li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-700">시청 기록</a></li>
+		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">내 영상</a></li>
+		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">시청 기록</a></li>
 		</ul><br>
 		<div class="w-full">
 			<div class="border-gray-600 border-t border-b py-2 px-4">
-				<a href="${ cl }/notice" class="block py-2 px-4 rounded-md hover:bg-gray-700">문의하기</a>
+				<a href="${ cl }/notice" class="block py-2 px-4 rounded-md hover:bg-gray-800">문의하기</a>
 			</div>
 	    	<p class="text-sm text-gray-500 mt-4 px-4">
 	    		&copy; 2024 Whynot. <br> All rights reserved. <br>

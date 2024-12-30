@@ -25,14 +25,12 @@ public class VideosEntity {
 	@Column(name = "title", nullable = false)
 	private String title;
 	
-	@Lob
 	@Column(name = "more")
 	private String more;
 	
 	@Column(name = "video_name", nullable = false)
 	private String videoName;
 	
-	@Lob
 	@Column(name = "video_path", nullable = false)
 	private String videoPath;
 	
@@ -45,7 +43,6 @@ public class VideosEntity {
 	@Column(name = "create_at", nullable = false)
 	private String createAt;
 	
-	@Lob
 	@Column(name = "front_profile_img", nullable = false)
 	private String frontProfileImg;
 	
@@ -63,6 +60,9 @@ public class VideosEntity {
 	
 	@Column(name = "comment_count")
 	private long commentCount;
+	
+	@Column(name = "tag")
+	private String tag;
 	
 	public void incrementVideoViews() {
 		this.views++;

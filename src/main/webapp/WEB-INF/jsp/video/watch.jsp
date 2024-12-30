@@ -58,45 +58,66 @@
 		    </div>
 		
 		    <div class="mt-10">
-		        <h2 class="text-lg font-bold mb-3">댓글</h2>
-		        <form action="/addComment" method="post" class="mb-5">
-		            <textarea name="comment" rows="3" class="w-full p-3 border rounded-md" placeholder="댓글을 입력하세요..."></textarea>
-		            <button type="submit" class="mt-2 px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-500 transition">
-		                댓글 달기
-		            </button>
-		        </form>
-		
-		        <!-- Comment List (uncomment the below block to show comments) -->
-		        <!--<div class="space-y-4">
-		            <div class="p-3 bg-gray-100 rounded-md">
-		                <p class="font-bold">User1</p>
-		                <p class="text-sm text-gray-700">This is a comment.</p>
-		                <div class="text-xs text-gray-600">2024-12-28 10:00 AM</div>
-		            </div>
-		            <div class="p-3 bg-gray-100 rounded-md">
-		                <p class="font-bold">User2</p>
-		                <p class="text-sm text-gray-700">Another comment here!</p>
-		                <div class="text-xs text-gray-600">2024-12-28 10:05 AM</div>
-		            </div>
-		        </div>-->
-		    </div>
-		
-		    <div class="mt-10">
-		        <h2 class="text-lg font-bold mb-3">추천 동영상</h2>
-		        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-		            <div class="flex flex-col">
-		                <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-		                    <a href="${ cl }/watch?v=1lendjqdjasjkd123">
-		                        <img src="" alt="Video thumbnail" class="w-full h-full object-cover">
-		                    </a>
-		                </div>
-		                <h3 class="font-medium text-sm mt-2 line-clamp-2">제목</h3>
-		                <p class="text-sm text-gray-600">채널명 또는 영상 제작자 이름</p>
-		                <div class="text-sm text-gray-600">조회수: 4.5만회 | 업로드: 12월 28일</div>
-		            </div>
+		        <h2 class="text-lg font-bold mb-3">댓글 
+		        	<c:if test="${ empty watchTheVideoCommentList }">
+		        		없음
+		        	</c:if>
+		        	<c:if test="${ not empty watchTheVideoCommentList }">
+		        		${ watchTheVideoCommentList.size() }개
+		        	</c:if>
+		        </h2>
+				<div class="mb-10">
+					<c:if test="${ not empty sessionScope.creatorSession }">
+						<form action="${ cl }/commentAdd" method="post" autocomplete="off">
+						    <div class="flex space-x-4 items-start">
+						        <img src="${ sessionScope.creatorSession.profileImgPath }" class="w-10 h-10 rounded-full">
+						        <input type="hidden" name="creatorId" value="${ sessionScope.creatorSession.creatorId }" required readonly>
+						        <input type="hidden" name="commentVideo" value="${ watchTheVideo.videoId }" required readonly>
+						        <textarea rows="1" name="commentContent" placeholder="댓글을 입력하세요..." class="w-full resize-none border-b 
+						         p-2 focus:border-gray-400 focus:outline-none text-black" required></textarea>
+						    </div>
+						    <div class="text-right mt-3">
+						        <button type="reset" class="px-4 py-2 text-sm font-medium text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200 mr-2">
+						            취소
+						        </button>
+						        <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600">
+						            댓글 작성
+						        </button>
+						    </div>
+						</form>
+					</c:if>
+					<c:if test="${ empty sessionScope.creatorSession }">
+						<h1>댓글은 로그인 후 사용할 수 있습니다</h1>
+					</c:if>
+				</div>
+						
+		        <div class="space-y-4">
+		        	<c:if test="${ not empty watchTheVideoCommentList }">
+			        	<c:forEach var="comment" items="${ watchTheVideoCommentList }">
+				            <div class="p-3 hover:bg-gray-100 flex">
+				            	<div>
+				            		<a href="${ cl }/channel/${ comment.commenter }">
+				            			<img src="${ comment.commenterProfilepath }" class="w-10 h-10 rounded-full">
+				            		</a>
+				            	</div>
+				            	<div class="px-3">
+				            		<span class="text-md font-bold">
+				            			<a href="${ cl }/channel/${ comment.commenter }" class="${ comment.commenter.equals(videoCreatorProfileInfo.creatorName) ? 'bg-gray-400 rounded-full text-white px-3 pb-1 mr-2' : '' }">
+				            				${ comment.commenter }
+				            			</a>
+				            		</span>
+				            		<span class="text-sm text-gray-400">날짜 : 
+				            			${ comment.datetime.substring(0, 10) }
+				            		</span>
+				            		<p>${ comment.commentContent }</p>
+				            	</div>
+				            </div>
+			            </c:forEach>
+		            </c:if>
 		        </div>
 		    </div>
 		</div>
+		
 	    <div class="w-96 border rounded-lg overflow-y-scroll" style="height: 1100px;">
 	    	<c:forEach var="rec" items="${ recentVideo }" varStatus="recentStatus">
 	    		<c:if test="${ recentStatus.index < 20 }">
