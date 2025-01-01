@@ -19,7 +19,7 @@ public class SubscriptionsEntity {
 	@Column(name = "subscriber_name", nullable = false)
 	private String subscriberName;
 	
-	@Column(name = "subscriber_id", nullable = false, unique = true)
+	@Column(name = "subscriber_id", nullable = false)
 	private long subscriberId;
 	
 	@Column(name = "subscribing_name", nullable = false)

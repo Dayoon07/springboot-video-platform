@@ -28,12 +28,18 @@
 		    <div class="mt-5">
 		        <h1 class="text-2xl font-bold">${ watchTheVideo.title }</h1>
 		        
-		        <div class="flex items-center space-x-3 mt-2">
-		            <a href="${ cl }/channel/${ videoCreatorProfileInfo.creatorName }" class="flex items-center">
-		                <img src="${ videoCreatorProfileInfo.profileImgPath }" alt="${ videoCreatorProfileInfo.creatorName } 프로필" class="w-10 h-10 rounded-full border-2 border-gray-300">
-						<span class="ml-2 text-sm font-semibold text-gray-900">${ videoCreatorProfileInfo.creatorName }</span>
-		            </a>
-					<span class="ml-2 text-sm text-gray-600">구독자 ${ videoCreatorProfileInfo.subscribe }명</span>
+		        <div class="flex mt-2">
+		            <div>
+		            	<a href="${ cl }/channel/${ videoCreatorProfileInfo.creatorName }" class="flex items-center">
+			                <img src="${ videoCreatorProfileInfo.profileImgPath }" alt="${ videoCreatorProfileInfo.creatorName } 프로필" class="w-10 h-10 rounded-full border-2 border-gray-300">
+			            </a>
+		            </div>
+					<div class="text-sm text-gray-600 px-3">
+						<a href="${ cl }/channel/${ videoCreatorProfileInfo.creatorName }" class="text-sm font-semibold hover:underline text-gray-900">
+							${ videoCreatorProfileInfo.creatorName }
+						</a>
+						<p>구독자 ${ videoCreatorProfileInfo.subscribe }명</p>
+					</div>
 		        </div>
 		
 		        <div class="text-sm text-gray-600 mt-2">
@@ -47,14 +53,24 @@
 		            <button class="px-6 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition flex items-center space-x-2">
 		                <span class="ml-1">싫어요 ${ watchTheVideo.unlikes }</span>
 		            </button>
-		            <button class="px-6 py-2 bg-red-600 text-white rounded-full hover:bg-red-500 transition">
-		                구독
-		            </button>
+		            <c:if test="${ thisIsSubscribed }">
+					    구독중
+					</c:if>
+					<c:if test="${ !thisIsSubscribed }">
+					    <form action="${ cl }/subscri?subscriberId=${ creator.creatorId }&subscribingId=${ sessionScope.creatorSession.creatorId }" method="post" autocomplete="off">
+					        <button type="submit" class="px-6 py-2 bg-black text-white rounded-full hover:bg-white hover:shadow-xl hover:text-black transition duration-300">
+					            구독
+					        </button>
+					    </form>
+					</c:if>
 		        </div>
 		    </div>
 		
 		    <div class="mt-5 p-4 bg-gray-100 rounded-lg">
-		        <p class="text-gray-800">${ watchTheVideo.more }</p>
+		        <p class="text-gray-800">
+		        	태그 <span class="text-blue-500 cursor-pointer hover:underline">#${ watchTheVideo.tag }</span> <br>
+		        	${ watchTheVideo.more }
+		        </p>
 		    </div>
 		
 		    <div class="mt-10">

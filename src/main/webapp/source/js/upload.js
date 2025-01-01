@@ -1,55 +1,47 @@
+// 이미지 파일을 선택했을 때 미리보기를 생성하는 함수
 function previewImage(event) {
-    const file = event.target.files[0];
-    const previewImg = document.getElementById("previewImg");
+    const fileInput = event.target;
+    const previewImg = document.getElementById('previewImg');
 
-    if (file) {
+    if (fileInput.files && fileInput.files[0]) {
         const reader = new FileReader();
 
-        reader.onload = function(e) {
-            previewImg.src = e.target.result;
-            previewImg.classList.remove("hidden");
+        // FileReader가 파일을 읽는 동안 load 이벤트가 발생합니다.
+        reader.onload = function (e) {
+            previewImg.src = e.target.result; // 이미지 데이터를 미리보기로 설정
+            previewImg.classList.remove('hidden'); // 이미지 엘리먼트 표시
         };
 
-        reader.readAsDataURL(file);
+        reader.readAsDataURL(fileInput.files[0]); // 파일을 DataURL 형식으로 읽습니다.
     } else {
-        previewImg.src = "";
-        previewImg.classList.add("hidden");
+        // 파일 선택이 취소되었거나, 유효하지 않은 경우 미리보기 숨김
+        previewImg.src = '';
+        previewImg.classList.add('hidden');
     }
 }
 
+// 드래그 앤 드롭 영역 처리
 const imgDropZone = document.getElementById('imgDropZone');
-const videoDropZone = document.getElementById('videoDropZone');
+const imgInput = document.getElementById('imgPath');
 
-[imgDropZone, videoDropZone].forEach(zone => {
-    zone.addEventListener('dragover', function(event) {
-        event.preventDefault();
-        zone.classList.add('border-blue-500');
-    });
+imgDropZone.addEventListener('click', () => imgInput.click());
 
-    zone.addEventListener('dragleave', function(event) {
-        event.preventDefault();
-        zone.classList.remove('border-blue-500');
-    });
+imgDropZone.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    imgDropZone.classList.add('border-blue-400');
+});
 
-    zone.addEventListener('drop', function(event) {
-        event.preventDefault();
-        zone.classList.remove('border-blue-500');
+imgDropZone.addEventListener('dragleave', () => {
+    imgDropZone.classList.remove('border-blue-400');
+});
 
-        const files = event.dataTransfer.files;
+imgDropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    imgDropZone.classList.remove('border-blue-400');
 
-        if (zone === imgDropZone) {
-            document.getElementById('imgPath').files = files;
-            previewImage({ target: { files: files } });
-        } else if (zone === videoDropZone) {
-            document.getElementById('videoPath').files = files;
-        }
-    });
-
-    zone.addEventListener('click', function() {
-        if (zone === imgDropZone) {
-            document.getElementById('imgPath').click();
-        } else if (zone === videoDropZone) {
-            document.getElementById('videoPath').click();
-        }
-    });
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        imgInput.files = e.dataTransfer.files; // 드래그한 파일을 input에 설정
+        const event = new Event('change');
+        imgInput.dispatchEvent(event); // change 이벤트 트리거
+    }
 });

@@ -165,18 +165,22 @@ public class MainController {
 	    List<VideosEntity> videos = videosRepository.findByCreatorVal(creator.get().getCreatorId());
 	    CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 	    
-	    Optional<SubscriptionsEntity> list = subscriptionsRepository.findBySubscriberId(creator.get().getCreatorId());
+	    List<SubscriptionsEntity> list = subscriptionsRepository.findBySubscriberId(creator.get().getCreatorId());
 	    
-	    if (user == null) {
-	        return "creator/login";
-	    }
-	    
-	    if (user != null && creator.isPresent()) {
+	    if (creator.isPresent()) {
 	    	model.addAttribute("creator", creator.get());
 	    	model.addAttribute("creatorVideosList", videos);
 	    }
-	    if (list.isPresent()) {
-	    	model.addAttribute("SucceededInThreeHours", "구독중");
+	    if (user != null) {
+	        // 구독 상태를 확인하여 모델에 추가
+	        boolean isSubscribed = false;
+	        for (SubscriptionsEntity subscription : list) {
+	            if (subscription.getSubscribingId() == user.getCreatorId()) {
+	                isSubscribed = true;
+	                break;
+	            }
+	        }
+	        model.addAttribute("isSubscribed", isSubscribed);  // 구독 여부
 	    }
 	    return "creator/channel";
 	}
@@ -199,6 +203,7 @@ public class MainController {
 	
 	@PostMapping("/uploadVideo")
 	public String upload(@RequestParam String creatorName,
+			@RequestParam String tag,
 			@RequestParam String title,
 			@RequestParam String more,
 			@RequestParam MultipartFile imgPath,
@@ -238,6 +243,7 @@ public class MainController {
 					.createAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분")))
 					.frontProfileImg(user.get().getProfileImgPath())
 					.v(UUID.randomUUID().toString().replaceAll("-", ""))
+					.tag(tag)
 					.build();
 		    videosRepository.save(videoBuilder);
 		} catch (Exception e) {
@@ -253,17 +259,27 @@ public class MainController {
 	        VideosEntity video = list.get();
 	        Optional<CreatorEntity> creator = creatorRepository.findById(video.getCreatorVal());
 	        List<CommentEntity> comment = commentRepository.findByCommentVideoOrderByCommentIdDesc(list.get().getVideoId());
-	        CreatorEntity creatorList = (CreatorEntity) session.getAttribute("creatorSession");
+	        CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+	        List<SubscriptionsEntity> subscriList = subscriptionsRepository.findBySubscriberId(creator.get().getCreatorId());
 	        
 	        model.addAttribute("watchTheVideo", video);
-	        model.addAttribute("videoCreatorProfileInfo", creator.orElse(null));
+	        model.addAttribute("videoCreatorProfileInfo", creator.get());
 	        model.addAttribute("recentVideo", videosRepository.findAll(Sort.by(Direction.DESC, "videoId")));
 	        model.addAttribute("watchTheVideoCommentList", comment);
-
-	        if (creatorList != null) {
+	        if (user != null) {
 	            video.incrementVideoViews();
 	            videosRepository.save(video); // 변경사항을 저장
+	            // 구독 상태를 확인하여 모델에 추가
+		        boolean isSubscribed = false;
+		        for (SubscriptionsEntity subscription : subscriList) {
+		            if (subscription.getSubscribingId() == user.getCreatorId()) {
+		                isSubscribed = true;
+		                break;
+		            }
+		        }
+		        model.addAttribute("thisIsSubscribed", isSubscribed);  // 구독 여부
 	        }
+	        
 	        return "video/watch";
 	    }
 	    return "redirect:/";

@@ -32,10 +32,7 @@
 	                </div>
 	                <div>
 	                    <label for="videoPath" class="block text-lg font-semibold mb-2 text-gray-700">영상 파일</label>
-	                    <div id="videoDropZone" class="w-full p-6 bg-gray-50 border-2 border-dashed border-gray-300 text-center rounded-lg cursor-pointer">
-	                        <p class="text-gray-600">영상 파일을 드래그 앤 드롭 <br> 하거나 클릭하여 선택하세요</p>
-	                        <input type="file" id="videoPath" name="videoPath" accept="video/*" class="hidden" required>
-	                    </div>
+						<input type="file" id="videoPath" name="videoPath" accept="video/*" class="p-6 bg-gray-50 border-2 border-dashed border-gray-300 text-center rounded-lg cursor-pointer" required>
 	                </div>
 	            </div>
 	            

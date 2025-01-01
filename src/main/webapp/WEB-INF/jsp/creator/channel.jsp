@@ -32,19 +32,17 @@
             		${ creator.bio }
             	</c:if>
             </p>
-            <c:if test="${ empty SucceededInThreeHours }">
-	            <form action="${ cl }/subscri?subscriberId=${ creator.creatorId }&subscribingId=${ sessionScope.creatorSession.creatorId }" method="post" autocomplete="off">
-	            	<button type="submit" class="px-6 py-2 mt-3 bg-black text-white rounded-full hover:bg-white hover:shadow-xl
-	            		hover:text-black transition duration-300">
-	                	구독
-	            	</button>
-	            </form>
-            </c:if>
-            <c:if test="${ not empty SucceededInThreeHours }">
-            	<button type="button" class="px-6 py-2 mt-3 text-black rounded-full border bg-white shadow-xl cursor-default">
-	            	구독중
-	            </button>
-            </c:if>
+            <c:if test="${ isSubscribed }">
+			    구독중
+			</c:if>
+			<c:if test="${ !isSubscribed }">
+			    <form action="${ cl }/subscri?subscriberId=${ creator.creatorId }&subscribingId=${ sessionScope.creatorSession.creatorId }" method="post" autocomplete="off">
+			        <button type="submit" class="px-6 py-2 mt-3 bg-black text-white rounded-full hover:bg-white hover:shadow-xl hover:text-black transition duration-300">
+			            구독
+			        </button>
+			    </form>
+			</c:if>
+            
             <nav class="mt-4 space-x-4">
                 <a href="#" class="text-black hover:text-red-600">홈</a>
                 <a href="#" class="text-black hover:text-red-600">동영상</a>
