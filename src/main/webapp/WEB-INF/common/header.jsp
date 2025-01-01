@@ -44,7 +44,6 @@
 				  			<a href="${ cl }/you" class="block w-full text-lg py-2 px-4 hover:bg-gray-200">내 페이지</a>
 				  			<a href="${ cl }/notice" class="block w-full text-lg py-2 px-4 hover:bg-gray-200">문의하기</a>
 				  			<form action="${ cl }/logout" method="post" autocomplete="off">
-						    	<input type="hidden" id="creatorId" name="creatorId" value="${ sessionScope.creatorSession.creatorId }" required>
 						        <button type="submit" class="block text-left w-full text-lg py-2 px-4 hover:bg-gray-200">로그아웃</button>
 							</form>
 				  		</div>

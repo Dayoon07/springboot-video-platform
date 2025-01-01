@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.e.d.model.entity.CommentEntity;
 import com.e.d.model.entity.CreatorEntity;
+import com.e.d.model.entity.SubscriptionsEntity;
 import com.e.d.model.entity.VideosEntity;
 import com.e.d.model.repository.CommentRepository;
 import com.e.d.model.repository.CreatorRepository;
@@ -83,36 +84,41 @@ public class MainController {
 	
 	@PostMapping("/loginF")
 	public String login(
-			@RequestParam String creatorName,
-			@RequestParam String creatorPassword,
-			HttpSession session) {
-		Optional<CreatorEntity> creatorList = creatorRepository.findByCreatorNameAndCreatorPassword(creatorName, creatorPassword);
-		
-		// 입력값 검증
+	        @RequestParam String creatorName,
+	        @RequestParam String creatorPassword,
+	        HttpSession session) {
+	    // 사용자 이름으로만 DB에서 사용자 정보 찾기
+	    Optional<CreatorEntity> creatorOpt = creatorRepository.findByCreatorName(creatorName);
+	    
+	    // 입력값 검증
 	    if (creatorName == null || creatorName.trim().isEmpty() || 
 	        creatorPassword == null || creatorPassword.trim().isEmpty()) {
+	        log.warn("로그인 시도 실패: 입력값이 비어있음.");
 	        return "redirect:/";
 	    }
-		
-		if (creatorList.isPresent()) {
-			if (!(creatorName.isEmpty()) && creatorList.get().getCreatorName().equals(creatorName)) {
-				if (!(creatorPassword.isEmpty()) && creatorList.get().getCreatorPassword().equals(creatorPassword)) {
-					CreatorEntity creator = creatorList.get();
-					session.setAttribute("creatorSession", creator);
-					log.info(creatorName + "이 로그인함 ( 고유 번호 : " + creatorList.get().getCreatorId() + " )");
-				}
-			}
-		}
-		return "redirect:/";
+
+	    if (creatorOpt.isPresent()) {
+	        CreatorEntity creator = creatorOpt.get();
+	        if (passwordEncode.matches(creatorPassword, creator.getCreatorPassword())) {
+	            session.setAttribute("creatorSession", creator);
+	            log.info("로그인 성공: 사용자 [{}], ID [{}]", creator.getCreatorName(), creator.getCreatorId());
+	        } else {
+	            log.warn("로그인 실패: 비밀번호 불일치 (사용자 [{}], ID [{}])", creator.getCreatorName(), creator.getCreatorId());
+	        }
+	    } else {
+	        log.warn("로그인 실패: 사용자 이름 [{}]에 해당하는 계정을 찾을 수 없음.", creatorName);
+	    }
+
+	    return "redirect:/";
 	}
 	
 	@PostMapping("/logout")
-	public String logout(@RequestParam long creatorId, HttpSession session) {
-		CreatorEntity creator = creatorRepository.findById(creatorId).orElse(null);
-		if (creator.getCreatorId() == creatorId) {
+	public String logout(HttpSession session) {
+		CreatorEntity creator = (CreatorEntity) session.getAttribute("creatorSession");
+		if (creator != null) {
+			log.info(creator.getCreatorName() + "이 로그아웃함 ( 고유 번호 : " + creator.getCreatorId() + " )");
 			session.invalidate();
 		}
-		log.info(creator.getCreatorName() + "이 로그아웃함 ( 고유 번호 : " + creator.getCreatorId() + " )");
 		return "redirect:/";
 	}
 	
@@ -123,10 +129,11 @@ public class MainController {
 						@RequestParam String bio, 
 						@RequestParam String tel, 
 						@RequestParam MultipartFile profileImgPath) {
-	    String fileName = profileImgPath.getOriginalFilename().trim();
+	    String fileName = UUID.randomUUID() + profileImgPath.getOriginalFilename().trim().replaceAll(" ", "_");
 	    String uploadDir = "C:/youtubeProject/profile-img/";
-	    File dir = new File(uploadDir);
+	    String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분"));
 
+	    File dir = new File(uploadDir);
 	    if (!dir.exists()) dir.mkdirs();
 	    
 	    try {
@@ -138,12 +145,12 @@ public class MainController {
 	    CreatorEntity entity = CreatorEntity.builder()
 	            .creatorName(creatorName)
 	            .creatorEmail(creatorEmail)
-	            .creatorPassword(creatorPassword)
-	            .createAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분")))
+	            .creatorPassword(passwordEncode.encode(creatorPassword))
+	            .createAt(now)
 	            .bio(bio)
 	            .tel(tel)
-	            .profileImg(profileImgPath != null ? profileImgPath.getOriginalFilename() : null) // 파일 이름 저장
-	            .profileImgPath(profileImgPath != null ? "/youtubeProject/profile-img/"+fileName : null) // 파일 경로 저장
+	            .profileImg(profileImgPath != null ? profileImgPath.getOriginalFilename() : "프로필 이미지 없음") // 파일 이름 저장
+	            .profileImgPath(profileImgPath != null ? "/youtubeProject/profile-img/"+fileName : "프로필 이미지 없음") // 파일 경로 저장
 	            .build();
 
 	    creatorRepository.save(entity);
@@ -152,33 +159,42 @@ public class MainController {
 	}
 	
 	@GetMapping("/channel/{creatorName}")
-	public String creatorProfile(@PathVariable String creatorName, Model model) {
-	    CreatorEntity creator = creatorRepository.findByCreatorName(creatorName)
-	                                              .orElseThrow(() -> new IllegalArgumentException("Creator not found"));
-	    List<VideosEntity> videos = videosRepository.findByCreatorVal(creator.getCreatorId());
+	public String creatorProfile(@PathVariable String creatorName, Model model, HttpSession session) {
+	    // 채널 정보를 조회
+	    Optional<CreatorEntity> creator = creatorRepository.findByCreatorName(creatorName);
+	    List<VideosEntity> videos = videosRepository.findByCreatorVal(creator.get().getCreatorId());
+	    CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 	    
-	    model.addAttribute("creator", creator);
-	    model.addAttribute("creatorVideosList", videos);
+	    Optional<SubscriptionsEntity> list = subscriptionsRepository.findBySubscriberId(creator.get().getCreatorId());
+	    
+	    if (user == null) {
+	        return "creator/login";
+	    }
+	    
+	    if (user != null && creator.isPresent()) {
+	    	model.addAttribute("creator", creator.get());
+	    	model.addAttribute("creatorVideosList", videos);
+	    }
+	    if (list.isPresent()) {
+	    	model.addAttribute("SucceededInThreeHours", "구독중");
+	    }
 	    return "creator/channel";
 	}
 
 	@GetMapping("/you")
 	public String showCreatorProfile(HttpSession session, Model model) {
-	    CreatorEntity me = (CreatorEntity) session.getAttribute("creatorSession");
-	    if (me == null || me.getCreatorName() == null || me.getCreatorName().isEmpty()) {
+		CreatorEntity me = (CreatorEntity) session.getAttribute("creatorSession");
+	    if (me == null) {
 	        return "creator/login";
+	    } else {
+	    	model.addAttribute("you", me);
+	    	return "creator/you";
 	    }
-	    model.addAttribute("you", me);
-	    return "creator/you";
 	}
 	
 	@GetMapping("/upload")
 	public String moveOnUploadForm(HttpSession session) {
-		if (session.getAttribute("creatorSession") != null) {			
-			return "video/upload";
-		} else {
-			return "creator/login";
-		}
+		return (session.getAttribute("creatorSession") != null) ? "video/upload" : "creator/login";
 	}
 	
 	@PostMapping("/uploadVideo")
@@ -279,7 +295,41 @@ public class MainController {
 	    return "redirect:/watch?v=" + URLEncoder.encode(video.getV(), "UTF-8");
 	}
 	
-	
+	@PostMapping("/subscri")
+	public String subscri(@RequestParam long subscriberId, @RequestParam long subscribingId) {
+	    Optional<CreatorEntity> subscriber = creatorRepository.findById(subscriberId);    // 구독을 받은 채널
+	    Optional<CreatorEntity> subscribing = creatorRepository.findById(subscribingId);    // 구독한 사람
+	    
+	        // 구독 정보 저장
+	        SubscriptionsEntity subscri = SubscriptionsEntity.builder()
+	        		.subscriberName(subscriber.get().getCreatorName())
+	        		.subscriberId(subscriberId)
+	        		.subscribingName(subscribing.get().getCreatorName())
+	        		.subscribingId(subscribingId)
+	        		.subscribedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a HH:mm:ss")))
+	        		.build();
+	        subscriptionsRepository.save(subscri);
+
+	        long subscriberCount = subscriptionsRepository.countBySubscriberId(subscriberId);
+	        CreatorEntity e = CreatorEntity.builder()
+	        		.creatorId(subscriber.get().getCreatorId())
+	        		.creatorName(subscriber.get().getCreatorName())
+	        		.creatorEmail(subscriber.get().getCreatorEmail())
+	        		.creatorPassword(subscriber.get().getCreatorPassword())
+	        		.createAt(subscriber.get().getCreateAt())
+	        		.bio(subscriber.get().getBio())
+	        		.tel(subscriber.get().getTel())
+	        		.profileImg(subscriber.get().getProfileImg())
+	        		.profileImgPath(subscriber.get().getProfileImgPath())
+	        		.subscribe(subscriberCount)
+	        		.build();
+	        creatorRepository.save(e);
+	        
+	        log.info(subscribing.get().getCreatorName() + "님이 " + subscriber.get().getCreatorName() + "님을 구독을 했습니다.");
+
+	    return "redirect:/";
+	}
+
 	
 	
 	

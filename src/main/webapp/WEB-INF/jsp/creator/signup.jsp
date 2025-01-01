@@ -63,25 +63,8 @@
 	            이미 계정이 있으신가요? <a href="${ cl }/login" class="text-red-600 hover:underline">로그인</a>
 	        </p>
 	    </div>
-	    
-	    <script>
-		    function previewImage(event) {
-		        const file = event.target.files[0];
-		        const preview = document.getElementById("profilePreview");
-		        const uploadText = document.getElementById("uploadText");
-		
-		        if (file) {
-		            const reader = new FileReader();
-		            reader.onload = (e) =>	 {
-		                preview.src = e.target.result;
-		                preview.classList.remove("hidden");
-		                uploadText.style.display = "none";
-		            };
-		            reader.readAsDataURL(file);
-		        }
-		    }
-		</script>
 	
-	<jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
+	<script src="${ cl }/source/js/signupImgLoad.js"></script>
+	<script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>

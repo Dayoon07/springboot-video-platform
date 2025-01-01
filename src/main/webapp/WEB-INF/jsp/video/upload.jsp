@@ -53,8 +53,8 @@
 	                    <input type="text" id="title" name="title" placeholder="영상 제목을 입력하세요" class="w-full p-3 bg-gray-50 rounded-lg border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400" required>
 	                </div>
 	                <div>
-	                    <label for="description" class="block text-lg font-semibold mb-2 text-gray-700">영상 설명</label>
-	                    <textarea id="description" name="description" rows="6" class="resize-none w-full p-3 bg-gray-50 rounded-lg border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="영상 설명을 입력하세요"></textarea>
+	                    <label for="more" class="block text-lg font-semibold mb-2 text-gray-700">영상 설명</label>
+	                    <textarea id="more" name="more" rows="6" class="resize-none w-full p-3 bg-gray-50 rounded-lg border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="영상 설명을 입력하세요"></textarea>
 	                </div>
 	            </div>
 	        </div>
@@ -67,6 +67,7 @@
 	    </form>
 	</div>
 	
-	<jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="${ cl }/source/js/upload.js"></script>
 </body>
 </html>

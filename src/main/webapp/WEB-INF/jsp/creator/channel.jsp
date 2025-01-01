@@ -1,3 +1,5 @@
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.time.LocalDateTime" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
@@ -15,13 +17,14 @@
 <body>
 	<jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 	
-	<div class="flex items-center max-w-4xl py-10 mx-auto">
+	<div class="flex max-w-4xl py-10 mx-auto">
         <div class="w-40 h-40 overflow-hidden rounded-full">
 			<img src="${ creator.profileImgPath }" alt="Profile Image" class="w-full h-full object-cover">
 		</div>
         <div class="ml-5"> 
             <h1 class="text-3xl font-semibold">${ creator.creatorName }</h1>
-            <p class="text-lg py-2 text-gray-700 truncate max-w-xl">
+            <h1 class="text-xl py-1">구독자 ${ creator.subscribe }명</h1>
+            <p class="text-lg py-1 text-gray-700 truncate max-w-xl">
             	<c:if test="${ creator.bio.length() >= 50 }">
 	                ${ creator.bio.substring(0, 50) }
             	</c:if>
@@ -29,9 +32,19 @@
             		${ creator.bio }
             	</c:if>
             </p>
-            <button class="px-6 py-2 mt-3 bg-red-600 text-black rounded-full hover:bg-red-500 transition duration-300">
-                구독
-            </button>
+            <c:if test="${ empty SucceededInThreeHours }">
+	            <form action="${ cl }/subscri?subscriberId=${ creator.creatorId }&subscribingId=${ sessionScope.creatorSession.creatorId }" method="post" autocomplete="off">
+	            	<button type="submit" class="px-6 py-2 mt-3 bg-black text-white rounded-full hover:bg-white hover:shadow-xl
+	            		hover:text-black transition duration-300">
+	                	구독
+	            	</button>
+	            </form>
+            </c:if>
+            <c:if test="${ not empty SucceededInThreeHours }">
+            	<button type="button" class="px-6 py-2 mt-3 text-black rounded-full border bg-white shadow-xl cursor-default">
+	            	구독중
+	            </button>
+            </c:if>
             <nav class="mt-4 space-x-4">
                 <a href="#" class="text-black hover:text-red-600">홈</a>
                 <a href="#" class="text-black hover:text-red-600">동영상</a>
@@ -59,11 +72,11 @@
 	                        <a href="${ cl }/watch?v=${ cvl.v }" class="font-medium text-sm line-clamp-2 hover:underline">
 	                        	${ cvl.title }
 	                        </a>
-	                        <a href="${ cl }/channel/${ video.creator }" class="text-sm text-gray-600 hover:underline">
+	                        <a href="${ cl }/channel/${ cvl.creator }" class="text-sm text-gray-600 hover:underline">
 		                        ${ cvl.creator }
 							</a>
 	                        <div class="text-sm text-gray-600">
-	                        	조회수 ${ cvl.views == 0 ? "없음" : cvl.views } | 	${ cvl.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
+	                        	조회수 ${ cvl.views == 0 ? "없음" : cvl.views } | ${ cvl.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
 	                        	 ? cvl.createAt.substring(6, 13) : cvl.createAt.substring(0, 13) }
 	                        </div>
 	                    </div>
