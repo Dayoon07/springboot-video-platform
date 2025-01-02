@@ -266,14 +266,15 @@ public class MainController {
 	        model.addAttribute("videoCreatorProfileInfo", creator.get());
 	        model.addAttribute("recentVideo", videosRepository.findAll(Sort.by(Direction.DESC, "videoId")));
 	        model.addAttribute("watchTheVideoCommentList", comment);
-	        if (user != null) {
-	            video.incrementVideoViews();
-	            videosRepository.save(video); // 변경사항을 저장
+		
+	        if (user != null) {	// 사용자가 로그인을 하면
+	            video.incrementVideoViews();	// 조회수를 1씩 증가
+	            videosRepository.save(video);	// 조회수를 저장
 	            // 구독 상태를 확인하여 모델에 추가
 		        boolean isSubscribed = false;
-		        for (SubscriptionsEntity subscription : subscriList) {
-		            if (subscription.getSubscribingId() == user.getCreatorId()) {
-		                isSubscribed = true;
+		        for (SubscriptionsEntity subscription : subscriList) {	// entity에 forEach문으로 전부 다 비교
+		            if (subscription.getSubscribingId() == user.getCreatorId()) {	// 해서 구독을 누른 사람인지 아닌지 확인하는 거
+		                isSubscribed = true;	// 맞으면 멈추고 model에 저장하는 방식
 		                break;
 		            }
 		        }
