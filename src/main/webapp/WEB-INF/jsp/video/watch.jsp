@@ -53,22 +53,33 @@
 		            <button class="px-6 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition flex items-center space-x-2">
 		                <span class="ml-1">싫어요 ${ watchTheVideo.unlikes }</span>
 		            </button>
-		            <c:if test="${ thisIsSubscribed }">
+		            <c:if test="${ isSubscribed }">
 					    구독중
 					</c:if>
-					<c:if test="${ !thisIsSubscribed }">
-					    <form action="${ cl }/subscri?subscriberId=${ creator.creatorId }&subscribingId=${ sessionScope.creatorSession.creatorId }" method="post" autocomplete="off">
-					        <button type="submit" class="px-6 py-2 bg-black text-white rounded-full hover:bg-white hover:shadow-xl hover:text-black transition duration-300">
-					            구독
-					        </button>
-					    </form>
+					<c:if test="${ sessionScope.creatorSession != null }">
+						<c:if test="${ !isSubscribed }">
+						    <form action="${ cl }/subscri?subscriberId=${ creator.creatorId }&subscribingId=${ sessionScope.creatorSession.creatorId }" method="post" autocomplete="off">
+						        <button type="submit" class="px-6 py-2 mt-3 bg-black text-white rounded-full hover:bg-white hover:shadow-xl hover:text-black transition duration-300">
+						            구독
+						        </button>
+						    </form>
+						</c:if> 
+					</c:if>
+					<c:if test="${ sessionScope.creatorSession == null }">
+						<h1>구독은 로그인 후 사용 하실 수 있습니다</h1>
 					</c:if>
 		        </div>
 		    </div>
 		
 		    <div class="mt-5 p-4 bg-gray-100 rounded-lg">
 		        <p class="text-gray-800">
-		        	태그 <span class="text-blue-500 cursor-pointer hover:underline">#${ watchTheVideo.tag }</span> <br>
+		        	태그
+		        	<span class="text-blue-500 cursor-pointer hover:underline">
+		        		#<a href="${ cl }/tag/${ watchTheVideo.tag }" class="text-blue-500 cursor-pointer hover:underline">
+		        			${ watchTheVideo.tag }
+		        		</a>
+		        	</span>
+		        	<br>
 		        	${ watchTheVideo.more }
 		        </p>
 		    </div>

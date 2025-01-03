@@ -6,9 +6,11 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -346,11 +348,70 @@ public class MainController {
 	    return "redirect:/";
 	}
 
+	@GetMapping("/myVideo")
+	public String myVideo(HttpSession session, Model m) {
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+		if (user == null) {
+			return "creator/login";
+		}
+		m.addAttribute("myvideos", videosRepository.findByCreatorVal(user.getCreatorId()));
+		return "creator/myVideo";
+	}
 	
+	@GetMapping("/tag/{tag}")
+	public String hashTag(@PathVariable String tag, Model model) {
+		List<VideosEntity> videoTagList = videosRepository.findByTagOrderByVideoIdDesc(tag);
+		model.addAttribute("videosTagList", videoTagList);
+		model.addAttribute("tagWord", tag);
+		return "tag/tag";
+	}
 	
-	
-	
-	
+	@GetMapping("/mySubscri")
+	public String mySubscribingChannelsList(HttpSession session, Model model) {
+	    // 세션에서 로그인한 사용자의 정보를 가져옵니다.
+	    CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+
+	    // 로그인 상태 확인
+	    if (user == null) {
+	        return "creator/login"; // 로그인 페이지로 리디렉션
+	    }
+
+	    // 내가 구독한 채널 정보 조회 (subscriberId 기준으로)
+	    List<SubscriptionsEntity> mySubscriptions = subscriptionsRepository.findBySubscriberId(user.getCreatorId());
+
+	    // 내가 구독한 채널들의 creatorId 가져오기
+	    List<Long> subscribedChannelIds = mySubscriptions.stream()
+	        .map(SubscriptionsEntity::getSubscribingId)  // subscribingId가 구독한 채널의 creatorId
+	        .collect(Collectors.toList());
+
+	    // 구독한 채널들의 상세 정보 조회 (한 번에)
+	    List<CreatorEntity> subscribedChannels = creatorRepository.findByCreatorIdIn(subscribedChannelIds);
+
+	    // 구독한 채널 목록을 Model에 추가하여 뷰로 전달
+	    model.addAttribute("mySubscribeLists", subscribedChannels);
+
+	    // 나를 구독한 사람들의 정보 조회 (subscribingId 기준으로)
+	    List<SubscriptionsEntity> mySubscribers = subscriptionsRepository.findBySubscribingId(user.getCreatorId());
+
+	    // 나를 구독한 사람들의 creatorId 가져오기
+	    List<Long> subscriberIds = mySubscribers.stream()
+	        .map(SubscriptionsEntity::getSubscriberId)  // subscriberId가 나를 구독한 사람들의 creatorId
+	        .collect(Collectors.toList());
+
+	    // 나를 구독한 사람들의 상세 정보 조회 (한 번에)
+	    List<CreatorEntity> subscribers = creatorRepository.findByCreatorIdIn(subscriberIds);
+
+	    // 나를 구독한 사람들의 목록을 Model에 추가하여 뷰로 전달
+	    model.addAttribute("mySubscribers", subscribers);
+
+	    // 뷰 페이지 반환
+	    return "creator/mySubscriChannel";
+	}
+
+
+
+
+
 	
 	
 	

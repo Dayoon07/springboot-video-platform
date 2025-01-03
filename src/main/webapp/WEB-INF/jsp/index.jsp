@@ -25,7 +25,7 @@
 	                <div class="relative group">
 	                    <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
 	                        <a href="${ cl }/watch?v=${ video.v }">
-	                        	<img src="${ video.imgPath }" alt="Video thumbnail" class="w-full h-full object-cover">
+	                        	<img src="${ video.imgPath }" class="w-full h-full object-cover">
 	                        </a>
 	                    </div>
 	                </div>
