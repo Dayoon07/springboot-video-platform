@@ -6,7 +6,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,10 +29,12 @@ import com.e.d.model.entity.SubscriptionsEntity;
 import com.e.d.model.entity.VideosEntity;
 import com.e.d.model.repository.CommentRepository;
 import com.e.d.model.repository.CreatorRepository;
+import com.e.d.model.repository.LikeRepository;
 import com.e.d.model.repository.SubscriptionsRepository;
 import com.e.d.model.repository.VideosRepository;
 import com.e.d.model.service.CommentService;
 import com.e.d.model.service.CreatorService;
+import com.e.d.model.service.LikeService;
 import com.e.d.model.service.SubscriptionsService;
 import com.e.d.model.service.VideosService;
 
@@ -48,17 +49,19 @@ public class MainController {
 	
 	private final CommentRepository commentRepository;
 	private final CreatorRepository creatorRepository;
+	private final LikeRepository likeRepository;
 	private final SubscriptionsRepository subscriptionsRepository;
 	private final VideosRepository videosRepository;
 	
 	private final CommentService commentService;
 	private final CreatorService creatorService;
+	private final LikeService likeService;
 	private final SubscriptionsService subscriptionsService;
 	private final VideosService videosService;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncode;
-
+	
 	@GetMapping("/")
 	public String index(Model model) {
 		List<VideosEntity> videos = videosRepository.findAll(Sort.by(Direction.DESC, "videoId"));
@@ -371,9 +374,8 @@ public class MainController {
 	    // 세션에서 로그인한 사용자의 정보를 가져옵니다.
 	    CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 
-	    // 로그인 상태 확인
 	    if (user == null) {
-	        return "creator/login"; // 로그인 페이지로 리디렉션
+	        return "creator/login";
 	    }
 
 	    // 내가 구독한 채널 정보 조회 (subscriberId 기준으로)
@@ -400,11 +402,7 @@ public class MainController {
 
 	    // 나를 구독한 사람들의 상세 정보 조회 (한 번에)
 	    List<CreatorEntity> subscribers = creatorRepository.findByCreatorIdIn(subscriberIds);
-
-	    // 나를 구독한 사람들의 목록을 Model에 추가하여 뷰로 전달
 	    model.addAttribute("mySubscribers", subscribers);
-
-	    // 뷰 페이지 반환
 	    return "creator/mySubscriChannel";
 	}
 

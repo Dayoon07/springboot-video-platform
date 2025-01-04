@@ -42,10 +42,6 @@
 					</div>
 		        </div>
 		
-		        <div class="text-sm text-gray-600 mt-2">
-		            조회수: ${ watchTheVideo.views } | 업로드 날짜: ${ watchTheVideo.createAt }
-		        </div>
-		
 		        <div class="flex items-center space-x-3 mt-3">
 		            <button class="px-6 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition flex items-center space-x-2">
 		                <span class="ml-1">좋아요 ${ watchTheVideo.likes }</span>
@@ -72,17 +68,32 @@
 		    </div>
 		
 		    <div class="mt-5 p-4 bg-gray-100 rounded-lg">
-		        <p class="text-gray-800">
-		        	태그
-		        	<span class="text-blue-500 cursor-pointer hover:underline">
-		        		#<a href="${ cl }/tag/${ watchTheVideo.tag }" class="text-blue-500 cursor-pointer hover:underline">
-		        			${ watchTheVideo.tag }
-		        		</a>
-		        	</span>
-		        	<br>
-		        	${ watchTheVideo.more }
-		        </p>
-		    </div>
+			    <div class="text-sm text-gray-500 flex justify-start items-center mb-2">
+			        <span>조회수: ${ watchTheVideo.views }</span>
+			        <span class="px-5">업로드 날짜: ${ watchTheVideo.createAt.substring(0, 13) }</span>
+			    </div>
+			    <p class="text-md	 text-gray-700 mb-3">
+			        <span class="font-semibold text-gray-900">태그</span>
+			        <a href="${ cl }/tag/${ watchTheVideo.tag }" class="text-blue-600 hover:underline">
+			            #${ watchTheVideo.tag }
+			        </a>
+			    </p>
+			    <c:if test="${ watchTheVideo.more.length() > 10 }">
+				    <details class="text-sm text-gray-700">
+				        <summary class="cursor-pointer hover:text-blue-600">
+				            ${ watchTheVideo.more.substring(0, 10) }...
+				        </summary>
+				        <p class="mt-1">
+				            ${ watchTheVideo.more.substring(11, watchTheVideo.more.length()) }
+				        </p>
+				    </details>
+			    </c:if>
+			    <c:if test="${ watchTheVideo.more.length() < 10 }">
+			    	<p class="mt-1">
+						${ watchTheVideo.more }
+					</p>
+			    </c:if>
+			</div>
 		
 		    <div class="mt-10">
 		        <h2 class="text-lg font-bold mb-3">댓글 
@@ -145,7 +156,7 @@
 		    </div>
 		</div>
 		
-	    <div class="w-96 border rounded-lg overflow-y-scroll" style="height: 1100px;">
+	    <div class="w-96 border rounded-lg overflow-y-scroll" style="height: 800px;">
 	    	<c:forEach var="rec" items="${ recentVideo }" varStatus="recentStatus">
 	    		<c:if test="${ recentStatus.index < 20 }">
 	    			<div class="flex flex-col gap-2 p-4 hover:bg-gray-200">

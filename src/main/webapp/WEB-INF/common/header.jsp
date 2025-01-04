@@ -71,12 +71,11 @@
 		    </c:if>
 		    <hr class="my-2 border-gray-600">
 		    <li class="font-semibold text-gray-400 uppercase">탐색</li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">음악</a></li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">영화</a></li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">게임</a></li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">스포츠</a></li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">교육</a></li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-800">팟캐스트</a></li>
+		    <li><a href="${ cl }/tag/music" class="block py-2 px-4 rounded-md hover:bg-gray-800">음악</a></li>
+		    <li><a href="${ cl }/tag/movie" class="block py-2 px-4 rounded-md hover:bg-gray-800">영화</a></li>
+		    <li><a href="${ cl }/tag/game" class="block py-2 px-4 rounded-md hover:bg-gray-800">게임</a></li>
+		    <li><a href="${ cl }/tag/sports" class="block py-2 px-4 rounded-md hover:bg-gray-800">스포츠</a></li>
+		    <li><a href="${ cl }/tag/edu" class="block py-2 px-4 rounded-md hover:bg-gray-800">교육</a></li>
 		    <hr class="my-2 border-gray-600">
 		    <li class="font-semibold text-gray-400 uppercase">내 콘텐츠</li>
 		    <li><a href="${ cl }/myVideo" class="block py-2 px-4 rounded-md hover:bg-gray-800">내 영상</a></li>
@@ -84,7 +83,7 @@
 		</ul><br>
 		<div class="w-full">
 			<div class="border-gray-600 border-t border-b py-2 px-4">
-				<a href="${ cl }/notice" class="block py-2 px-4 rounded-md hover:bg-gray-800">문의하기</a>
+				<a href="mailto:gangd0642@gmail.com" class="block py-2 px-4 rounded-md hover:bg-gray-800">문의하기</a>
 			</div>
 	    	<p class="text-sm text-gray-500 mt-4 px-4">
 	    		&copy; 2024 Whynot. <br> All rights reserved. <br>
