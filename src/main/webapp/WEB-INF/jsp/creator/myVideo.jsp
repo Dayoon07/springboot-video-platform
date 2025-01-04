@@ -6,137 +6,87 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-	<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="${ cl }/source/img/videoPlayer-icon.png" type="image/x-icon">
-    <link rel="stylesheet" href="${ cl }/source/css/custom.css">
-	<title>whynot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>whynot studio</title>
 </head>
-<body class="bg-gray-100">
-	<jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
-	
-    <div class="flex">
-        <aside class="w-64 h-screen fixed bg-white overflow-y-auto border-r border-gray-200">
-            <ul class="space-y-2 pt-4 px-4">
-                <li>
-                    <a href="#" class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-100">
-                        <i data-lucide="home" class="w-5 h-5 mr-4"></i>
-                        홈
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-100">
-                        <i data-lucide="play-square" class="w-5 h-5 mr-4"></i>
-                        구독
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-100">
-                        <i data-lucide="thumbs-up" class="w-5 h-5 mr-4"></i>
-                        좋아요를 누른 영상
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-100">
-                        <i data-lucide="user" class="w-5 h-5 mr-4"></i>
-                        내 채널
-                    </a>
-                </li>
+<body class="flex flex-col h-screen">
+    <jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 
-                <li><hr class="my-2 border-gray-200"></li>
-
-                <li class="text-xs font-semibold text-gray-500 uppercase px-4">탐색</li>
+    <main class="flex flex-grow" style="height: calc(100% - 76px);">
+        <div class="w-64 bg-gray-200">
+            <ul>
                 <li>
-                    <a href="#" class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-100">
-                        <i data-lucide="music" class="w-5 h-5 mr-4"></i>
-                        음악
-                    </a>
+                    <a href="#" class="block p-4 rounded bg-gray-200 hover:bg-white transition">대시보드</a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-100">
-                        <i data-lucide="film" class="w-5 h-5 mr-4"></i>
-                        영화
-                    </a>
+                    <a href="#" class="block p-4 rounded bg-gray-200 hover:bg-white transition">콘텐츠</a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-100">
-                        <i data-lucide="gamepad-2" class="w-5 h-5 mr-4"></i>
-                        게임
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-100">
-                        <i data-lucide="trophy" class="w-5 h-5 mr-4"></i>
-                        스포츠
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-100">
-                        <i data-lucide="book-open" class="w-5 h-5 mr-4"></i>
-                        교육
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-100">
-                        <i data-lucide="mic-2" class="w-5 h-5 mr-4"></i>
-                        팟캐스트
-                    </a>
-                </li>
-
-                <li><hr class="my-2 border-gray-200"></li>
-
-                <li class="text-xs font-semibold text-gray-500 uppercase px-4">내 콘텐츠</li>
-                <li>
-                    <a href="#" class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-100">
-                        <i data-lucide="video" class="w-5 h-5 mr-4"></i>
-                        내 영상
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-100">
-                        <i data-lucide="history" class="w-5 h-5 mr-4"></i>
-                        시청 기록
-                    </a>
+                    <a href="#" class="block p-4 rounded bg-gray-200 hover:bg-white transition">분석</a>
                 </li>
             </ul>
+        </div>
 
-            <div class="p-4 mt-4">
-                <p class="text-xs text-gray-500">
-                    &copy; 2024 Whynot. <br>
-                    All rights reserved. <br><br>
-                    영상 제작자가 whynot에서 게시한 영상은 각 영상 제작자의 소유이며 저작권을 인정하며
-                    whynot은 영상 제작자가 만든 영상에 관여하지 않으며, 그와 관련된 책임을 지지 않습니다.
-                </p>
-            </div>
-        </aside>
-
-        <main class="ml-64 flex-1 p-8">
-            <div class="mb-6">
-                <h1 class="text-2xl font-bold text-gray-800">내가 올린 영상</h1>
-                <p class="text-sm text-gray-600">당신이 업로드한 영상 목록을 확인하세요.</p>
+        <div class="flex-grow bg-white p-6" style="width: calc(100% - 256px);"> <!-- Main Content -->
+            <div class="border-b border-gray-200">
+                <nav class="flex space-x-4" id="tabs">
+                    <button class="py-2 px-4 text-blue-600 border-b-2 border-blue-600" onclick="showTab('videos')">영상</button>
+                    <button class="py-2 px-4 text-gray-600 hover:text-blue-600 hover:border-blue-600 transition" onclick="showTab('analytics')">분석</button>
+                    <button class="py-2 px-4 text-gray-600 hover:text-blue-600 hover:border-blue-600 transition" onclick="showTab('comments')">댓글</button>
+                </nav>
             </div>
 
-            <div class="space-y-4">
-                <div class="flex bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                    <img src="/api/placeholder/320/180" alt="비디오 썸네일" class="w-72 object-cover">
-                    <div class="p-4">
-                        <h3 class="font-semibold text-lg text-gray-800">영상 제목</h3>
-                        <p class="text-sm text-gray-600">업로드 날짜: 2024-01-03</p>
-                        <p class="mt-2 text-sm text-gray-500">조회수 1.2만회</p>
+            <!-- Tab Contents -->
+            <div id="videos" class="mt-6">
+                <h2 class="text-xl font-bold mb-4">업로드된 영상</h2>
+                <div>
+                    <div class="grid grid-cols-12 gap-4 px-6 py-3 border-b border-gray-400 font-medium text-sm">
+                        <div class="col-span-6">동영상</div>
+                        <div class="col-span-1 text-right">가시성</div>
+                        <div class="col-span-2 text-right">날짜</div>
+                        <div class="col-span-1 text-right">조회수</div>
+                        <div class="col-span-1 text-right">댓글</div>
+                        <div class="col-span-1 text-right">좋아요</div>
+                    </div>
+                    <div class="divide-y">
+                    	<c:forEach var="mvdos" items="${ myvideos }">
+                        	<div class="grid grid-cols-12 gap-4 px-6 py-4 hover:bg-gray-200">
+	                            <div class="col-span-6 flex items-center">
+	                                <img src="${ mvdos.imgPath }" class="w-40 rounded">
+	                                <div class="ml-4">
+	                                    <h3 class="font-medium">${ mvdos.title }</h3>
+	                                    <p class="text-sm text-gray-400">${ mvdos.more }</p>
+	                                </div>
+	                            </div>
+	                            <div class="col-span-1 text-right flex items-center justify-end">
+	                                <span class="px-2 py-1 bg-blue-500 rounded text-xs">공개</span>
+	                            </div>
+	                            <div class="col-span-2 text-right text-sm text-gray-400 flex items-center justify-end">${ mvdos.createAt }</div>
+	                            <div class="col-span-1 text-right text-sm text-gray-400 flex items-center justify-end">${ mvdos.views }</div>
+	                            <div class="col-span-1 text-right text-sm text-gray-400 flex items-center justify-end">${ mvdos.commentCount }</div>
+	                            <div class="col-span-1 text-right text-sm text-gray-400 flex items-center justify-end">${ mvdos.likes }</div>
+	                        </div>
+                        </c:forEach>
                     </div>
                 </div>
-
-                <div class="flex bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                    <img src="/api/placeholder/320/180" alt="비디오 썸네일" class="w-72 object-cover">
-                    <div class="p-4">
-                        <h3 class="font-semibold text-lg text-gray-800">두 번째 영상</h3>
-                        <p class="text-sm text-gray-600">업로드 날짜: 2024-01-02</p>
-                        <p class="mt-2 text-sm text-gray-500">조회수 8.5천회</p>
-                    </div>
-                </div>
             </div>
-        </main>
-    </div>
+
+            <div id="analytics" class="mt-6 hidden">
+                <h2 class="text-xl font-bold mb-4">분석</h2>
+                <p>이곳에 분석 데이터를 추가하세요.</p>
+            </div>
+
+            <div id="comments" class="mt-6 hidden">
+                <h2 class="text-xl font-bold mb-4">댓글</h2>
+                <p>이곳에 댓글 내용을 추가하세요.</p>
+            </div>
+            
+        </div>
+    </main>
+
 	<jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
 </body>
 </html>

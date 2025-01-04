@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -134,7 +135,7 @@ public class MainController {
 						@RequestParam String bio, 
 						@RequestParam String tel, 
 						@RequestParam MultipartFile profileImgPath) {
-	    String fileName = UUID.randomUUID() + profileImgPath.getOriginalFilename().trim().replaceAll(" ", "_");
+	    String fileName = UUID.randomUUID() + "_" + profileImgPath.getOriginalFilename().trim().replaceAll(" ", "_");
 	    String uploadDir = "C:/youtubeProject/profile-img/";
 	    String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분"));
 
@@ -206,6 +207,7 @@ public class MainController {
 		return (session.getAttribute("creatorSession") != null) ? "video/upload" : "creator/login";
 	}
 	
+	@Transactional
 	@PostMapping("/uploadVideo")
 	public String upload(@RequestParam String creatorName,
 			@RequestParam String tag,
@@ -257,14 +259,15 @@ public class MainController {
 		return "redirect:/";
 	}
 	
+	@Transactional
 	@GetMapping("/watch")
 	public String watchTheVideo(@RequestParam String v, Model model, HttpSession session) {
 	    Optional<VideosEntity> list = videosRepository.findByV(v);
 	    if (list.isPresent()) {
 	        VideosEntity video = list.get();
+	        CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 	        Optional<CreatorEntity> creator = creatorRepository.findById(video.getCreatorVal());
 	        List<CommentEntity> comment = commentRepository.findByCommentVideoOrderByCommentIdDesc(list.get().getVideoId());
-	        CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 	        List<SubscriptionsEntity> subscriList = subscriptionsRepository.findBySubscriberId(creator.get().getCreatorId());
 	        
 	        model.addAttribute("watchTheVideo", video);
@@ -272,8 +275,25 @@ public class MainController {
 	        model.addAttribute("recentVideo", videosRepository.findAll(Sort.by(Direction.DESC, "videoId")));
 	        model.addAttribute("watchTheVideoCommentList", comment);
 	        if (user != null) {
-	            video.incrementVideoViews();
-	            videosRepository.save(video); // 변경사항을 저장
+	        	VideosEntity entity = VideosEntity.builder()
+	        			.videoId(video.getVideoId())
+	        			.creator(video.getCreator())
+	        			.creatorVal(video.getCreatorVal())
+	        			.title(video.getTitle())
+	        			.more(video.getMore())
+	        			.videoName(video.getVideoName())
+	        			.videoPath(video.getVideoPath())
+	        			.imgName(video.getImgName())
+	        			.imgPath(video.getImgPath())
+	        			.createAt(video.getCreateAt())
+	        			.frontProfileImg(video.getFrontProfileImg())
+	        			.v(video.getV())
+	        			.views(video.getViews() + 1)
+	        			.likes(video.getLikes())
+	        			.unlikes(video.getLikes())
+	        			.commentCount(comment.size()) 
+	        			.build();
+	            videosRepository.save(entity); // 변경사항을 저장
 	            // 구독 상태를 확인하여 모델에 추가
 		        boolean isSubscribed = false;
 		        for (SubscriptionsEntity subscription : subscriList) {
@@ -284,12 +304,12 @@ public class MainController {
 		        }
 		        model.addAttribute("thisIsSubscribed", isSubscribed);  // 구독 여부
 	        }
-	        
 	        return "video/watch";
 	    }
 	    return "redirect:/";
 	}
 	
+	@Transactional
 	@PostMapping("/commentAdd")
 	public String addVideoComment(@RequestParam long commentVideo,
 	                              @RequestParam String commentContent,
@@ -309,13 +329,13 @@ public class MainController {
 		            .commentContent(commentContent)
 		            .datetime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
 		            .build();
-
 		    commentRepository.save(comment);
 	    }
 
 	    return "redirect:/watch?v=" + URLEncoder.encode(video.getV(), "UTF-8");
 	}
 	
+	@Transactional
 	@PostMapping("/subscri")
 	public String subscri(@RequestParam long subscriberId, @RequestParam long subscribingId) {
 	    Optional<CreatorEntity> subscriber = creatorRepository.findById(subscriberId);    // 구독을 받은 채널

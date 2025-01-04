@@ -49,11 +49,11 @@
 		            <button class="px-6 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition flex items-center space-x-2">
 		                <span class="ml-1">싫어요 ${ watchTheVideo.unlikes }</span>
 		            </button>
-		            <c:if test="${ isSubscribed }">
+		            <c:if test="${ thisIsSubscribed }">
 					    구독중
 					</c:if>
 					<c:if test="${ sessionScope.creatorSession != null }">
-						<c:if test="${ !isSubscribed }">
+						<c:if test="${ !thisIsSubscribed }">
 						    <form action="${ cl }/subscri?subscriberId=${ creator.creatorId }&subscribingId=${ sessionScope.creatorSession.creatorId }" method="post" autocomplete="off">
 						        <button type="submit" class="px-6 py-2 mt-3 bg-black text-white rounded-full hover:bg-white hover:shadow-xl hover:text-black transition duration-300">
 						            구독
