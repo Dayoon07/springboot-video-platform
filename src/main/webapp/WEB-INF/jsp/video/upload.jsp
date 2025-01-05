@@ -66,5 +66,6 @@
 	
 	<script src="https://cdn.tailwindcss.com"></script>
 	<script src="${ cl }/source/js/upload.js"></script>
+	<script src="${ cl }/source/js/script.js"></script>
 </body>
 </html>

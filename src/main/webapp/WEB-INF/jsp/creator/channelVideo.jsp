@@ -50,45 +50,42 @@
 			</c:if>
 
             <nav class="mt-4 space-x-4">
-                <a href="${ cl }/channel/${ creator.creatorName }" class="text-black text-red-600 underline">홈</a>
-                <a href="${ cl }/channel/${ creator.creatorName }/videos" class="text-black hover:text-red-600 hover:underline">동영상</a>
+                <a href="${ cl }/channel/${ creator.creatorName }" class="text-black hover:text-red-600 hover:underline">홈</a>
+                <a href="${ cl }/channel/${ creator.creatorName }/videos" class="text-black text-red-600 underline">동영상</a>
                 <!-- <a href="#" class="text-black hover:text-red-600">게시물</a> -->
             </nav>
         </div>
     </div>
     <div class="max-w-7xl mx-auto p-4">
-    	<h1>최신 영상</h1>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         
-        	<c:forEach var="cvl" items="${ creatorVideosList }" varStatus="cvlStatus">
-        		<c:if test="${ cvlStatus.index < 20 }">
-	        		<div class="flex flex-col gap-2 p-2 rounded-lg hover:bg-gray-200">
-		                <div class="relative group">
-		                    <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-		                        <a href="${ cl }/watch?v=${ cvl.v }">
-		                        	<img src="${ cvl.imgPath }" alt="Video thumbnail" class="w-full h-full object-cover">
-		                        </a>
-		                    </div>
-		                </div>
-		                <div class="flex gap-2">
-		                    <a href="${ cl }/channel/${ cvl.creator }">
-		                    	<img src="${ cvl.frontProfileImg }" class="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0">
-		                    </a>
-		                    <div class="flex-1 min-w-0">
-		                        <a href="${ cl }/watch?v=${ cvl.v }" class="font-medium text-sm line-clamp-2 hover:underline">
-		                        	${ cvl.title }
-		                        </a>
-		                        <a href="${ cl }/channel/${ cvl.creator }" class="text-sm text-gray-600 hover:underline">
-			                        ${ cvl.creator }
-								</a>
-		                        <div class="text-sm text-gray-600">
-		                        	조회수 ${ cvl.views == 0 ? "없음" : cvl.views } | ${ cvl.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
-		                        	 ? cvl.createAt.substring(6, 13) : cvl.createAt.substring(0, 13) }
-		                        </div>
-		                    </div>
-		                </div>
-		            </div>
-	            </c:if>
+        	<c:forEach var="cvl" items="${ creatorVideosList }">
+        		<div class="flex flex-col gap-2 p-2 rounded-lg hover:bg-gray-200">
+	                <div class="relative group">
+	                    <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
+	                        <a href="${ cl }/watch?v=${ cvl.v }">
+	                        	<img src="${ cvl.imgPath }" alt="Video thumbnail" class="w-full h-full object-cover">
+	                        </a>
+	                    </div>
+	                </div>
+	                <div class="flex gap-2">
+	                    <a href="${ cl }/channel/${ cvl.creator }">
+	                    	<img src="${ cvl.frontProfileImg }" class="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0">
+	                    </a>
+	                    <div class="flex-1 min-w-0">
+	                        <a href="${ cl }/watch?v=${ cvl.v }" class="font-medium text-sm line-clamp-2 hover:underline">
+	                        	${ cvl.title }
+	                        </a>
+	                        <a href="${ cl }/channel/${ cvl.creator }" class="text-sm text-gray-600 hover:underline">
+		                        ${ cvl.creator }
+							</a>
+	                        <div class="text-sm text-gray-600">
+	                        	조회수 ${ cvl.views == 0 ? "없음" : cvl.views } | ${ cvl.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
+	                        	 ? cvl.createAt.substring(6, 13) : cvl.createAt.substring(0, 13) }
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
         	</c:forEach>
         </div>
     </div>

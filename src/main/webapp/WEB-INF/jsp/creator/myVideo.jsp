@@ -41,38 +41,53 @@
 
             <!-- Tab Contents -->
             <div id="videos" class="mt-6">
-                <h2 class="text-xl font-bold mb-4">업로드된 영상</h2>
-                <div>
-                    <div class="grid grid-cols-12 gap-4 px-6 py-3 border-b border-gray-400 font-medium text-sm">
-                        <div class="col-span-6">동영상</div>
-                        <div class="col-span-1 text-right">가시성</div>
-                        <div class="col-span-2 text-right">날짜</div>
-                        <div class="col-span-1 text-right">조회수</div>
-                        <div class="col-span-1 text-right">댓글</div>
-                        <div class="col-span-1 text-right">좋아요</div>
-                    </div>
-                    <div class="divide-y">
-                    	<c:forEach var="mvdos" items="${ myvideos }">
-                        	<div class="grid grid-cols-12 gap-4 px-6 py-4 hover:bg-gray-200">
-	                            <div class="col-span-6 flex items-center">
-	                                <img src="${ mvdos.imgPath }" class="w-40 rounded">
-	                                <div class="ml-4">
-	                                    <h3 class="font-medium">${ mvdos.title }</h3>
-	                                    <p class="text-sm text-gray-400">${ mvdos.more }</p>
-	                                </div>
-	                            </div>
-	                            <div class="col-span-1 text-right flex items-center justify-end">
-	                                <span class="px-2 py-1 bg-blue-500 rounded text-xs">공개</span>
-	                            </div>
-	                            <div class="col-span-2 text-right text-sm text-gray-400 flex items-center justify-end">${ mvdos.createAt }</div>
-	                            <div class="col-span-1 text-right text-sm text-gray-400 flex items-center justify-end">${ mvdos.views }</div>
-	                            <div class="col-span-1 text-right text-sm text-gray-400 flex items-center justify-end">${ mvdos.commentCount }</div>
-	                            <div class="col-span-1 text-right text-sm text-gray-400 flex items-center justify-end">${ mvdos.likes }</div>
-	                        </div>
-                        </c:forEach>
-                    </div>
-                </div>
-            </div>
+			    <h2 class="text-xl font-bold mb-4">업로드된 영상</h2>
+			    <table class="min-w-full border-collapse">
+			        <thead>
+			            <tr class="border-b border-black text-left text-sm font-medium">
+			                <th class="p-2">동영상</th>
+			                <th class="p-2 text-left">공개여부</th>
+			                <th class="p-2 text-left">날짜</th>
+			                <th class="p-2 text-left">조회수</th>
+			                <th class="p-2 text-left">좋아요</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			            <c:forEach var="mvdos" items="${ myvideos }">
+			                <tr class="hover:bg-gray-100">
+			                    <td class="p-2">
+			                        <div class="flex items-center">
+			                            <a href="${ cl }/watch?v=${ mvdos.v }">
+			                                <img src="${ mvdos.imgPath }" class="w-40 h-auto rounded mr-4">
+			                            </a>
+			                            <div>
+			                                <h3 class="font-medium">${ mvdos.title }</h3>
+			                                <p class="text-sm text-gray-400">${ mvdos.more }</p>
+			                                <div class="flex items-center">
+			                                	<form action="${ cl }/myVideoUpdate" method="post" class="mt-2">
+			                                		<input type="hidden" name="videoId" value="${ mvdos.videoId }" required readonly>
+				                                    <button type="submit" class="text-blue-500">수정</button>
+				                                </form>
+				                                <form action="${ cl }/myVideoDelete" method="post" class="mt-2">
+				                                	<input type="hidden" name="videoId" value="${ mvdos.videoId }" required readonly>
+				                                    <button type="submit" class="text-blue-500 px-5">삭제</button>
+				                                </form>
+			                                </div>
+			                            </div>
+			                        </div>
+			                    </td>
+			                    <td class="p-2 text-left">
+			                        <span class="px-2 py-1 bg-black text-white rounded text-xs">공개</span>
+			                    </td>
+			                    <td class="p-2 text-left">${ mvdos.createAt }</td>
+			                    <td class="p-2 text-left">${ mvdos.views }</td>
+			                    <td class="p-2 text-left">${ mvdos.likes }</td>
+			                </tr>
+			            </c:forEach>
+			        </tbody>
+			    </table>
+			</div>
+
 
             <div id="analytics" class="mt-6 hidden">
                 <h2 class="text-xl font-bold mb-4">분석</h2>
