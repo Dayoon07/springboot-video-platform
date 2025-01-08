@@ -11,3 +11,8 @@ aside {
 .tab-content.active {
     display: block;
 }
+@media (max-width: 840px) {
+    #mainFormId {
+		display : none;
+	}
+}

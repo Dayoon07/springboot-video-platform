@@ -560,12 +560,91 @@ public class MainController {
 	    return "creator/myVideo";
 	}
 	
+	@GetMapping("/update")
+	public String updateMeMovePage(HttpSession s, Model m) {
+		CreatorEntity user = (CreatorEntity) s.getAttribute("creatorSession");
+		if (user == null) return "index";
+		return "creator/updateMe";
+	}
+	
+	@PostMapping("/confirmPassword")
+	public String confirmPassword(@RequestParam String creatorPassword, HttpSession s, Model m) {
+	    CreatorEntity user = (CreatorEntity) s.getAttribute("creatorSession");
+	    Optional<CreatorEntity> userInfo = creatorRepository.findById(user.getCreatorId());
+	    if (user != null && userInfo.isPresent() && passwordEncode.matches(creatorPassword, user.getCreatorPassword())) {
+	        m.addAttribute("creatorInfomation", userInfo.get());
+	        m.addAttribute("realCreatorPassword", creatorPassword);
+	        return "creator/realUpdateMe";
+	    }
+	    return "creator/login";
+	}
+	
+	@PostMapping("/updateAboutMe")
+	public String updateAboutMe(@RequestParam String creatorName,
+	                             @RequestParam String creatorEmail,
+	                             @RequestParam String creatorPassword,
+	                             @RequestParam String bio,
+	                             @RequestParam String tel,
+	                             @RequestParam MultipartFile profileImgPath,
+	                             HttpSession session) {
+	    CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+	    Optional<CreatorEntity> info = creatorRepository.findById(user.getCreatorId());
 
-	
-	
-	
-	
-	
+	    String profileImg;
+	    if (profileImgPath != null && !profileImgPath.isEmpty()) {
+	        String fileName = UUID.randomUUID() + "_" + profileImgPath.getOriginalFilename().trim().replaceAll(" ", "_");
+	        String uploadDir = "C:/youtubeProject/profile-img/";
+
+	        File dir = new File(uploadDir);
+	        if (!dir.exists()) dir.mkdirs();
+
+	        try {
+	            profileImgPath.transferTo(new File(uploadDir + fileName));
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+
+	        profileImg = "/youtubeProject/profile-img/" + fileName;
+	    } else {
+	        profileImg = info.get().getProfileImgPath();
+	    }
+
+	    CreatorEntity entity = CreatorEntity.builder()
+	            .creatorId(info.get().getCreatorId())
+	            .creatorName(creatorName)
+	            .creatorEmail(creatorEmail)
+	            .creatorPassword(passwordEncode.encode(creatorPassword))
+	            .createAt(info.get().getCreateAt())
+	            .bio(bio)
+	            .tel(tel)
+	            .profileImg(profileImgPath.getOriginalFilename())
+	            .profileImgPath(profileImg)
+	            .subscribe(info.get().getSubscribe())
+	            .build();
+
+	    creatorRepository.save(entity);
+
+	    return "creator/you";
+	}
+
+	@Transactional
+	@PostMapping("/deleteAccount")
+	public String deleteAccount(@RequestParam long creatorId) {
+	    log.info("deleteAccount 요청이 들어왔습니다. creatorId: {}", creatorId);
+
+	    if (creatorRepository.findById(creatorId).isEmpty()) {
+	        log.warn("creatorId {}에 해당하는 계정이 존재하지 않습니다.", creatorId);
+	    } else {
+	        log.info("creatorId {}에 해당하는 계정을 삭제합니다.", creatorId);
+	        creatorRepository.deleteById(creatorId);
+	        commentRepository.deleteByCommentUserid(creatorId);
+	        subscriptionsRepository.deleteBySubscribingId(creatorId);
+	        videosRepository.deleteByCreatorVal(creatorId);
+	        log.info("creatorId {}에 해당하는 계정을 성공적으로 삭제했습니다.", creatorId);
+	    }
+
+	    return "index";
+	}
 	
 	
 	

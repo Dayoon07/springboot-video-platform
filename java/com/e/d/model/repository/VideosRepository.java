@@ -14,4 +14,5 @@ public interface VideosRepository extends JpaRepository<VideosEntity, Long> {
 	Optional<VideosEntity> findByV(String v);
 	List<VideosEntity> searchByTitleIgnoreCaseContaining(String title);
 	List<VideosEntity> findByTagOrderByVideoIdDesc(String tag);
+	void deleteByCreatorVal(long creatorVal);
 }

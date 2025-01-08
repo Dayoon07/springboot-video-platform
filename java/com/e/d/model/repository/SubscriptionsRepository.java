@@ -14,4 +14,5 @@ public interface SubscriptionsRepository extends JpaRepository<SubscriptionsEnti
 	List<SubscriptionsEntity> findBySubscriberId(long subscriberId);
 	List<SubscriptionsEntity> findBySubscribingId(long subscribingId);
 	long countBySubscriberId(long subscriberId);
+	void deleteBySubscribingId(long subscribingId);
 }

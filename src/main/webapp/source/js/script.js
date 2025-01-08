@@ -24,22 +24,18 @@ profileDropdownMenu.addEventListener("click", () => {
 	profileDropdownMenu.classList.add("hidden");
 	profileDropdown.classList.add("hidden");
 });
-/*************************************************************************************************************/
 
+// 계정 삭제 모달 열기
+function openDeleteAccountModal() {
+    document.getElementById("deleteMyAccount").classList.remove("hidden");
+	document.getElementById("deleteMyAccountBg").classList.remove("hidden");
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+// 계정 삭제 모달 닫기
+function closeDeleteAccountModal() {
+	document.getElementById("deleteMyAccountBg").classList.add("hidden");
+    document.getElementById("deleteMyAccount").classList.add("hidden");
+}
 
 
 

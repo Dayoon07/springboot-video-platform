@@ -13,7 +13,7 @@
 		        </a>
 	        </div>
 	
-	        <form action="${ cl }/search" method="get" autocomplete="on" class="flex items-center space-x-4">
+	        <form action="${ cl }/search" method="get" autocomplete="on" class="flex items-center space-x-4" id="mainFormId">
 	            <input type="text" name="t" class="w-96 p-2 rounded bg-gray-800 text-white" placeholder="검색" required>
 	            <button type="submit" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded">검색</button>
 	        </form>
@@ -42,6 +42,7 @@
 				  		
 				  		<div>
 				  			<a href="${ cl }/you" class="block w-full text-lg py-2 px-4 hover:bg-gray-200">내 페이지</a>
+				  			<a href="${ cl }/update" class="block w-full text-lg py-2 px-4 hover:bg-gray-200">정보 수정</a>
 				  			<form action="${ cl }/logout" method="post" autocomplete="off">
 						        <button type="submit" class="block text-left w-full text-lg py-2 px-4 hover:bg-gray-200">로그아웃</button>
 							</form>

@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="${ cl }/source/css/custom.css">
 	<title>로그인 - whynot</title>
 </head>
-<body class="bg-gray-900">
+<body>
 	<jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 	
 	<div class="mt-24 flex items-center justify-center text-white">
