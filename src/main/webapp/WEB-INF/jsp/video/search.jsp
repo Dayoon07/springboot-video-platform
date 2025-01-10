@@ -19,12 +19,14 @@
 		<c:forEach var="searchVideos" items="${ searchList }">
 			<div class="flex justify-start" style="height: 250px;">
 				<div class="pr-2">
-					<img src="${ searchVideos.imgPath }" width="375" class="h-full rounded-lg object-cover">
+					<a href="${ cl }/watch?v=${ searchVideos.v }">
+						<img src="${ searchVideos.imgPath }" width="375" class="h-full rounded-lg object-cover">
+					</a>
 				</div>
 				<div class="pl-2 py-2">
 					<h1 class="text-2xl">${ searchVideos.title }</h1>
 					<p class="text-gray-500">
-						<span>조회수 ${ searchVideos.views == 0 ? "없음" : searchVideos.views } | </span>
+						<span>조회수 ${ searchVideos.views == 0 ? "없음" : searchVideos.views }회 | </span>
 						<span>${ searchVideos.createAt }</span>
 					</p>
 					<div class="flex items-center my-2">
