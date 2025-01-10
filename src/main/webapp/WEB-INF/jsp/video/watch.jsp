@@ -50,12 +50,22 @@
 		                <span class="ml-1">싫어요 ${ watchTheVideo.unlikes }</span>
 		            </button>
 		            <c:if test="${ thisIsSubscribed }">
-					    구독중
+					    <div class="flex justify-center items-center">
+					    	<div>
+					    		<p>구독중</p>
+					    	</div>
+					    	<div class="px-4">
+					    		<form action="${ cl }/deleteSubscri" method="post" autocomplete="off">
+						    		<input type="hidden" name="subscriberId" id="subscriberId" value="${ videoCreatorProfileInfo.creatorId }" readonly readonly>
+						    		<button type="submit" class="btn px-4 py-2 bg-red-500 hover:bg-red-300 rounded-lg text-white">구독 취소</button>
+						    	</form>
+					    	</div>
+					    </div>
 					</c:if>
 					<c:if test="${ sessionScope.creatorSession != null }">
 						<c:if test="${ !thisIsSubscribed }">
 						    <form action="${ cl }/subscri?subscriberId=${ creator.creatorId }&subscribingId=${ sessionScope.creatorSession.creatorId }" method="post" autocomplete="off">
-						        <button type="submit" class="px-6 py-2 mt-3 bg-black text-white rounded-full hover:bg-white hover:shadow-xl hover:text-black transition duration-300">
+						        <button type="submit" class="px-6 py-2 bg-black text-white rounded-full hover:bg-white hover:shadow-xl hover:text-black transition duration-300">
 						            구독
 						        </button>
 						    </form>
@@ -72,7 +82,7 @@
 			        <span>조회수: ${ watchTheVideo.views }</span>
 			        <span class="px-5">업로드 날짜: ${ watchTheVideo.createAt.substring(0, 13) }</span>
 			    </div>
-			    <p class="text-md	 text-gray-700 mb-3">
+			    <p class="text-md text-gray-700 mb-3">
 			        <span class="font-semibold text-gray-900">태그</span>
 			        <a href="${ cl }/tag/${ watchTheVideo.tag }" class="text-blue-600 hover:underline">
 			            #${ watchTheVideo.tag }
@@ -81,10 +91,10 @@
 			    <c:if test="${ watchTheVideo.more.length() > 10 }">
 				    <details class="text-sm text-gray-700">
 				        <summary class="cursor-pointer hover:text-blue-600">
-				            ${ watchTheVideo.more.substring(0, 10) }...
+				            더보기...
 				        </summary>
 				        <p class="mt-1">
-				            ${ watchTheVideo.more.substring(11, watchTheVideo.more.length()) }
+				            ${ watchTheVideo.more }
 				        </p>
 				    </details>
 			    </c:if>

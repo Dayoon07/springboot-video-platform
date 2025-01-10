@@ -34,7 +34,17 @@
             </p>
 
             <c:if test="${ isSubscribed }">
-			    구독중
+			    <div class="flex justify-center items-center">
+			    	<div>
+			    		<p>구독중</p>
+			    	</div>
+			    	<div class="px-4">
+			    		<form action="${ cl }/deleteSubscri" method="post" autocomplete="off">
+				    		<input type="hidden" name="subscriberId" id="subscriberId" value="${ creator.creatorId }" readonly readonly>
+				    		<button type="submit" class="btn px-4 py-2 bg-red-500 hover:bg-red-300 rounded-lg text-white">구독 취소</button>
+				    	</form>
+			    	</div>
+			    </div>
 			</c:if>
 			<c:if test="${ sessionScope.creatorSession != null }">
 				<c:if test="${ !isSubscribed }">

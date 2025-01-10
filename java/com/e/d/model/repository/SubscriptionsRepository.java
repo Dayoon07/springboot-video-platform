@@ -10,7 +10,7 @@ import com.e.d.model.entity.SubscriptionsEntity;
 
 @Repository
 public interface SubscriptionsRepository extends JpaRepository<SubscriptionsEntity, Long> {
-	List<SubscriptionsEntity> findBySubscriberIdAndSubscribingId(long subscriberId, long subscribingId);
+	Optional<SubscriptionsEntity> findBySubscriberIdAndSubscribingId(long subscriberId, long subscribingId);
 	List<SubscriptionsEntity> findBySubscriberId(long subscriberId);
 	List<SubscriptionsEntity> findBySubscribingId(long subscribingId);
 	long countBySubscriberId(long subscriberId);

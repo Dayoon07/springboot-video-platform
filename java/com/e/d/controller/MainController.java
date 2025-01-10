@@ -7,6 +7,7 @@ import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -128,41 +129,21 @@ public class MainController {
 		return "redirect:/";
 	}
 	
-	@PostMapping("/signupF")
-	public String signup(@RequestParam String creatorName,
-						@RequestParam String creatorEmail, 
-						@RequestParam String creatorPassword, 
-						@RequestParam String bio, 
-						@RequestParam String tel, 
-						@RequestParam MultipartFile profileImgPath) {
-	    String fileName = UUID.randomUUID() + "_" + profileImgPath.getOriginalFilename().trim().replaceAll(" ", "_");
-	    String uploadDir = "C:/youtubeProject/profile-img/";
-	    String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분"));
-
-	    File dir = new File(uploadDir);
-	    if (!dir.exists()) dir.mkdirs();
-	    
-	    try {
-	        profileImgPath.transferTo(new File(uploadDir + fileName));
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-
-	    CreatorEntity entity = CreatorEntity.builder()
-	            .creatorName(creatorName)
-	            .creatorEmail(creatorEmail)
-	            .creatorPassword(passwordEncode.encode(creatorPassword))
-	            .createAt(now)
-	            .bio(bio)
-	            .tel(tel)
-	            .profileImg(profileImgPath != null ? profileImgPath.getOriginalFilename() : "프로필 이미지 없음") // 파일 이름 저장
-	            .profileImgPath(profileImgPath != null ? "/youtubeProject/profile-img/"+fileName : "프로필 이미지 없음") // 파일 경로 저장
-	            .build();
-
-	    creatorRepository.save(entity);
-
-	    return "redirect:/"; // 회원가입 완료 후 리디렉션
-	}
+	 @PostMapping("/signupF")
+	 public String signup(@RequestParam String creatorName,
+			 				@RequestParam String creatorEmail,
+	                        @RequestParam String creatorPassword,
+	                        @RequestParam String bio,
+	                        @RequestParam String tel,
+	                        @RequestParam MultipartFile profileImgPath) {
+		 try {
+			 creatorService.registerCreator(creatorName, creatorEmail, creatorPassword, bio, tel, profileImgPath);
+		 } catch (IOException e) {
+			 e.printStackTrace();
+	         return "redirect:/error";
+		 }
+		 return "redirect:/";
+	 }
 	
 	@GetMapping("/channel/{creatorName}")
 	public String creatorProfile(@PathVariable String creatorName, Model model, HttpSession session) {
@@ -234,107 +215,33 @@ public class MainController {
 		return (session.getAttribute("creatorSession") != null) ? "video/upload" : "creator/login";
 	}
 	
-	@Transactional
 	@PostMapping("/uploadVideo")
-	public String upload(@RequestParam String creatorName,
-			@RequestParam String tag,
-			@RequestParam String title,
-			@RequestParam String more,
-			@RequestParam MultipartFile imgPath,
-			@RequestParam MultipartFile videoPath) {
-		
-		Optional<CreatorEntity> user = creatorRepository.findByCreatorName(creatorName);
-		
-		if (user.get().getCreatorName().isEmpty() && user.get().getCreatorName() == null) {
-			return "index";
-		}
-		
-		String uuidTest = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss"));
-		String imgName = uuidTest + "-" + imgPath.getOriginalFilename().trim().replaceAll(" ", "_");
-		String videoName = uuidTest + "-" + videoPath.getOriginalFilename().trim().replaceAll(" ", "_");
-		    
-		String videoImgUploadDir = "C:/youtubeProject/video-img/";
-		File imgDir = new File(videoImgUploadDir);
-		if (!imgDir.exists()) imgDir.mkdirs();
-		    
-		String videoUploadDir = "C:/youtubeProject/";
-		File videoDir = new File(videoUploadDir);
-		if (!videoDir.exists()) videoDir.mkdirs();
-		    
-		try {
-			imgPath.transferTo(new File(videoImgUploadDir + imgName));
-			videoPath.transferTo(new File(videoUploadDir + videoName));
-		    	
-			VideosEntity videoBuilder = VideosEntity.builder()
-					.creator(user.get().getCreatorName())
-					.creatorVal(user.get().getCreatorId())
-					.title(title)
-					.more(more)
-					.videoName(videoName)
-					.videoPath("/youtubeProject/" + videoName)
-					.imgName(imgName)
-					.imgPath("/youtubeProject/video-img/" + imgName)
-					.createAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분")))
-					.frontProfileImg(user.get().getProfileImgPath())
-					.v(UUID.randomUUID().toString().replaceAll("-", ""))
-					.tag(tag)
-					.build();
-		    videosRepository.save(videoBuilder);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "redirect:/";
-	}
+    public String upload(@RequestParam String creatorName,
+                         @RequestParam String tag,
+                         @RequestParam String title,
+                         @RequestParam String more,
+                         @RequestParam MultipartFile imgPath,
+                         @RequestParam MultipartFile videoPath) {
+        try {
+            videosService.uploadVideo(creatorName, tag, title, more, imgPath, videoPath);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/error"; // 에러 페이지로 리디렉션
+        }
+        return "redirect:/";
+    }
 	
-	@Transactional
 	@GetMapping("/watch")
-	public String watchTheVideo(@RequestParam String v, Model model, HttpSession session) {
-	    Optional<VideosEntity> list = videosRepository.findByV(v);
-	    if (list.isPresent()) {
-	        VideosEntity video = list.get();
-	        CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
-	        Optional<CreatorEntity> creator = creatorRepository.findById(video.getCreatorVal());
-	        List<CommentEntity> comment = commentRepository.findByCommentVideoOrderByCommentIdDesc(list.get().getVideoId());
-	        List<SubscriptionsEntity> subscriList = subscriptionsRepository.findBySubscriberId(creator.get().getCreatorId());
-	        
-	        model.addAttribute("watchTheVideo", video);
-	        model.addAttribute("videoCreatorProfileInfo", creator.get());
-	        model.addAttribute("recentVideo", videosRepository.findAll(Sort.by(Direction.DESC, "videoId")));
-	        model.addAttribute("watchTheVideoCommentList", comment);
-	        if (user != null) {
-	        	VideosEntity entity = VideosEntity.builder()
-	        			.videoId(video.getVideoId())
-	        			.creator(video.getCreator())
-	        			.creatorVal(video.getCreatorVal())
-	        			.title(video.getTitle())
-	        			.more(video.getMore())
-	        			.videoName(video.getVideoName())
-	        			.videoPath(video.getVideoPath())
-	        			.imgName(video.getImgName())
-	        			.imgPath(video.getImgPath())
-	        			.createAt(video.getCreateAt())
-	        			.frontProfileImg(video.getFrontProfileImg())
-	        			.v(video.getV())
-	        			.views(video.getViews() + 1)
-	        			.likes(video.getLikes())
-	        			.unlikes(video.getLikes())
-	        			.commentCount(comment.size()) 
-	        			.build();
-	            videosRepository.save(entity); // 변경사항을 저장
-	            // 구독 상태를 확인하여 모델에 추가
-		        boolean isSubscribed = false;
-		        for (SubscriptionsEntity subscription : subscriList) {
-		            if (subscription.getSubscribingId() == user.getCreatorId()) {
-		                isSubscribed = true;
-		                break;
-		            }
-		        }
-		        model.addAttribute("thisIsSubscribed", isSubscribed);  // 구독 여부
-	        }
-	        return "video/watch";
-	    }
-	    return "redirect:/";
-	}
+    public String watchTheVideo(@RequestParam String v, Model model, HttpSession session) {
+        try {
+            Map<String, Object> videoDetails = videosService.watchVideo(v, session);
+            model.addAllAttributes(videoDetails);
+            return "video/watch";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/error"; // 에러 페이지로 리디렉션
+        }
+    }
 	
 	@Transactional
 	@PostMapping("/commentAdd")
@@ -396,6 +303,36 @@ public class MainController {
 	        log.info(subscribing.get().getCreatorName() + "님이 " + subscriber.get().getCreatorName() + "님을 구독을 했습니다.");
 
 	    return "redirect:/";
+	}
+	
+	@Transactional
+	@PostMapping("/deleteSubscri")
+	public String deleteMySubscri(@RequestParam long subscriberId, HttpSession session) {
+	    CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+	    if (user == null) return "redirect:/login";
+
+	    Optional<SubscriptionsEntity> mySubscribe = subscriptionsRepository.findBySubscriberIdAndSubscribingId(subscriberId, user.getCreatorId());
+	    Optional<CreatorEntity> channel = creatorRepository.findById(subscriberId);
+	    if (mySubscribe.isPresent()) {
+	        subscriptionsRepository.deleteById(mySubscribe.get().getSubscriptionId());
+	    }
+	    
+	    long subscriberCount = subscriptionsRepository.countBySubscriberId(subscriberId);
+        CreatorEntity e = CreatorEntity.builder()
+        		.creatorId(channel.get().getCreatorId())
+        		.creatorName(channel.get().getCreatorName())
+        		.creatorEmail(channel.get().getCreatorEmail())
+        		.creatorPassword(channel.get().getCreatorPassword())
+        		.createAt(channel.get().getCreateAt())
+        		.bio(channel.get().getBio())
+        		.tel(channel.get().getTel())
+        		.profileImg(channel.get().getProfileImg())
+        		.profileImgPath(channel.get().getProfileImgPath())
+        		.subscribe(subscriberCount)
+        		.build();
+        creatorRepository.save(e);
+	    
+	    return "redirect:/mySubscri";
 	}
 	
 	@GetMapping("/tag/{tag}")
