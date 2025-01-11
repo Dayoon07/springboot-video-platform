@@ -115,7 +115,7 @@ public class MainController {
 	    } else {
 	        log.warn("로그인 실패: 사용자 이름 [{}]에 해당하는 계정을 찾을 수 없음.", creatorName);
 	    }
-
+	    
 	    return "redirect:/";
 	}
 	
@@ -137,7 +137,7 @@ public class MainController {
 	                        @RequestParam String tel,
 	                        @RequestParam MultipartFile profileImgPath) {
 		 try {
-			 creatorService.registerCreator(creatorName, creatorEmail, creatorPassword, bio, tel, profileImgPath);
+			 creatorService.creatorSignupFunction(creatorName, creatorEmail, creatorPassword, bio, tel, profileImgPath);
 		 } catch (IOException e) {
 			 e.printStackTrace();
 	         return "redirect:/error";

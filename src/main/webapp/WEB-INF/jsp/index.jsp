@@ -41,7 +41,7 @@
 		                        ${ video.creator }
 							</a>
 	                        <div class="text-sm text-gray-600">
-	                        	조회수 ${ video.views == 0 ? "없음" : video.views } | 	${ video.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
+	                        	조회수 ${ video.views == 0 ? "없음" : video.views += "회" } | 	${ video.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
 	                        	 ? video.createAt.substring(6, 13) : video.createAt.substring(0, 13) }
 	                        </div>
 	                    </div>

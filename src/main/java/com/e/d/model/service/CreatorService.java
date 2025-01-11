@@ -23,8 +23,12 @@ public class CreatorService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public CreatorEntity registerCreator(String creatorName, String creatorEmail, String creatorPassword, 
-                                         String bio, String tel, MultipartFile profileImgPath) throws IOException {
+    public CreatorEntity creatorSignupFunction(String creatorName,
+							    		String creatorEmail,
+							    		String creatorPassword,
+							    		String bio,
+							    		String tel,
+							    		MultipartFile profileImgPath) throws IOException {
         String fileName = UUID.randomUUID() + "_" + profileImgPath.getOriginalFilename().trim().replaceAll(" ", "_");
         String uploadDir = "C:/youtubeProject/profile-img/";
         String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분"));
