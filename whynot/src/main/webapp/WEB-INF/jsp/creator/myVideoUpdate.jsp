@@ -18,7 +18,6 @@
     <div class="max-w-6xl mx-auto mt-10 p-8 bg-white rounded-lg">
         <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">영상 수정</h1>
         <form action="${ cl }/updateVideo" method="post" enctype="multipart/form-data" class="space-y-8">
-            <!-- 기존 비디오 ID를 hidden으로 전달 -->
             <input type="hidden" name="videoId" value="${ updatingVideo.videoId }">
             
             <div class="flex flex-wrap gap-6">    
@@ -30,10 +29,8 @@
                             <input type="file" id="imgPath" name="imgPath" accept="image/*" class="hidden" onchange="previewImage(event)">
                         </div>
                         <div id="thumbnailPreview" class="mt-4 flex justify-center items-center">
-                            <!-- 기존 이미지 표시 -->
                             <img id="previewImg" src="${ updatingVideo.imgPath }" class="w-3/5 object-cover border rounded-md">
                         </div>
-                        <!-- 기존 이미지 경로 보존 -->
                         <input type="hidden" name="currentImgPath" value="${ updatingVideo.imgPath }">
                     </div>
                     <div>

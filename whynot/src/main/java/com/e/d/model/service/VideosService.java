@@ -101,7 +101,7 @@ public class VideosService {
 
         if (user != null) {
         	video.setViews(video.getViews() + 1);
-            video.setCommentCount(comments.size());
+            video.setCommentCnt(comments.size());
             videosRepository.save(video);
         }
 

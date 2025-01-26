@@ -57,7 +57,7 @@
 		        </button>
 		    </c:if>
 		</div>
-	</div>
+	</div> 
 
     <jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
     

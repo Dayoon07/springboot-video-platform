@@ -277,7 +277,7 @@ public class MainController {
 	@PostMapping("/deleteComment")
 	public String deleteComment(@RequestParam long commentId, @RequestParam long videoId) {
 		commentRepository.deleteById(commentId);
-		return videosRepository.findById(videoId).get().getV();
+		return "redirect:/watch?v=" + videosRepository.findById(videoId).get().getV();
 	}
 	
 	@Transactional
@@ -313,7 +313,7 @@ public class MainController {
 	        
 	        log.info(subscribing.get().getCreatorName() + "님이 " + subscriber.get().getCreatorName() + "님을 구독을 했습니다.");
 
-	    return "redirect:/";
+	    return "redirect:/channel/" + subscriber.get().getCreatorName();
 	}
 	
 	@Transactional
@@ -394,11 +394,23 @@ public class MainController {
 	@GetMapping("/myVideo")
 	public String myVideo(HttpSession session, Model m) {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
-		if (user == null) {
-			return "creator/login";
-		}
+		if (user == null) return "creator/login";
 		m.addAttribute("myvideos", videosRepository.findByCreatorVal(user.getCreatorId()));
-		return "creator/myVideo";
+		return "dashboard/myVideo";
+	}
+	
+	@GetMapping("/myVideo/dashboard")
+	public String dashboardPage(HttpSession session, Model m) {
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+		if (user == null) return "creator/login";
+		
+		m.addAttribute("countMyVideos", videosRepository.countByCreatorVal(user.getCreatorId()));
+		return "dashboard/dashboard";
+	}
+	
+	@GetMapping("/myVideo/analysis")
+	public String myVideoAnalysis(HttpSession session) {
+		return session.getAttribute("creatorSession") != null ? "dashboard/videoAnalysis" : "creator/login";
 	}
 	
 	@PostMapping("/myVideoDelete")
@@ -415,9 +427,7 @@ public class MainController {
 	    CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 	    Optional<VideosEntity> video = videosRepository.findById(videoId);
 	    
-	    if (user == null) {
-	    	return "redirect:/myVideo";
-	    }
+	    if (user == null) return "creator/login";
 	    if (video.isPresent() && user != null && user.getCreatorId() == video.get().getCreatorVal()) {
 	        m.addAttribute("updatingVideo", video.get());
 	        return "creator/myVideoUpdate";
@@ -502,17 +512,15 @@ public class MainController {
 
 	    } catch (Exception e) {
 	        e.printStackTrace();
-	        return "redirect:/error";  // 에러 페이지로 리다이렉트
+	        return "redirect:/";
 	    }
 
-	    return "creator/myVideo";
+	    return "dashboard/myVideo";
 	}
 	
 	@GetMapping("/update")
 	public String updateMeMovePage(HttpSession s, Model m) {
-		CreatorEntity user = (CreatorEntity) s.getAttribute("creatorSession");
-		if (user == null) return "index";
-		return "creator/updateMe";
+		return s.getAttribute("creatorSession") != null ? "creator/updateMe" : "index";
 	}
 	
 	@PostMapping("/confirmPassword")

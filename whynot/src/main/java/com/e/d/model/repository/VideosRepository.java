@@ -11,8 +11,14 @@ import com.e.d.model.entity.VideosEntity;
 @Repository
 public interface VideosRepository extends JpaRepository<VideosEntity, Long> {
 	List<VideosEntity> findByCreatorVal(long creatorVal);
+
 	Optional<VideosEntity> findByV(String v);
+
 	List<VideosEntity> searchByTitleIgnoreCaseContaining(String title);
+
 	List<VideosEntity> findByTagOrderByVideoIdDesc(String tag);
+
 	void deleteByCreatorVal(long creatorVal);
+
+	long countByCreatorVal(long creatorVal); // 총 업로드된 영상 개수
 }

@@ -38,7 +38,7 @@
 				  				<p class="text-xl py-1 font-normal cursor-pointer">${ sessionScope.creatorSession.creatorName }</p>
 				  				<a href="${ cl }/channel/${ sessionScope.creatorSession.creatorName }" class="text-blue-600 hover:underline">내 채널 보기</a>
 				  			</div>
-				  		</div><hr>
+				  		</div><hr> 
 				  		
 				  		<div>
 				  			<a href="${ cl }/you" class="block w-full text-lg py-2 px-4 hover:bg-gray-200">마이 페이지</a>

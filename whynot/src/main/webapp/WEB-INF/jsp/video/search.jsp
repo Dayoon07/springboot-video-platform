@@ -17,16 +17,16 @@
 	
 	<div class="max-w-6xl mx-auto p-4">
 		<c:forEach var="searchVideos" items="${ searchList }">
-			<div class="flex justify-start" style="height: 250px;">
+			<div class="flex justify-start my-3">
 				<div class="pr-2">
 					<a href="${ cl }/watch?v=${ searchVideos.v }">
-						<img src="${ searchVideos.imgPath }" width="375" class="h-full rounded-lg object-cover">
+						<img src="${ searchVideos.imgPath }" width="300" class="rounded-md object-cover">
 					</a>
 				</div>
 				<div class="pl-2 py-2">
 					<h1 class="text-2xl">${ searchVideos.title }</h1>
 					<p class="text-gray-500">
-						<span>조회수 ${ searchVideos.views == 0 ? "없음" : searchVideos.views }회 | </span>
+						<span>조회수 ${ searchVideos.views == 0 ? "없음" : searchVideos.views += "회" } | </span>
 						<span>${ searchVideos.createAt }</span>
 					</p>
 					<div class="flex items-center my-2">

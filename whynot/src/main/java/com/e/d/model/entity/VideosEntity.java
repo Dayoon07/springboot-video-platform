@@ -58,8 +58,8 @@ public class VideosEntity {
 	@Column(name = "unlikes")
 	private long unlikes;
 	
-	@Column(name = "comment_count")
-	private long commentCount;
+	@Column(name = "comment_cnt")
+	private long commentCnt;
 	
 	@Column(name = "tag")
 	private String tag;

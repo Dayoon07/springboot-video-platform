@@ -24,4 +24,11 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/youtubeProject/video-img/**")
             .addResourceLocations(resolvedBasePath + "video-img/");
     }
+    
+    /* @Override
+    public void addCorsMappings(CorsRegistry registry) {
+    	registry.addMapping("/**")
+    		.allowedOrigins("*");
+    } */
+    
 }

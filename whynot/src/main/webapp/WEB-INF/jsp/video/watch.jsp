@@ -146,7 +146,7 @@
                                             	<form action="${ cl }/updateComment" method="post" autocomplete="off" class="px-5">
                                             		<button type="button" class="hover:underline hover:text-blue-500">댓글 수정</button>
                                             	</form>
-                                            	<c:if test="${ comment.commentUserId == sessionScope.creatorSession.creatorId }">
+                                            	<c:if test="${ comment.commentUserid == sessionScope.creatorSession.creatorId }">
 	                                            	<form action="${ cl }/deleteComment" method="post" autocomplete="off">
 	                                            		<input type="hidden" name="commentId" id="commentId" value="${ comment.commentId }" required readonly>
 	                                            		<input type="hidden" name="videoId" id="videoId" value="${ watchTheVideo.videoId }" required readonly>
