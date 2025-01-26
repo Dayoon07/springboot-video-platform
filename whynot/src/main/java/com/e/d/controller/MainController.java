@@ -13,6 +13,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -65,10 +68,17 @@ public class MainController {
 	private BCryptPasswordEncoder passwordEncode;
 	
 	@GetMapping("/")
-	public String index(Model model) {
-		List<VideosEntity> videos = videosRepository.findAll(Sort.by(Direction.DESC, "videoId"));
-		model.addAttribute("allVideo", videos);
-		return "index";
+	public String index(@RequestParam(defaultValue = "0") int page, Model model) {
+	    int pageSize = 4;
+	    Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Direction.DESC, "videoId"));
+	    Page<VideosEntity> videoPage = videosRepository.findAll(pageable);
+
+	    model.addAttribute("allVideo", videoPage.getContent());
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalPages", videoPage.getTotalPages());
+	    model.addAttribute("countVideos", videosRepository.count());
+	    
+	    return "index";
 	}
 	
 	@GetMapping("/search")
@@ -201,13 +211,7 @@ public class MainController {
 
 	@GetMapping("/you")
 	public String showCreatorProfile(HttpSession session, Model model) {
-		CreatorEntity me = (CreatorEntity) session.getAttribute("creatorSession");
-	    if (me == null) {
-	        return "creator/login";
-	    } else {
-	    	model.addAttribute("you", me);
-	    	return "creator/you";
-	    }
+		return "creator/you";
 	}
 	
 	@GetMapping("/upload")

@@ -41,7 +41,7 @@
 				  		</div><hr>
 				  		
 				  		<div>
-				  			<a href="${ cl }/you" class="block w-full text-lg py-2 px-4 hover:bg-gray-200">내 페이지</a>
+				  			<a href="${ cl }/you" class="block w-full text-lg py-2 px-4 hover:bg-gray-200">마이 페이지</a>
 				  			<a href="${ cl }/update" class="block w-full text-lg py-2 px-4 hover:bg-gray-200">정보 수정</a>
 				  			<form action="${ cl }/logout" method="post" autocomplete="off">
 						        <button type="submit" class="block text-left w-full text-lg py-2 px-4 hover:bg-gray-200">로그아웃</button>
