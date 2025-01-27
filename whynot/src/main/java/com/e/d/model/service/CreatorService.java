@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.e.d.model.entity.CreatorEntity;
+import com.e.d.model.mapper.CreatorMapper;
 import com.e.d.model.repository.CreatorRepository;
 
 @Service
@@ -19,6 +20,9 @@ public class CreatorService {
 
     @Autowired
     private CreatorRepository creatorRepository;
+    
+    @Autowired
+    private CreatorMapper creatorMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;

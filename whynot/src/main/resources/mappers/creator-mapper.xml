@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.e.d.model.mapper.CreatorMapper">
+
+	<resultMap id="CreatorResultMap" type="com.e.d.model.vo.CreatorVo">
+	    <id property="creatorId" column="creator_id"/>
+	    <result property="creatorName" column="creator_name"/>
+	    <result property="creatorEmail" column="creator_email"/>
+	    <result property="creatorPassword" column="creator_password"/>
+	    <result property="createAt" column="create_at"/>
+	    <result property="bio" column="bio"/>
+	    <result property="tel" column="tel"/>
+	    <result property="profileImg" column="profile_img"/>
+	    <result property="profileImgPath" column="profile_img_path"/>
+	    <result property="subscribe" column="subscribe"/>
+	</resultMap>
 	
 </mapper>

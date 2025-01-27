@@ -15,7 +15,7 @@
 <body class="flex flex-col h-screen">
     <jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 
-    <main class="flex flex-grow" style="height: calc(100% - 76px); overflow: scroll;">
+    <main class="flex flex-grow" style="height: calc(100% - 76px);">
         <div class="w-64 bg-gray-200">
             <ul>
                 <li>
@@ -30,7 +30,7 @@
             </ul>
         </div>
 
-        <div class="flex-grow bg-white p-6" style="width: calc(100% - 256px);">
+        <div class="flex-grow bg-white p-6 overflow-y-scroll" style="width: calc(100% - 256px);">
 			<h2 class="text-2xl font-bold mb-4">업로드된 영상</h2>
 			<c:forEach var="mvdos" items="${ myvideos }">
 				<div class="w-full flex my-5">

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.e.d.model.mapper.CommentMapper">
+
+	<resultMap id="CommentResultMap" type="com.e.d.model.vo.CommentVo">
+	    <id property="commentId" column="comment_id"/>
+	    <result property="commentVideo" column="comment_video"/>
+	    <result property="commenter" column="commenter"/>
+	    <result property="commentUserid" column="commenter_userid"/>
+	    <result property="commenterProfile" column="commenter_profile"/>
+	    <result property="commenterProfilepath" column="commenter_profilepath"/>
+	    <result property="commentContent" column="comment_content"/>
+	    <result property="datetime" column="datetime"/>
+	</resultMap>
+
 	
 </mapper>

@@ -21,6 +21,7 @@ import com.e.d.model.entity.CommentEntity;
 import com.e.d.model.entity.CreatorEntity;
 import com.e.d.model.entity.SubscriptionsEntity;
 import com.e.d.model.entity.VideosEntity;
+import com.e.d.model.mapper.VideosMapper;
 import com.e.d.model.repository.CommentRepository;
 import com.e.d.model.repository.CreatorRepository;
 import com.e.d.model.repository.SubscriptionsRepository;
@@ -42,6 +43,9 @@ public class VideosService {
 
     @Autowired
     private SubscriptionsRepository subscriptionsRepository;
+    
+    @Autowired
+    private VideosMapper mapper;
 
     @Transactional
     public void uploadVideo(String creatorName, String tag, String title, String more,
@@ -117,4 +121,13 @@ public class VideosService {
 
         return response;
     }
+    
+    public long sumByMyVideoViews(long creatorVal) {
+    	return mapper.sumByMyVideoViews(creatorVal);
+    }
+    
+    public long sumByMyVideoLikes(long creatorVal) {
+    	return mapper.sumByMyVideoLikes(creatorVal);
+    }
+    
 }

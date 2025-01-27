@@ -13,4 +13,5 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
 	List<CommentEntity> findByCommentVideoOrderByCommentIdDesc(long commentVideo);
 	void deleteByCommentUserid(long commentUserid);
 	Optional<CommentEntity> findByCommentVideo(long commentVideo);
+	long countByCommentUserid(long CommentUserid);
 }

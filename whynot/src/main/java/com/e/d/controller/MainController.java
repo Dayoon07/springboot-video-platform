@@ -243,7 +243,7 @@ public class MainController {
             return "video/watch";
         } catch (Exception e) {
             e.printStackTrace();
-            return "redirect:/error"; // 에러 페이지로 리디렉션
+            return "redirect:/error";
         }
     }
 	
@@ -404,7 +404,10 @@ public class MainController {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 		if (user == null) return "creator/login";
 		
-		m.addAttribute("countMyVideos", videosRepository.countByCreatorVal(user.getCreatorId()));
+		m.addAttribute("countMyVideos", videosRepository.countByCreatorVal(user.getCreatorId()));				// 내가 올린 영상
+		m.addAttribute("commentCntMyVideos", commentRepository.countByCommentUserid(user.getCreatorId()));		// 내 영상에 달린 모든 댓글 갯수
+		m.addAttribute("sumMyVideosLikes", videosService.sumByMyVideoLikes(user.getCreatorId()));				// 내가 올린 영상의 모든 좋아요 수
+		m.addAttribute("sumMyVideosViews", videosService.sumByMyVideoViews(user.getCreatorId()));				// 내가 올린 영상의 모든 조회수
 		return "dashboard/dashboard";
 	}
 	
@@ -585,7 +588,7 @@ public class MainController {
 
 	@Transactional
 	@PostMapping("/deleteAccount")
-	public String deleteAccount(@RequestParam long creatorId) {
+	public String deleteAccount(@RequestParam long creatorId, HttpSession session) {
 	    log.info("deleteAccount 요청이 들어왔습니다. creatorId: {}", creatorId);
 
 	    if (creatorRepository.findById(creatorId).isEmpty()) {
@@ -598,6 +601,8 @@ public class MainController {
 	        videosRepository.deleteByCreatorVal(creatorId);
 	        log.info("creatorId {}에 해당하는 계정을 성공적으로 삭제했습니다.", creatorId);
 	    }
+	    
+	    session.invalidate();
 
 	    return "index";
 	}
