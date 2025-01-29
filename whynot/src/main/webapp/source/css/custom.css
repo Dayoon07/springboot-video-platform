@@ -11,6 +11,12 @@ aside {
 .tab-content.active {
     display: block;
 }
+#mainFormId {
+	position: absolute;
+	top: 16px;
+    left: 50%;
+    transform: translate(-50%);
+}
 @media (max-width: 840px) {
     #mainFormId {
 		display : none;

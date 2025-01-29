@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="${ cl }/source/css/custom.css">
     <title>whynot</title>
 </head>
-<body class="bg-gray-100">
+<body>
 	<jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 
     <div class="max-w-7xl mx-auto p-4">

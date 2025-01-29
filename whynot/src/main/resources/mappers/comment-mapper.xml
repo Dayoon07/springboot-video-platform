@@ -5,13 +5,20 @@
 	<resultMap id="CommentResultMap" type="com.e.d.model.vo.CommentVo">
 	    <id property="commentId" column="comment_id"/>
 	    <result property="commentVideo" column="comment_video"/>
+	    <result property="commentUserid" column="comment_userid"/>
 	    <result property="commenter" column="commenter"/>
-	    <result property="commentUserid" column="commenter_userid"/>
+	    <result property="commenterUserid" column="commenter_userid"/>
 	    <result property="commenterProfile" column="commenter_profile"/>
 	    <result property="commenterProfilepath" column="commenter_profilepath"/>
 	    <result property="commentContent" column="comment_content"/>
 	    <result property="datetime" column="datetime"/>
 	</resultMap>
 
+	<select id="findCommentsByKeyword" resultMap="CommentResultMap">
+	    SELECT comment_id, comment_video, comment_userid, commenter, commenter_userid, commenter_profile, commenter_profilepath, comment_content, datetime
+	    FROM whynot_comment
+	    WHERE comment_userid = #{myid}
+	    AND comment_content LIKE '%' || #{keyword} || '%'
+	</select>
 	
 </mapper>

@@ -1,5 +1,5 @@
 function showTab(tabId) {
-	document.querySelectorAll('#dashboard, #analytics, #comments').forEach(tab => {
+	document.querySelectorAll('#commentSearch, #comments').forEach(tab => {
 		tab.classList.add('hidden');
 	});
 

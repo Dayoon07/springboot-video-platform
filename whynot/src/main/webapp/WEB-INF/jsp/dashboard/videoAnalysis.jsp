@@ -9,8 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="${ cl }/source/img/videoPlayer-icon.png" type="image/x-icon">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>whynot studio - 분석</title>
+    <title>whynot - 모든 댓글</title>
 </head>
 <body class="flex flex-col h-screen">
     <jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
@@ -18,100 +17,70 @@
     <main class="flex flex-grow" style="height: calc(100% - 76px);">
         <div class="w-64 bg-gray-200">
             <ul>
+            	<li>
+                    <a href="${ cl }/myVideo" class="block p-4 rounded bg-gray-200 hover:bg-white transition">콘텐츠</a>
+                </li>
                 <li>
                     <a href="${ cl }/myVideo/dashboard" class="block p-4 rounded bg-gray-200 hover:bg-white transition">대시보드</a>
                 </li>
                 <li>
-                    <a href="${ cl }/myVideo" class="block p-4 rounded bg-gray-200 hover:bg-white transition">콘텐츠</a>
-                </li>
-                <li>
-                    <a href="${ cl }/myVideo/analysis" class="block p-4 rounded bg-gray-200 bg-white hover:bg-white transition">분석</a>
+                    <a href="${ cl }/myVideo/analysis" class="block p-4 rounded bg-gray-200 bg-white hover:bg-white transition">댓글</a>
                 </li>
             </ul>
         </div>
 
-        <div class="flex-grow bg-white p-6" style="width: calc(100% - 256px);"> <!-- Main Content -->
+        <div class="flex-grow bg-white p-6" style="width: calc(100% - 256px);">
             <div class="border-b border-gray-200">
                 <nav class="flex space-x-4" id="tabs">
-                    <button class="py-2 px-4 text-blue-600 border-b-2 border-blue-600" onclick="showTab('dashboard')">대시보드</button>
-                    <button class="py-2 px-4 text-gray-600 hover:text-blue-600 hover:border-blue-600 transition" onclick="showTab('analytics')">분석</button>
-                    <button class="py-2 px-4 text-gray-600 hover:text-blue-600 hover:border-blue-600 transition" onclick="showTab('comments')">댓글</button>
+                    <button class="py-2 px-4 text-gray-600 border-b-2 border-blue-600" onclick="showTab('comments')">모든 댓글</button>
+                    <button class="py-2 px-4 text-gray-600 hover:text-blue-600 hover:border-blue-600 transition" onclick="showTab('commentSearch')">댓글 검색</button>
                 </nav>
             </div>
 
-            <div id="dashboard" class="mt-6">
-			    <h2 class="text-2xl font-bold mb-6">대시보드</h2>
-			    
-			    <div class="bg-white p-4 rounded-lg shadow-lg mb-6">
-			        <h3 class="text-xl font-semibold mb-4">영상 통계</h3>
-			        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-			            <div class="text-center p-4 border border-gray-200 rounded-lg">
-			                <h4 class="text-lg font-semibold">총 업로드된 영상</h4>
-			                <p class="text-3xl font-bold">23</p>
-			            </div>
-			            <div class="text-center p-4 border border-gray-200 rounded-lg">
-			                <h4 class="text-lg font-semibold">총 조회수</h4>
-			                <p class="text-3xl font-bold">1,540,234</p>
-			            </div>
-			            <div class="text-center p-4 border border-gray-200 rounded-lg">
-			                <h4 class="text-lg font-semibold">총 좋아요</h4>
-			                <p class="text-3xl font-bold">12,435</p>
-			            </div>
-			            <div class="text-center p-4 border border-gray-200 rounded-lg">
-			                <h4 class="text-lg font-semibold">총 댓글 수</h4>
-			                <p class="text-3xl font-bold">1,234</p>
-			            </div>
-			        </div>
-			    </div>
-			    
-			    <div class="bg-white p-4 rounded-lg shadow-lg mb-6">
-			        <h3 class="text-xl font-semibold mb-4">좋아요 관리</h3>
-			        <table class="min-w-full table-auto">
-			            <thead>
-			                <tr class="bg-gray-100 text-left">
-			                    <th class="py-2 px-4">영상 제목</th>
-			                    <th class="py-2 px-4">좋아요 수</th>
-			                    <th class="py-2 px-4">좋아요 한 사용자</th>
-			                    <th class="py-2 px-4">날짜</th>
-			                </tr>
-			            </thead>
-			            <tbody>
-			                <tr>
-			                    <td class="py-2 px-4 border-b">영상 제목 A</td>
-			                    <td class="py-2 px-4 border-b">234</td>
-			                    <td class="py-2 px-4 border-b">김민수</td>
-			                    <td class="py-2 px-4 border-b">2025-01-15</td>
-			                </tr>
-			                <tr>
-			                    <td class="py-2 px-4 border-b">영상 제목 B</td>
-			                    <td class="py-2 px-4 border-b">125</td>
-			                    <td class="py-2 px-4 border-b">이수진</td>
-			                    <td class="py-2 px-4 border-b">2025-01-17</td>
-			                </tr>
-			                <tr>
-			                    <td class="py-2 px-4 border-b">영상 제목 C</td>
-			                    <td class="py-2 px-4 border-b">876</td>
-			                    <td class="py-2 px-4 border-b">박철호</td>
-			                    <td class="py-2 px-4 border-b">2025-01-18</td>
-			                </tr>
-			            </tbody>
-			        </table>
-			    </div>
-			</div>
-
-            <div id="analytics" class="mt-6 hidden">
-                <h2 class="text-xl font-bold mb-4">분석</h2>
-                <p>이곳에 분석 데이터를 추가하세요.</p>
+            <div id="comments" class="mt-6">
+                <h1 class="text-2xl font-bold mb-4">모든 댓글</h1>
+                <c:forEach var="mvcl" items="${ myVideoCommentList }">
+				    <div class="border-b border-gray-300 py-4">
+				        <div class="flex items-start space-x-4">
+				            <img src="${ mvcl.commenterProfilepath }" class="w-10 h-10 rounded-full">
+				
+				            <div class="w-full flex justify-between">
+			                    <div>
+			                    	<span class="text-sm text-gray-500">${ mvcl.datetime }</span><br>
+				                    <span class="font-semibold text-md">${ mvcl.commenter }</span>
+					                <p class="mt-1 text-gray-700">${ mvcl.commentContent }</p>
+			                    </div>
+			                    <div>
+			                    	<form action="${ cl }/deleteCommentButAdminAccount" method="post" autocomplete="off">
+										<input type="hidden" name="commentId" id="commentId" value="${ mvcl.commentId }" required readonly>
+	                                    <button type="submit" class="hover:underline hover:text-red-500">댓글 삭제</button>
+									</form>
+			                    </div>
+				            </div>
+				        </div>
+				    </div>
+				</c:forEach>
             </div>
-
-            <div id="comments" class="mt-6 hidden">
-                <h2 class="text-xl font-bold mb-4">댓글</h2>
-                <p>이곳에 댓글 내용을 추가하세요.</p>
+            
+            <div id="commentSearch" class="mt-6 hidden">
+                <h1 class="text-2xl font-bold mb-4">댓글 검색</h1>
+                <div class="mt-6">
+				    <div class="bg-white flex rounded border border-blue-500 overflow-hidden w-96 rounded-full">
+						<input type="text" id="keywordInput" placeholder="검색할 키워드를 입력하세요" class="w-96 outline-none bg-white pl-4 pr-5 text-sm" required>
+					    <button onclick="searchComments()" class="w-20 bg-blue-600 hover:bg-blue-700 transition-all text-white text-sm px-5 py-3 rounded-full">검색</button>
+					</div>
+				</div>
+				
+				<div id="searchResults" class="mt-4"></div>
             </div>
             
         </div>
     </main>
-
-	<jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
+    
+	<script src="https://cdn.tailwindcss.com"></script>
+    <script src="${ cl }/source/js/searchCommentFetch.js"></script>
+	<script src="${ cl }/source/js/script.js"></script>
+	<script src="${ cl }/source/js/myVideoTab.js"></script>
+	<script src="${ cl }/source/js/main.js"></script>
 </body>
 </html>

@@ -9,8 +9,9 @@ import lombok.*;
 public class CommentVo {
 	private long commentId;
 	private long commentVideo;
-	private String commenter;
 	private long commentUserid;
+	private String commenter;
+	private long commenterUserid;
 	private String commenterProfile;
 	private String commenterProfilepath;
 	private String commentContent;

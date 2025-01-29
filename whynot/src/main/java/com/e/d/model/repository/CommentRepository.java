@@ -11,7 +11,14 @@ import com.e.d.model.entity.CommentEntity;
 @Repository
 public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
 	List<CommentEntity> findByCommentVideoOrderByCommentIdDesc(long commentVideo);
-	void deleteByCommentUserid(long commentUserid);
+
+	void deleteByCommenterUserid(long commenterUserid);
+
 	Optional<CommentEntity> findByCommentVideo(long commentVideo);
-	long countByCommentUserid(long CommentUserid);
+
+	long countByCommenterUserid(long CommenterUserid);
+	
+	List<CommentEntity> findByCommenterUserid(long commenterUserid);
+	
+	List<CommentEntity> findByCommentUserid(long commentUserid);
 }

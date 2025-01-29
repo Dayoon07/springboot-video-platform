@@ -256,12 +256,14 @@ public class MainController {
 	            .orElseThrow(() -> new IllegalArgumentException("videoId가 비어있습니다"));
 	    
 	    Optional<CreatorEntity> creator = creatorRepository.findById(creatorId);
+	    Optional<CreatorEntity> uploder = creatorRepository.findById(video.getCreatorVal());
 	    
 	    if (creator.isPresent()) {
 	    	CommentEntity comment = CommentEntity.builder()
 		            .commentVideo(commentVideo)
 		            .commenter(creator.get().getCreatorName())
-		            .commentUserid(creatorId)
+		            .commentUserid(uploder.get().getCreatorId())
+		            .commenterUserid(creatorId)
 		            .commenterProfile(creator.get().getProfileImg() != null ? creator.get().getProfileImg() : "없음")
 		            .commenterProfilepath(creator.get().getProfileImgPath() != null ? creator.get().getProfileImgPath() : "없음")
 		            .commentContent(commentContent)
@@ -278,6 +280,13 @@ public class MainController {
 	public String deleteComment(@RequestParam long commentId, @RequestParam long videoId) {
 		commentRepository.deleteById(commentId);
 		return "redirect:/watch?v=" + videosRepository.findById(videoId).get().getV();
+	}
+	
+	@Transactional
+	@PostMapping("/deleteCommentButAdminAccount")
+	public String deleteCommentButAdminAccount(@RequestParam long commentId) {
+		commentRepository.deleteById(commentId);
+		return "redirect:/myVideo/analysis";
 	}
 	
 	@Transactional
@@ -404,15 +413,20 @@ public class MainController {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 		if (user == null) return "creator/login";
 		
-		m.addAttribute("countMyVideos", videosRepository.countByCreatorVal(user.getCreatorId()));				// 내가 올린 영상
-		m.addAttribute("commentCntMyVideos", commentRepository.countByCommentUserid(user.getCreatorId()));		// 내 영상에 달린 모든 댓글 갯수
-		m.addAttribute("sumMyVideosLikes", videosService.sumByMyVideoLikes(user.getCreatorId()));				// 내가 올린 영상의 모든 좋아요 수
-		m.addAttribute("sumMyVideosViews", videosService.sumByMyVideoViews(user.getCreatorId()));				// 내가 올린 영상의 모든 조회수
+		if (videosRepository.countByCreatorVal(user.getCreatorId()) != 0) {
+			m.addAttribute("countMyVideos", videosRepository.countByCreatorVal(user.getCreatorId()));				// 내가 올린 영상
+			m.addAttribute("commentCntMyVideos", commentRepository.countByCommenterUserid(user.getCreatorId()));	// 내 영상에 달린 모든 댓글 갯수
+			m.addAttribute("sumMyVideosLikes", videosService.sumByMyVideoLikes(user.getCreatorId()));				// 내가 올린 영상의 모든 좋아요 수
+			m.addAttribute("sumMyVideosViews", videosService.sumByMyVideoViews(user.getCreatorId()));				// 내가 올린 영상의 모든 조회수
+		}
+		
 		return "dashboard/dashboard";
 	}
 	
 	@GetMapping("/myVideo/analysis")
-	public String myVideoAnalysis(HttpSession session) {
+	public String myVideoAnalysis(HttpSession session, Model m) {
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+		m.addAttribute("myVideoCommentList", commentRepository.findByCommentUserid(user.getCreatorId()));
 		return session.getAttribute("creatorSession") != null ? "dashboard/videoAnalysis" : "creator/login";
 	}
 	
@@ -596,7 +610,7 @@ public class MainController {
 	    } else {
 	        log.info("creatorId {}에 해당하는 계정을 삭제합니다.", creatorId);
 	        creatorRepository.deleteById(creatorId);
-	        commentRepository.deleteByCommentUserid(creatorId);
+	        commentRepository.deleteByCommenterUserid(creatorId);
 	        subscriptionsRepository.deleteBySubscribingId(creatorId);
 	        videosRepository.deleteByCreatorVal(creatorId);
 	        log.info("creatorId {}에 해당하는 계정을 성공적으로 삭제했습니다.", creatorId);

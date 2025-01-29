@@ -1,5 +1,6 @@
 package com.e.d.controller;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,11 +16,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.e.d.model.entity.CommentEntity;
 import com.e.d.model.entity.CreatorEntity;
 import com.e.d.model.entity.VideosEntity;
 import com.e.d.model.repository.CreatorRepository;
 import com.e.d.model.repository.SubscriptionsRepository;
 import com.e.d.model.repository.VideosRepository;
+import com.e.d.model.service.CommentService;
+import com.e.d.model.vo.CommentVo;
+import com.e.d.model.vo.CreatorVo;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -34,6 +39,9 @@ public class RestMainController {
 	
 	@Autowired
 	private SubscriptionsRepository subscriptionsRepository;
+	
+	@Autowired
+	private CommentService commentService;
 	
 	@GetMapping("/api/all")
 	List<VideosEntity> list() {
@@ -58,5 +66,26 @@ public class RestMainController {
 	        .map(creator -> ResponseEntity.ok(creator.getSubscribe()))
 	        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(0L));
 	}
+	
+	@GetMapping("/searchComments")
+	public List<CommentVo> searchComments(HttpSession session, @RequestParam String keyword) {
+	    CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+	    if (user == null) return Collections.emptyList();
+	    
+	    List<CommentVo> comments = commentService.findCommentsByKeyword(user.getCreatorId(), keyword);
+	    return comments;
+	}
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

@@ -15,17 +15,17 @@
 <body>
 	<jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 	
-	<div class="mt-24 flex items-center justify-center text-white">
-	    <div class="bg-black p-8 rounded-lg shadow-lg w-96">
+	<div class="mt-24 flex items-center justify-center text-black">
+	    <div class="bg-gray-200 p-8 rounded-lg shadow-lg w-96">
 	        <h2 class="text-center text-2xl font-bold mb-4">로그인</h2>
 	        <form action="${ cl }/loginF" method="post">
 	            <div class="mb-4">
 	                <label for="creatorName" class="block text-sm mb-2">사용자 이름</label>
-	                <input type="text" id="creatorName" name="creatorName" class="w-full p-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-red-600" required>
+	                <input type="text" id="creatorName" name="creatorName" class="w-full p-2 rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-black" required>
 	            </div>
 	            <div class="mb-4">
 	                <label for="creatorPassword" class="block text-sm mb-2">비밀번호</label>
-	                <input type="password" id="creatorPassword" name="creatorPassword" class="w-full p-2 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-red-600" required>
+	                <input type="password" id="creatorPassword" name="creatorPassword" class="w-full p-2 rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-black" required>
 	            </div>
 	            <button type="submit" class="w-full bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded">로그인</button>
 	        </form>

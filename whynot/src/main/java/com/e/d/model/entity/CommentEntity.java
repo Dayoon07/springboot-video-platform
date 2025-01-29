@@ -19,11 +19,14 @@ public class CommentEntity {
 	@Column(name = "comment_video", nullable = false)
 	private long commentVideo;
 	
+	@Column(name = "comment_userid", nullable = false)
+	private long commentUserid;
+	
 	@Column(name = "commenter", nullable = false)
 	private String commenter;
 	
 	@Column(name = "commenter_userid", nullable = false)
-	private long commentUserid;
+	private long commenterUserid;
 	
 	@Column(name = "commenter_profile", nullable = false)
 	private String commenterProfile;
