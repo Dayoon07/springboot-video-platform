@@ -92,7 +92,7 @@
 			                        ${ cvl.creator }
 								</a>
 		                        <div class="text-sm text-gray-600">
-		                        	조회수 ${ cvl.views == 0 ? "없음" : cvl.views } | ${ cvl.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
+		                        	조회수 ${ cvl.views == 0 ? "없음" : cvl.views += "회" } | ${ cvl.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
 		                        	 ? cvl.createAt.substring(6, 13) : cvl.createAt.substring(0, 13) }
 		                        </div>
 		                    </div>

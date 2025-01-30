@@ -3,7 +3,9 @@ package com.e.d.controller;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
 import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -26,6 +28,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.e.d.model.entity.CommentEntity;
@@ -43,6 +47,7 @@ import com.e.d.model.service.LikeService;
 import com.e.d.model.service.SubscriptionsService;
 import com.e.d.model.service.VideosService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,12 +72,31 @@ public class MainController {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncode;
 	
+	protected void ipPrint() {
+		HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+	    String ip = req.getHeader("X-FORWARDED-FOR");
+	    if (ip == null || ip.isEmpty()) {
+	        ip = req.getRemoteAddr();
+	        if (ip.equals("0:0:0:0:0:0:0:1")) {
+	            try {
+	                ip = InetAddress.getLocalHost().getHostAddress();
+	            } catch (UnknownHostException e) {
+	                e.printStackTrace();
+	            }
+	        }
+	    }
+	    log.info("클라이언트 IP : {}", ip);
+	    log.info("클라이언트 브라우저 종류 : {}", req.getHeader("User-Agent"));
+	}
+	
 	@GetMapping("/")
 	public String index(@RequestParam(defaultValue = "0") int page, Model model) {
 	    int pageSize = 4;
 	    Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Direction.DESC, "videoId"));
 	    Page<VideosEntity> videoPage = videosRepository.findAll(pageable);
-
+	    
+	    ipPrint();
+	    
 	    model.addAttribute("allVideo", videoPage.getContent());
 	    model.addAttribute("currentPage", page);
 	    model.addAttribute("totalPages", videoPage.getTotalPages());
@@ -230,7 +254,6 @@ public class MainController {
             videosService.uploadVideo(creatorName, tag, title, more, imgPath, videoPath);
         } catch (Exception e) {
             e.printStackTrace();
-            return "redirect:/error"; // 에러 페이지로 리디렉션
         }
         return "redirect:/";
     }
@@ -365,12 +388,9 @@ public class MainController {
 	
 	@GetMapping("/mySubscri")
 	public String mySubscribingChannelsList(HttpSession session, Model model) {
-	    // 세션에서 로그인한 사용자의 정보를 가져옵니다.
 	    CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 
-	    if (user == null) {
-	        return "creator/login";
-	    }
+	    if (user == null) return "creator/login";
 
 	    // 내가 구독한 채널 정보 조회 (subscriberId 기준으로)
 	    List<SubscriptionsEntity> mySubscriptions = subscriptionsRepository.findBySubscriberId(user.getCreatorId());

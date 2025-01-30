@@ -37,7 +37,7 @@
                         <label for="videoPath" class="block text-lg font-semibold mb-2 text-gray-700">영상 파일</label>
                         <div class="mb-2">
                             <p class="text-sm text-gray-600">현재 영상</p>
-                            <video controls autoplay class="w-80 py-5">
+                            <video controls class="w-80 py-5">
 					            <source src="${ updatingVideo.videoPath }" type="video/mp4">
 					        </video>
                         </div>
