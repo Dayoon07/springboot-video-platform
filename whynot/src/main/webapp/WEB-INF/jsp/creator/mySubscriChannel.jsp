@@ -25,7 +25,7 @@
 	    
 	    <c:if test="${ not empty mySubscribers }">
 	        <c:forEach var="msl" items="${ mySubscribers }">
-	            <div class="w-full p-4 flex items-center gap-6 bg-white rounded-lg border relative">
+	            <div class="w-full p-4 flex items-center gap-6 bg-white rounded-lg relative">
 				    <div class="shrink-0">
 				        <c:if test="${ not empty msl.profileImgPath }">
 				        	<a href="${ cl }/channel/${ msl.creatorName }">
@@ -37,42 +37,15 @@
 				        </c:if>
 				    </div>
 				    <div class="flex flex-col gap-2">
-				        <h1 class="text-2xl font-bold text-gray-800">${ msl.creatorName }</h1>
+				        <h1 class="text-2xl font-bold text-gray-800"><a href="${ cl }/channel/${ msl.creatorName }">${ msl.creatorName }</a></h1>
 				        <p class="text-gray-600">구독자 ${ msl.subscribe }명</p>
-				        <p class="text-sm text-gray-500">${ msl.creatorName }</p>
+				        <p class="text-sm text-gray-500">${ msl.bio }</p>
 				    </div>
 				    <div class="absolute top-4 right-4">
 				    	<form action="${ cl }/deleteSubscri" method="post" autocomplete="off">
 				    		<input type="hidden" name="subscriberId" id="subscriberId" value="${ msl.creatorId }" readonly readonly>
 				    		<button type="submit" class="btn px-4 py-2 bg-red-500 hover:bg-red-300 rounded-lg text-white">구독 취소</button>
 				    	</form>
-				    </div>
-				</div>
-	        </c:forEach>
-	    </c:if>
-	
-	    <h1 class="text-3xl mt-8">나를 구독한 사람들</h1>
-	
-	    <!-- 나를 구독한 사람 목록 -->
-	    <c:if test="${ empty mySubscribeLists }">
-	        <h2 class="text-lg text-gray-500">나를 구독한 사람이 없습니다.</h2>
-	    </c:if>
-	    
-	    <c:if test="${ not empty mySubscribeLists }">
-	        <c:forEach var="msl" items="${ mySubscribeLists }">
-	            <div class="w-full p-4 flex items-center gap-6 bg-white rounded-lg shadow">
-				    <div class="shrink-0">
-				        <c:if test="${ not empty msl.profileImgPath }">
-				            <img src="${ msl.profileImgPath }" 
-				                 alt="${ msl.creatorName }'s profile" 
-				                 class="w-40 h-40 rounded-full object-cover border-2 border-gray-200"
-				                 onerror="this.src='default-profile.jpg'"/>
-				        </c:if>
-				    </div>
-				    <div class="flex flex-col gap-2">
-				        <h1 class="text-2xl font-bold text-gray-800">$ msl.creatorName }</h1>
-				        <p class="text-gray-600">${ msl.subscribe }</p>
-				        <p class="text-sm text-gray-500">${ msl.creatorName }</p>
 				    </div>
 				</div>
 	        </c:forEach>

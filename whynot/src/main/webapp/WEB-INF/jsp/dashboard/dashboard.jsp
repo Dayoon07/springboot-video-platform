@@ -19,13 +19,16 @@
 	    <div class="w-64 bg-gray-200">
 	        <ul>
 	        	<li>
-	                <a href="${ cl }/myVideo" class="block p-4 hover:bg-white transition">콘텐츠</a>
+	                <a href="${ cl }/myVideo" class="block p-4 bg-gray-200 hover:bg-white transition">콘텐츠</a>
 	            </li>
 	            <li>
 	                <a href="${ cl }/myVideo/dashboard" class="block p-4 bg-white hover:bg-white transition">대시보드</a>
 	            </li>
 	            <li>
-	                <a href="${ cl }/myVideo/analysis" class="block p-4 hover:bg-white transition">댓글</a>
+	                <a href="${ cl }/myVideo/comment" class="block p-4 bg-gray-200 hover:bg-white transition">댓글</a>
+	            </li>
+	            <li>
+	                <a href="${ cl }/myVideo/subscribe" class="block p-4 bg-gray-200 hover:bg-white transition">나를 구독한 유저</a>
 	            </li>
 	        </ul>
 	    </div>
@@ -43,23 +46,31 @@
 	
 	            <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6">
 	                <div class="text-center p-6 border border-gray-300 rounded-lg bg-gray-50">
-	                    <h4 class="text-lg font-semibold text-gray-700">총 업로드된 영상</h4>
-	                    <p class="text-4xl font-bold text-indigo-600">${ countMyVideos != null ? countMyVideos : 0 }</p>
+	                    <h4 class="text-lg font-semibold text-gray-700">업로드된 영상</h4>
+	                    <p class="text-4xl font-bold text-indigo-600">
+	                    	${ countMyVideos != null && countMyVideos != 0 ? countMyVideos : 0 }
+	                    </p>
 	                </div>
 	                <div class="text-center p-6 border border-gray-300 rounded-lg bg-gray-50">
 	                    <h4 class="text-lg font-semibold text-gray-700">총 조회수</h4>
-	                    <p class="text-4xl font-bold text-green-600">${ sumMyVideosViews != null ? sumMyVideosViews : 0 }</p>
+	                    <p class="text-4xl font-bold text-green-600">
+	                    	${ sumMyVideosViews != null && sumMyVideosViews != 0 ? sumMyVideosViews : 0 }
+	                    </p>
 	                </div>
 	            </div>
 	
 	            <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
 	                <div class="text-center p-6 border border-gray-300 rounded-lg bg-gray-50">
-	                    <h4 class="text-lg font-semibold text-gray-700">총 좋아요</h4>
-	                    <p class="text-4xl font-bold text-red-500">${ sumMyVideosLikes != null ? sumMyVideosLikes : 0 }</p>
+	                    <h4 class="text-lg font-semibold text-gray-700">모든 좋아요</h4>
+	                    <p class="text-4xl font-bold text-red-500">
+	                    	${ sumMyVideosLikes != null && sumMyVideosLikes != 0 ? sumMyVideosLikes : 0 }
+	                    </p>
 	                </div>
 	                <div class="text-center p-6 border border-gray-300 rounded-lg bg-gray-50">
-	                    <h4 class="text-lg font-semibold text-gray-700">총 댓글 수</h4>
-	                    <p class="text-4xl font-bold text-yellow-500">${ commentCntMyVideos != null ? commentCntMyVideos : 0 }</p>
+	                    <h4 class="text-lg font-semibold text-gray-700">모든 댓글 수</h4>
+	                    <p class="text-4xl font-bold text-yellow-500">
+	                    	${ commentCntMyVideos != null && commentCntMyVideos != 0 ? commentCntMyVideos : 0 }
+	                    </p>
 	                </div>
 	            </div>
 	        </div>

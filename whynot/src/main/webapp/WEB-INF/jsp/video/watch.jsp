@@ -63,7 +63,7 @@
                             </div>
                         </c:if>
                         <c:if test="${ sessionScope.creatorSession != null && !thisIsSubscribed }">
-                            <form action="${ cl }/subscri?subscriberId=${ creator.creatorId }&subscribingId=${ sessionScope.creatorSession.creatorId }" 
+                            <form action="${ cl }/subscri?subscriberId=${ watchTheVideo.creatorVal }&subscribingId=${ sessionScope.creatorSession.creatorId }" 
                                 method="post" autocomplete="off">
                                 <button type="submit" class="px-4 py-2 bg-black text-white rounded-full hover:bg-gray-800 text-sm">
                                     구독
@@ -109,7 +109,7 @@
                                 <input type="hidden" name="creatorId" value="${ sessionScope.creatorSession.creatorId }">
                                 <input type="hidden" name="commentVideo" value="${ watchTheVideo.videoId }">
                                 <textarea rows="1" name="commentContent" placeholder="댓글을 입력하세요..." 
-                                    class="w-full resize-none border-b p-2 focus:border-gray-400 focus:outline-none text-sm"></textarea>
+                                    class="w-full resize-none border-b p-2 focus:border-gray-400 focus:outline-none text-sm" required></textarea>
                             </div>
                             <div class="flex justify-end gap-2">
                                 <button type="reset" class="px-3 py-1.5 text-sm text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200">
@@ -146,7 +146,7 @@
                                             	<form action="${ cl }/updateComment" method="post" autocomplete="off" class="px-5">
                                             		<button type="button" class="hover:underline hover:text-blue-500">댓글 수정</button>
                                             	</form>
-                                            	<c:if test="${ comment.commentUserid == sessionScope.creatorSession.creatorId }">
+                                            	<c:if test="${ comment.commentUserid == sessionScope.creatorSession.creatorId || comment.commenterUserid == sessionScope.creatorSession.creatorId }">
 	                                            	<form action="${ cl }/deleteComment" method="post" autocomplete="off">
 	                                            		<input type="hidden" name="commentId" id="commentId" value="${ comment.commentId }" required readonly>
 	                                            		<input type="hidden" name="videoId" id="videoId" value="${ watchTheVideo.videoId }" required readonly>

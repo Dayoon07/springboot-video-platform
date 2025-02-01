@@ -1,5 +1,6 @@
 package com.e.d.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,24 +22,25 @@ import com.e.d.model.repository.CreatorRepository;
 import com.e.d.model.repository.SubscriptionsRepository;
 import com.e.d.model.repository.VideosRepository;
 import com.e.d.model.service.CommentService;
+import com.e.d.model.service.CreatorService;
 import com.e.d.model.vo.CommentVo;
+import com.e.d.model.vo.CreatorVo;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@RequiredArgsConstructor
 @RestController
 public class RestMainController {
 
-	@Autowired
-	private VideosRepository videosRepository;
+	private final VideosRepository videosRepository;
+	private final CreatorRepository creatorRepository;
+	private final SubscriptionsRepository subscriptionsRepository;
+	private final CommentService commentService;
+	private final CreatorService creatorService;
 	
-	@Autowired
-	private CreatorRepository creatorRepository;
-	
-	@Autowired
-	private SubscriptionsRepository subscriptionsRepository;
-	
-	@Autowired
-	private CommentService commentService;
 	
 	@GetMapping("/api/all")
 	List<VideosEntity> list() {
@@ -73,7 +75,15 @@ public class RestMainController {
 	    return comments;
 	}
 	
-	
+	@GetMapping("/selectByMySubscribingUsername")
+	public List<CreatorVo> selectByMySubscribingUsername(HttpSession session, @RequestParam String name) {
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+		if (user == null) {
+			return Collections.emptyList();
+		} else {
+			return creatorService.selectBySubscribeUsername(name, user.getCreatorId());
+		}
+	}
 	
 	
 	

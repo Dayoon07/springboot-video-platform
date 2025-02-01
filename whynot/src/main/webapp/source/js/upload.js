@@ -45,3 +45,13 @@ imgDropZone.addEventListener('drop', (e) => {
         imgInput.dispatchEvent(event); // change 이벤트 트리거
     }
 });
+
+$("#videoPath").on("change", function(){
+	let maxSize = 100 * 1024 * 1024;
+	let fileSize = this.files[0].size;
+	if(fileSize > maxSize){
+		alert("업로드 최대 용량은 100MB 입니다");
+		$(this).val('');
+		return; 
+	}
+});

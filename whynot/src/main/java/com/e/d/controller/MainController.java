@@ -72,9 +72,9 @@ public class MainController {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncode;
 	
-	protected void ipPrint() {
-		HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-	    String ip = req.getHeader("X-FORWARDED-FOR");
+	private void ipPrint() {
+	    HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+	    String ip = req.getHeader("x-forwarded-for");
 	    if (ip == null || ip.isEmpty()) {
 	        ip = req.getRemoteAddr();
 	        if (ip.equals("0:0:0:0:0:0:0:1")) {
@@ -85,8 +85,43 @@ public class MainController {
 	            }
 	        }
 	    }
+	    
 	    log.info("클라이언트 IP : {}", ip);
-	    log.info("클라이언트 브라우저 종류 : {}", req.getHeader("User-Agent"));
+	    log.info("클라이언트 브라우저 : {}", parseBrowserInfo(req.getHeader("User-Agent")));
+	}
+
+	private String parseBrowserInfo(String userAgent) {
+	    String browserName = "";
+	    String version = "";
+	    
+	    userAgent = userAgent.toLowerCase();
+	    
+	    if (userAgent.contains("chrome") && !userAgent.contains("edg")) {
+	        browserName = "구글 크롬";
+	        version = extractVersion(userAgent, "chrome/");
+	    } else if (userAgent.contains("safari") && !userAgent.contains("chrome")) {
+	        browserName = "사파리";
+	        version = extractVersion(userAgent, "version/");
+	    } else if (userAgent.contains("firefox")) {
+	        browserName = "파이어폭스";
+	        version = extractVersion(userAgent, "firefox/");
+	    } else if (userAgent.contains("edg")) {
+	        browserName = "엣지";
+	        version = extractVersion(userAgent, "edg/");
+	    } else {
+	        browserName = "기타 브라우저";
+	    }
+	    
+	    return version.isEmpty() ? browserName : browserName + " " + version;
+	}
+
+	private String extractVersion(String userAgent, String keyword) {
+	    int start = userAgent.indexOf(keyword) + keyword.length();
+	    int end = userAgent.indexOf(" ", start);
+	    if (end == -1) {
+	        end = userAgent.length();
+	    }
+	    return userAgent.substring(start, end);
 	}
 	
 	@GetMapping("/")
@@ -312,41 +347,10 @@ public class MainController {
 		return "redirect:/myVideo/analysis";
 	}
 	
-	@Transactional
 	@PostMapping("/subscri")
-	public String subscri(@RequestParam long subscriberId, @RequestParam long subscribingId) {
-	    Optional<CreatorEntity> subscriber = creatorRepository.findById(subscriberId);    // 구독을 받은 채널
-	    Optional<CreatorEntity> subscribing = creatorRepository.findById(subscribingId);    // 구독한 사람
-	    
-	        // 구독 정보 저장
-	        SubscriptionsEntity subscri = SubscriptionsEntity.builder()
-	        		.subscriberName(subscriber.get().getCreatorName())
-	        		.subscriberId(subscriberId)
-	        		.subscribingName(subscribing.get().getCreatorName())
-	        		.subscribingId(subscribingId)
-	        		.subscribedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a HH:mm:ss")))
-	        		.build();
-	        subscriptionsRepository.save(subscri);
-
-	        long subscriberCount = subscriptionsRepository.countBySubscriberId(subscriberId);
-	        CreatorEntity e = CreatorEntity.builder()
-	        		.creatorId(subscriber.get().getCreatorId())
-	        		.creatorName(subscriber.get().getCreatorName())
-	        		.creatorEmail(subscriber.get().getCreatorEmail())
-	        		.creatorPassword(subscriber.get().getCreatorPassword())
-	        		.createAt(subscriber.get().getCreateAt())
-	        		.bio(subscriber.get().getBio())
-	        		.tel(subscriber.get().getTel())
-	        		.profileImg(subscriber.get().getProfileImg())
-	        		.profileImgPath(subscriber.get().getProfileImgPath())
-	        		.subscribe(subscriberCount)
-	        		.build();
-	        creatorRepository.save(e);
-	        
-	        log.info(subscribing.get().getCreatorName() + "님이 " + subscriber.get().getCreatorName() + "님을 구독을 했습니다.");
-
-	    return "redirect:/channel/" + subscriber.get().getCreatorName();
-	}
+    public String subscri(@RequestParam long subscriberId, @RequestParam long subscribingId) {
+        return subscriptionsService.subscribe(subscriberId, subscribingId);
+    }
 	
 	@Transactional
 	@PostMapping("/deleteSubscri")
@@ -392,20 +396,6 @@ public class MainController {
 
 	    if (user == null) return "creator/login";
 
-	    // 내가 구독한 채널 정보 조회 (subscriberId 기준으로)
-	    List<SubscriptionsEntity> mySubscriptions = subscriptionsRepository.findBySubscriberId(user.getCreatorId());
-
-	    // 내가 구독한 채널들의 creatorId 가져오기
-	    List<Long> subscribedChannelIds = mySubscriptions.stream()
-	        .map(SubscriptionsEntity::getSubscribingId)  // subscribingId가 구독한 채널의 creatorId
-	        .collect(Collectors.toList());
-
-	    // 구독한 채널들의 상세 정보 조회 (한 번에)
-	    List<CreatorEntity> subscribedChannels = creatorRepository.findByCreatorIdIn(subscribedChannelIds);
-
-	    // 구독한 채널 목록을 Model에 추가하여 뷰로 전달
-	    model.addAttribute("mySubscribeLists", subscribedChannels);
-
 	    // 나를 구독한 사람들의 정보 조회 (subscribingId 기준으로)
 	    List<SubscriptionsEntity> mySubscribers = subscriptionsRepository.findBySubscribingId(user.getCreatorId());
 
@@ -435,7 +425,7 @@ public class MainController {
 		
 		if (videosRepository.countByCreatorVal(user.getCreatorId()) != 0) {
 			m.addAttribute("countMyVideos", videosRepository.countByCreatorVal(user.getCreatorId()));				// 내가 올린 영상
-			m.addAttribute("commentCntMyVideos", commentRepository.countByCommenterUserid(user.getCreatorId()));	// 내 영상에 달린 모든 댓글 갯수
+			m.addAttribute("commentCntMyVideos", commentRepository.countByCommentUserid(user.getCreatorId()));	// 내 영상에 달린 모든 댓글 갯수
 			m.addAttribute("sumMyVideosLikes", videosService.sumByMyVideoLikes(user.getCreatorId()));				// 내가 올린 영상의 모든 좋아요 수
 			m.addAttribute("sumMyVideosViews", videosService.sumByMyVideoViews(user.getCreatorId()));				// 내가 올린 영상의 모든 조회수
 		}
@@ -443,11 +433,32 @@ public class MainController {
 		return "dashboard/dashboard";
 	}
 	
-	@GetMapping("/myVideo/analysis")
-	public String myVideoAnalysis(HttpSession session, Model m) {
+	@GetMapping("/myVideo/comment")
+	public String myVideoComment(HttpSession session, Model m) {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+		if (user == null) return "creator/login";
 		m.addAttribute("myVideoCommentList", commentRepository.findByCommentUserid(user.getCreatorId()));
-		return session.getAttribute("creatorSession") != null ? "dashboard/videoAnalysis" : "creator/login";
+		return "dashboard/videoAllComment";
+	}
+	
+	@GetMapping("/myVideo/subscribe")
+	public String myVideoSubscribe(HttpSession session, Model m) {
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+		if (user == null) return "creator/login";
+		// 내가 구독한 채널 정보 조회 (subscriberId 기준으로)
+	    List<SubscriptionsEntity> mySubscriptions = subscriptionsRepository.findBySubscriberId(user.getCreatorId());
+
+	    // 내가 구독한 채널들의 creatorId 가져오기
+	    List<Long> subscribedChannelIds = mySubscriptions.stream()
+	        .map(SubscriptionsEntity::getSubscribingId)  // subscribingId가 구독한 채널의 creatorId
+	        .collect(Collectors.toList());
+
+	    // 구독한 채널들의 상세 정보 조회 (한 번에)
+	    List<CreatorEntity> subscribedChannels = creatorRepository.findByCreatorIdIn(subscribedChannelIds);
+
+	    // 구독한 채널 목록을 Model에 추가하여 뷰로 전달
+	    m.addAttribute("mySubscribeLists", subscribedChannels);
+	    return "dashboard/subscribe";
 	}
 	
 	@PostMapping("/myVideoDelete")
@@ -640,26 +651,5 @@ public class MainController {
 
 	    return "index";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.e.d.model.entity.CreatorEntity;
 import com.e.d.model.mapper.CreatorMapper;
 import com.e.d.model.repository.CreatorRepository;
+import com.e.d.model.vo.CreatorVo;
 
 @Service
 public class CreatorService {
@@ -54,6 +56,10 @@ public class CreatorService {
                 .build();
 
         return creatorRepository.save(entity);
+    }
+    
+    public List<CreatorVo> selectBySubscribeUsername(String name, long id) {
+    	return creatorMapper.selectBySubscribeUsername(name, id);
     }
 
 }

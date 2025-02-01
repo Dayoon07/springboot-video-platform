@@ -19,14 +19,17 @@
         <div class="w-64 bg-gray-200">
             <ul>
             	<li>
-                    <a href="${ cl }/myVideo" class="block p-4 rounded bg-gray-200 bg-white hover:bg-white transition">콘텐츠</a>
+                    <a href="${ cl }/myVideo" class="block p-4 bg-white hover:bg-white transition">콘텐츠</a>
                 </li>
                 <li>
-                    <a href="${ cl }/myVideo/dashboard" class="block p-4 rounded bg-gray-200 hover:bg-white transition">대시보드</a>
+                    <a href="${ cl }/myVideo/dashboard" class="block p-4 bg-gray-200 hover:bg-white transition">대시보드</a>
                 </li>
                 <li>
-                    <a href="${ cl }/myVideo/analysis" class="block p-4 rounded bg-gray-200 hover:bg-white transition">댓글</a>
+                    <a href="${ cl }/myVideo/comment" class="block p-4 bg-gray-200 hover:bg-white transition">댓글</a>
                 </li>
+                <li>
+	                <a href="${ cl }/myVideo/subscribe" class="block p-4 hover:bg-white transition">나를 구독한 유저</a>
+	            </li>
             </ul>
         </div>
 
@@ -68,7 +71,7 @@
 							</c:choose>
 							<div class="w-96 mt-2 my-1">
 					        	<p class="text-md text-black">
-					        		조회수 : ${ mvdos.views } &nbsp; | &nbsp;
+					        		조회수 : ${ mvdos.views }회 &nbsp; | &nbsp;
 					       			좋아요 : ${ mvdos.likes } &nbsp; | &nbsp;
 									댓글수 : ${ mvdos.commentCnt }
 								</p>

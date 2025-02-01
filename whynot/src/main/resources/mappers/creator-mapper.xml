@@ -15,4 +15,19 @@
 	    <result property="subscribe" column="subscribe"/>
 	</resultMap>
 	
+	<select id="selectBySubscribeUsername" resultType="com.e.d.model.vo.CreatorVo">
+		SELECT 
+		    B.creator_name,
+		    B.creator_email,
+		    B.bio,
+		    B.profile_img_path, 
+		    B.subscribe,
+		    A.subscribed_at
+		FROM whynot_subscriptions A 
+		JOIN whynot_creator B
+		ON A.subscribing_id = B.creator_id
+		WHERE subscribing_name LIKE '%' || #{ name } || '%'
+		AND subscriber_id = #{ id }
+	</select>
+	
 </mapper>

@@ -1,12 +1,24 @@
 const sidebar = document.getElementById("sidebar");
 const sidebarDrop = document.getElementById("sidebar-drop");
 
+document.addEventListener("DOMContentLoaded", () => {
+	"use strict";
+	sidebarControl();	
+});
+
+function sidebarControl() {
+	setTimeout(() => {
+		sidebar.classList.add("-translate-x-full");
+	}, 10);
+	setTimeout(() => {
+		sidebar.classList.remove("hidden");
+	}, 20);
+}
 function openSide() {
     sidebar.classList.remove("-translate-x-full");
     sidebar.classList.add("translate-x-0");
 	sidebarDrop.classList.remove("hidden");
 }
-
 function closeSide() {
     sidebar.classList.remove("translate-x-0");
     sidebar.classList.add("-translate-x-full");

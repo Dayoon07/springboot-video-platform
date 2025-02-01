@@ -61,7 +61,7 @@
 	
 	<div class="fixed top-0 left-0 w-full h-full z-50 bg-black opacity-50 hidden" id="sidebar-drop" onclick="closeSide()"></div>
 	
-	<aside id="sidebar" class="w-64 h-full fixed left-0 top-0 py-2 bg-white text-black z-50 transform -translate-x-full transition-transform overflow-y-scroll">
+	<aside id="sidebar" class="hidden w-64 h-full fixed left-0 top-0 py-2 bg-white text-black z-50 transform transition-transform overflow-y-scroll">
 	    <div class="w-full bg-white flex items-center p-4" style="height: 56px;">
 	        <button class="text-black text-3xl mr-5 cursor-pointer" onclick="closeSide()">&#9776;</button>
 	        <a href="/" class="text-2xl font-bold">
