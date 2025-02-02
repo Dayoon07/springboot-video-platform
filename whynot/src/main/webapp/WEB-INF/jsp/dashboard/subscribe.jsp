@@ -42,7 +42,7 @@
 
             <div id="comments" class="mt-6">
                 <h1 class="text-2xl font-bold mb-4">모든 구독자 ${ mySubscribeLists.size() }명</h1>
-                <div style="height: 700px;" class="py-2 border-t border-b overflow-y-scroll">
+                <div style="height: 500px;" class="py-2 border-t border-b overflow-y-scroll">
 	                <c:if test="${ empty mySubscribeLists }">
 				        <h2 class="text-lg text-gray-500">나를 구독한 사람이 없습니다.</h2>
 				    </c:if>

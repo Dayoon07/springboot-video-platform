@@ -77,6 +77,10 @@
 	    </div>
 	</main>
 	
-	<jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<script src="${ cl }/source/js/script.js"></script>
+	<script src="${ cl }/source/js/dashboardLiveChangeSubscri.js"></script>
+	<script src="${ cl }/source/js/myVideoTab.js"></script>
 </body>
 </html>

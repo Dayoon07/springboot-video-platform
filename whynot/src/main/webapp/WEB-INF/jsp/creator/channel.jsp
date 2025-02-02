@@ -19,7 +19,7 @@
 	
 	<div class="flex max-w-4xl py-10 mx-auto">
         <div class="w-40 h-40 overflow-hidden rounded-full">
-			<img src="${ creator.profileImgPath }" alt="Profile Image" class="w-full h-full object-cover">
+			<img src="${ creator.profileImgPath }" alt="Profile Image" class="w-full h-full object-cover" loading="lazy">
 		</div>
         <div class="ml-5"> 
             <h1 class="text-3xl font-semibold">${ creator.creatorName }</h1>
@@ -76,7 +76,7 @@
 		                <div class="relative group">
 		                    <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
 		                        <a href="${ cl }/watch?v=${ cvl.v }">
-		                        	<img src="${ cvl.imgPath }" alt="Video thumbnail" class="w-full h-full object-cover">
+		                        	<img src="${ cvl.imgPath }" alt="Video thumbnail" class="w-full h-full object-cover" loading="lazy">
 		                        </a>
 		                    </div>
 		                </div>

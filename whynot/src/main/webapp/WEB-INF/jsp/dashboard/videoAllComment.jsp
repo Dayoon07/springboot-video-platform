@@ -42,7 +42,7 @@
 
             <div id="comments" class="mt-6">
                 <h1 class="text-2xl font-bold mb-4">모든 댓글 ${ myVideoCommentList.size() }개</h1>
-                <div style="height: 700px;" class="py-2 border-t border-b overflow-y-scroll">
+                <div style="height: 500px;" class="py-2 border-t border-b overflow-y-scroll">
 	                <c:forEach var="mvcl" items="${ myVideoCommentList }">
 					    <div class="border-b border-gray-300 py-4">
 					        <div class="flex items-start space-x-4">

@@ -11,4 +11,3 @@
 	<script src="${ cl }/source/js/upload.js"></script>
 	<script src="${ cl }/source/js/myVideoTab.js"></script>
 	<script src="${ cl }/source/js/main.js"></script>
-	<script src="${ cl }/source/js/dashboardLiveChangeSubscri.js"></script>

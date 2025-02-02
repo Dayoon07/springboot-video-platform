@@ -563,7 +563,7 @@ public class MainController {
 	        return "redirect:/";
 	    }
 
-	    return "dashboard/myVideo";
+	    return "redirect:/myVideo";
 	}
 	
 	@GetMapping("/update")

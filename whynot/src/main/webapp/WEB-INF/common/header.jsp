@@ -33,13 +33,13 @@
 				  	<a href="${ cl }/upload" class="btn text-black hover:text-white hover:bg-black border-black border-2 border-gray rounded-lg px-4 py-2 
 				  		transition-all duration-300">업로드</a>
 			        <a href="${ cl }/you" class="text-black text-xl">${ sessionScope.creatorSession.creatorName }</a>
-				  	<img src="${ sessionScope.creatorSession.profileImgPath }" id="profile" class="w-10 h-10 border-white border-2 rounded-full cursor-pointer">
+				  	<img src="${ sessionScope.creatorSession.profileImgPath }" id="profile" class="w-10 h-10 border-white border-2 rounded-full cursor-pointer" loading="lazy">
 				  	
 				  	<div id="profileDropdownMenu" class="fixed top-0 right-0 w-full h-full z-10 hidden"></div>
 				  	
 				  	<div id="profileDropdown" class="fixed top-16 right-4 bg-white py-1 text-black w-72 border z-20 rounded-lg font-normal shadow hidden">
 				  		<div class="flex px-4 pb-1">
-				  			<img src="${ sessionScope.creatorSession.profileImgPath }" class="w-16 h-16 rounded-full">
+				  			<img src="${ sessionScope.creatorSession.profileImgPath }" class="w-16 h-16 rounded-full" loading="lazy">
 				  			<div class="ml-2">
 				  				<p class="text-xl py-1 font-normal cursor-pointer">${ sessionScope.creatorSession.creatorName }</p>
 				  				<a href="${ cl }/channel/${ sessionScope.creatorSession.creatorName }" class="text-blue-600 hover:underline">내 채널 보기</a>
