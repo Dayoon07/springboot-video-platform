@@ -16,7 +16,7 @@
 </head>
 <body>
 	<jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
-
+	
     <div class="max-w-7xl mx-auto p-4">
 	    <div id="videoContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
 	        <c:forEach var="video" items="${ allVideo }">
@@ -52,7 +52,7 @@
 	
 	    <div class="flex justify-center mt-4">
 		    <c:if test="${ countVideos < 100 }">
-		        <button id="loadMoreBtn" class="bg-black w-60 text-white px-4 py-2 rounded-lg hover:opacity-80 mb-96" data-page="0">
+		        <button id="loadMoreBtn" class="bg-black w-60 text-white px-4 py-2 rounded-lg hover:opacity-80 mb-40" data-page="0">
 		            더보기
 		        </button>
 		    </c:if>

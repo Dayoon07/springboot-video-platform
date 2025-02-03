@@ -32,6 +32,7 @@
                     <div class="flex items-center gap-3">
                         <a href="${ cl }/channel/${ videoCreatorProfileInfo.creatorName }">
                             <img src="${ videoCreatorProfileInfo.profileImgPath }" alt="${ videoCreatorProfileInfo.creatorName } 프로필" 
+                            	title="${ videoCreatorProfileInfo.creatorName } 프로필" 
                                 class="w-10 h-10 rounded-full border-2 border-gray-300">
                         </a>
                         <div class="text-sm">
@@ -44,12 +45,17 @@
                     </div>
 
                     <div class="flex flex-wrap gap-2 items-center mt-2 w-full md:w-auto">
-                        <button class="px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition text-sm">
-                            좋아요 ${ watchTheVideo.likes }
-                        </button>
-                        <button class="px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition text-sm">
-                            싫어요 ${ watchTheVideo.unlikes }
-                        </button>
+                    	<form action="${ cl }/like?videoId=${ watchTheVideo.videoId }&creatorId=${ sessionScope.creatorSession.creatorId }&videoName=${ watchTheVideo.videoName }"
+                    		method="post" autocomplete="off">
+                        	<button type="submit" class="px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition text-sm">
+	                            좋아요 ${ watchTheVideo.likes }
+	                        </button>
+                        </form>
+                        <form action="${ cl }/unlike" method="post" autocomplete="off">
+                        	<button type="submit" class="px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition text-sm">
+	                            싫어요 ${ watchTheVideo.unlikes }
+	                        </button>
+                        </form>
                         
                         <c:if test="${ thisIsSubscribed }">
                             <div class="flex items-center gap-2">
@@ -196,7 +202,7 @@
             </div>
         </div>
     </div>
-
+    
     <jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
 </body>
 </html>

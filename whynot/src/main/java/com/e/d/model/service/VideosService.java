@@ -130,4 +130,8 @@ public class VideosService {
     	return mapper.sumByMyVideoLikes(creatorVal);
     }
     
+    public void updateLike(long likes, long videoId) {
+    	mapper.updateLike(likes, videoId);
+    }
+    
 }

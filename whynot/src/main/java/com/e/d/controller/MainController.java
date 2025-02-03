@@ -72,7 +72,7 @@ public class MainController {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncode;
 	
-	private void ipPrint() {
+	protected void ipPrint() {
 	    HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 	    String ip = req.getHeader("x-forwarded-for");
 	    if (ip == null || ip.isEmpty()) {
@@ -90,7 +90,7 @@ public class MainController {
 	    log.info("클라이언트 브라우저 : {}", parseBrowserInfo(req.getHeader("User-Agent")));
 	}
 
-	private String parseBrowserInfo(String userAgent) {
+	protected String parseBrowserInfo(String userAgent) {
 	    String browserName = "";
 	    String version = "";
 	    
@@ -115,7 +115,7 @@ public class MainController {
 	    return version.isEmpty() ? browserName : browserName + " " + version;
 	}
 
-	private String extractVersion(String userAgent, String keyword) {
+	protected String extractVersion(String userAgent, String keyword) {
 	    int start = userAgent.indexOf(keyword) + keyword.length();
 	    int end = userAgent.indexOf(" ", start);
 	    if (end == -1) {
@@ -295,6 +295,7 @@ public class MainController {
 	
 	@GetMapping("/watch")
     public String watchTheVideo(@RequestParam String v, Model model, HttpSession session) {
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
         try {
             Map<String, Object> videoDetails = videosService.watchVideo(v, session);
             model.addAllAttributes(videoDetails);
@@ -651,5 +652,24 @@ public class MainController {
 
 	    return "index";
 	}
+	
+	@PostMapping("/like")
+	public String like(@RequestParam long videoId,
+			@RequestParam long creatorId,
+			@RequestParam String videoName) {
+		Optional<VideosEntity> video = videosRepository.findById(videoId);
+		likeService.addLike(videoId, videoName, creatorId);
+		return "redirect:/watch?v=" + video.get().getV();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }

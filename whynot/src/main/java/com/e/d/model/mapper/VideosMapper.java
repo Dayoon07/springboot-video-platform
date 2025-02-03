@@ -6,4 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
 public interface VideosMapper {
 	long sumByMyVideoViews(long creatorVal);
 	long sumByMyVideoLikes(long creatorVal);
+	int updateLike(long likes, long videoId);
 }

@@ -22,7 +22,6 @@
 	    <result property="tag" column="tag"/>
 	</resultMap>
 	
-	
 	<select id="sumByMyVideoViews" parameterType="long" resultType="long">
 		SELECT SUM(VIEWS) AS VIEWS FROM WHYNOT_VIDEOS WHERE CREATOR_VAL = #{ creatorVal }
 	</select>
@@ -31,6 +30,9 @@
 		SELECT SUM(LIKES) AS LIKES FROM WHYNOT_VIDEOS WHERE CREATOR_VAL = #{ creatorVal }
 	</select>
 	
-	
+	<update id="updateLike" parameterType="long">
+		UPDATE whynot_videos SET likes = #{ likes }
+		WHERE video_id = #{ videoId }
+	</update>
 	
 </mapper>
