@@ -57,11 +57,15 @@ public class RestMainController {
 	@GetMapping("/subscribeCount")
 	public ResponseEntity<Long> subscribeCount(HttpSession s) {
 	    CreatorEntity user = (CreatorEntity) s.getAttribute("creatorSession");
-	    if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(0L);
-	    
-	    return creatorRepository.findById(user.getCreatorId())
-	        .map(creator -> ResponseEntity.ok(creator.getSubscribe()))
-	        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(0L));
+	    if (user == null) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(0L);
+	    }
+
+	    Long subscribeCount = creatorRepository.findById(user.getCreatorId())
+	        .map(CreatorEntity::getSubscribe)
+	        .orElse(0L);  // Optional 처리 간단하게
+
+	    return ResponseEntity.ok(subscribeCount);
 	}
 	
 	@GetMapping("/searchComments")

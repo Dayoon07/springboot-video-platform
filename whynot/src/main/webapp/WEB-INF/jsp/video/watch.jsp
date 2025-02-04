@@ -40,7 +40,7 @@
                                 class="font-semibold hover:underline text-gray-900 block">
                                 ${ videoCreatorProfileInfo.creatorName }
                             </a>
-                            <p class="text-gray-600">구독자 ${ videoCreatorProfileInfo.subscribe }명</p>
+                            <p class="text-gray-600">구독자 <fmt:formatNumber value="${ videoCreatorProfileInfo.subscribe }" type="number" />명</p>
                         </div>
                     </div>
 

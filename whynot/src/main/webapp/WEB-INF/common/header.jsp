@@ -88,14 +88,14 @@
 		    <li><a href="${ cl }/myVideo" class="block py-2 px-4 rounded-md hover:bg-gray-200">내 영상</a></li>
 		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-200">시청 기록</a></li>
 		</ul><br>
-		<div class="w-full">
-			<div class="border-gray-300 border-t border-b py-2 px-4">
-				<a href="mailto:gangd0642@gmail.com" class="block py-2 px-4 rounded-md hover:bg-gray-200">문의하기</a>
-			</div>
+		<div class="w-full border-gray-300 border-t">
 	    	<p class="text-sm text-gray-500 mt-4 px-4">
 	    		&copy; 2024 Whynot. <br> All rights reserved. <br>
-        		영상 제작자가 whynot에서 게시한 영상은 각 영상 제작자의 소유이며 저작권을 인정하며
-        		whynot은 영상 제작자가 만든 영상에 관여하지 않으며, 그와 관련된 책임을 지지 않습니다.
+	    		문의 : gangd0642@gmail.com
+        		<!--
+        			영상 제작자가 whynot에서 게시한 영상은 각 영상 제작자의 소유이며 저작권을 인정하며
+        			whynot은 영상 제작자가 만든 영상에 관여하지 않으며, 그와 관련된 책임을 지지 않습니다.
+        		-->
     		</p>
 	    </div>
 	</aside>

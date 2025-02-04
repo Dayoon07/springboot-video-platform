@@ -20,7 +20,7 @@
 			<div class="flex justify-start my-3">
 				<div class="pr-2">
 					<a href="${ cl }/watch?v=${ searchVideos.v }">
-						<img src="${ searchVideos.imgPath }" width="300" class="rounded-md object-cover">
+						<img src="${ searchVideos.imgPath }" style="height: 220px;" class="w-80 rounded-md object-cover">
 					</a>
 				</div>
 				<div class="pl-2 py-2">

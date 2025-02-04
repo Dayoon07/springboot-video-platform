@@ -38,7 +38,9 @@
 	
 	        <div class="text-center p-6 border border-gray-300 rounded-lg bg-white">
 	            <h4 class="text-lg font-semibold text-gray-700">구독자 수</h4>
-	            <p id="subscribeCount" class="text-4xl font-bold">${ sessionScope.creatorSession.subscribe }</p>
+	            <p id="subscribeCount" class="text-4xl font-bold">
+					<fmt:formatNumber value="${ sessionScope.creatorSession.subscribe }" />
+				</p>
 	        </div>
 	
 	        <div class="bg-white p-6 rounded-lg shadow-lg mt-6">
@@ -48,13 +50,13 @@
 	                <div class="text-center p-6 border border-gray-300 rounded-lg bg-gray-50">
 	                    <h4 class="text-lg font-semibold text-gray-700">업로드된 영상</h4>
 	                    <p class="text-4xl font-bold text-indigo-600">
-	                    	${ countMyVideos != null && countMyVideos != 0 ? countMyVideos : 0 }
+	                    	<fmt:formatNumber value="${ countMyVideos != null && countMyVideos != 0 ? countMyVideos : 0 }" type="number" />
 	                    </p>
 	                </div>
 	                <div class="text-center p-6 border border-gray-300 rounded-lg bg-gray-50">
 	                    <h4 class="text-lg font-semibold text-gray-700">총 조회수</h4>
 	                    <p class="text-4xl font-bold text-green-600">
-	                    	${ sumMyVideosViews != null && sumMyVideosViews != 0 ? sumMyVideosViews : 0 }
+	                    	<fmt:formatNumber value="${ sumMyVideosViews != null && sumMyVideosViews != 0 ? sumMyVideosViews : 0 }" type="number" />
 	                    </p>
 	                </div>
 	            </div>
@@ -63,13 +65,13 @@
 	                <div class="text-center p-6 border border-gray-300 rounded-lg bg-gray-50">
 	                    <h4 class="text-lg font-semibold text-gray-700">모든 좋아요</h4>
 	                    <p class="text-4xl font-bold text-red-500">
-	                    	${ sumMyVideosLikes != null && sumMyVideosLikes != 0 ? sumMyVideosLikes : 0 }
+	                    	<fmt:formatNumber value="${ sumMyVideosLikes != null && sumMyVideosLikes != 0 ? sumMyVideosLikes : 0 }" type="number" />
 	                    </p>
 	                </div>
 	                <div class="text-center p-6 border border-gray-300 rounded-lg bg-gray-50">
 	                    <h4 class="text-lg font-semibold text-gray-700">모든 댓글 수</h4>
 	                    <p class="text-4xl font-bold text-yellow-500">
-	                    	${ commentCntMyVideos != null && commentCntMyVideos != 0 ? commentCntMyVideos : 0 }
+	                    	<fmt:formatNumber value="${ commentCntMyVideos != null && commentCntMyVideos != 0 ? commentCntMyVideos : 0 }" type="number" />
 	                    </p>
 	                </div>
 	            </div>

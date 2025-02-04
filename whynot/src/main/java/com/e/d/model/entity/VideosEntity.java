@@ -68,4 +68,22 @@ public class VideosEntity {
 		this.views++;
 	}
 	
+	public void updateVideo(String title, String more, String tag, String imgName, String videoName) {
+        this.title = title;
+        this.more = more;
+        this.tag = tag;
+
+        // 이미지 변경 시 업데이트
+        if (imgName != null) {
+            this.imgName = imgName;
+            this.imgPath = "/youtubeProject/video-img/" + imgName;
+        }
+
+        // 비디오 변경 시 업데이트
+        if (videoName != null) {
+            this.videoName = videoName;
+            this.videoPath = "/youtubeProject/" + videoName;
+        }
+    }
+	
 }

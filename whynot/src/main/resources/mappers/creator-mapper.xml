@@ -15,14 +15,14 @@
 	    <result property="subscribe" column="subscribe"/>
 	</resultMap>
 	
-	<select id="selectBySubscribeUsername" resultType="com.e.d.model.vo.CreatorVo">
+	<select id="selectBySubscribeUsername">
 		SELECT 
-		    B.creator_name,
-		    B.creator_email,
-		    B.bio,
-		    B.profile_img_path, 
-		    B.subscribe,
-		    A.subscribed_at
+		    B.creator_name AS creatorname,
+		    B.creator_email AS creatoremail,
+		    B.bio AS bio,
+		    B.profile_img_path AS profileimgpath, 
+		    B.subscribe AS subscribe,
+		    A.subscribed_at AS subscribedat
 		FROM whynot_subscriptions A 
 		JOIN whynot_creator B
 		ON A.subscribing_id = B.creator_id
