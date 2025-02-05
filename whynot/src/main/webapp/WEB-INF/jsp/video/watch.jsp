@@ -20,7 +20,7 @@
     <div class="container mx-auto py-5 px-3 md:px-5 flex flex-col lg:flex-row lg:justify-between">
         <div class="w-full lg:w-10/12 lg:px-4">
             <div class="aspect-video bg-black rounded-lg overflow-hidden shadow-lg">
-                <video controls autoplay class="w-full h-full">
+                <video controls autoplay muted class="w-full h-full">
                     <source src="${ watchTheVideo.videoPath }" type="video/mp4">
                 </video>
             </div>

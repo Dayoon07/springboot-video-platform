@@ -203,9 +203,9 @@ public class MainController {
 	                        @RequestParam String bio,
 	                        @RequestParam String tel,
 	                        @RequestParam MultipartFile profileImgPath,
-	                        Model m) {
+	                        Model m, HttpSession session) {
 		 try {
-			 creatorService.creatorSignupFunction(creatorName, creatorEmail, creatorPassword, bio, tel, profileImgPath);
+			 creatorService.creatorSignupFunction2(creatorName, creatorEmail, creatorPassword, bio, tel, profileImgPath, session);
 			 m.addAttribute("success", "회원가입에 성공 했습니다.");
 		 } catch (IOException e) {
 			 e.printStackTrace();

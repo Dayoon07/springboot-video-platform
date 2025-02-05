@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.e.d.model.dto.CreatorSubscriptionDto;
 import com.e.d.model.entity.CreatorEntity;
 import com.e.d.model.entity.VideosEntity;
 import com.e.d.model.repository.CreatorRepository;
@@ -78,7 +79,7 @@ public class RestMainController {
 	}
 	
 	@GetMapping("/selectByMySubscribingUsername")
-	public List<CreatorVo> selectByMySubscribingUsername(HttpSession session, @RequestParam String name) {
+	public List<CreatorSubscriptionDto> selectByMySubscribingUsername(HttpSession session, @RequestParam String name) {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 		if (user == null) {
 			return Collections.emptyList();

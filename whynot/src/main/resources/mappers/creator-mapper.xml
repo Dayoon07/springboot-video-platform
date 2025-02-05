@@ -15,19 +15,31 @@
 	    <result property="subscribe" column="subscribe"/>
 	</resultMap>
 	
-	<select id="selectBySubscribeUsername">
-		SELECT 
-		    B.creator_name AS creatorname,
-		    B.creator_email AS creatoremail,
-		    B.bio AS bio,
-		    B.profile_img_path AS profileimgpath, 
-		    B.subscribe AS subscribe,
-		    A.subscribed_at AS subscribedat
-		FROM whynot_subscriptions A 
-		JOIN whynot_creator B
-		ON A.subscribing_id = B.creator_id
-		WHERE subscribing_name LIKE '%' || #{ name } || '%'
-		AND subscriber_id = #{ id }
+	<resultMap id="CreatorSubscriptionResultMap" type="com.e.d.model.dto.CreatorSubscriptionDto">
+	    <association property="creator" javaType="com.e.d.model.vo.CreatorVo">
+	        <result property="creatorName" column="creator_name"/>
+		    <result property="creatorEmail" column="creator_email"/>
+		    <result property="createAt" column="create_at"/>
+		    <result property="bio" column="bio"/>
+		    <result property="profileImgPath" column="profile_img_path"/>
+		    <result property="subscribe" column="subscribe"/>
+	    </association>
+	
+	    <association property="subscription" javaType="com.e.d.model.vo.SubscriptionsVo">
+	        <result property="subscriberName" column="subscriber_name"/>
+		    <result property="subscriberId" column="subscriber_id"/>
+		    <result property="subscribingName" column="subscribing_name"/>
+		    <result property="subscribingId" column="subscribing_id"/>
+		    <result property="subscribedAt" column="subscribed_at"/>
+	    </association>
+	</resultMap>
+	
+	<select id="selectBySubscribeUsername" parameterType="map" resultMap="CreatorSubscriptionResultMap">
+		SELECT * FROM whynot_subscriptions A  
+	    JOIN whynot_creator B  
+	    ON A.subscribing_id = B.creator_id  
+	    WHERE subscribing_name LIKE '%' || #{ name } || '%'  
+	    AND subscriber_id = #{ id }
 	</select>
 	
 </mapper>

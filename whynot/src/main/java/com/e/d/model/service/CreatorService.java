@@ -11,11 +11,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.e.d.model.dto.CreatorSubscriptionDto;
 import com.e.d.model.entity.CreatorEntity;
 import com.e.d.model.mapper.CreatorMapper;
 import com.e.d.model.repository.CreatorRepository;
 import com.e.d.model.vo.CreatorVo;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,7 +50,32 @@ public class CreatorService {
 		return creatorRepository.save(entity);
 	}
 
-	public List<CreatorVo> selectBySubscribeUsername(String name, long id) {
+	public CreatorEntity creatorSignupFunction2(String creatorName, String creatorEmail, String creatorPassword,
+			String bio, String tel, MultipartFile profileImgPath, HttpSession session) throws IOException {
+		String fileName = UUID.randomUUID() + "_" + profileImgPath.getOriginalFilename().trim().replaceAll(" ", "_");
+
+		String uploadDir = session.getServletContext().getRealPath("/resources/profile-img/");
+
+		String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분"));
+
+		// 파일 저장할 디렉토리 확인 후 생성
+		File dir = new File(uploadDir);
+		if (!dir.exists()) {
+			dir.mkdirs(); // 디렉토리가 없으면 생성
+		}
+
+		profileImgPath.transferTo(new File(uploadDir + fileName));
+
+		CreatorEntity entity = CreatorEntity.builder().creatorName(creatorName).creatorEmail(creatorEmail)
+				.creatorPassword(passwordEncoder.encode(creatorPassword)).createAt(now).bio(bio).tel(tel)
+				.profileImg(fileName) // 저장된 파일 이름 (UUID 포함)
+				.profileImgPath("/resources/profile-img/" + fileName) // 클라이언트가 접근할 수 있는 상대 경로
+				.build();
+
+		return creatorRepository.save(entity);
+	}
+
+	public List<CreatorSubscriptionDto> selectBySubscribeUsername(String name, long id) {
 		return creatorMapper.selectBySubscribeUsername(name, id);
 	}
 

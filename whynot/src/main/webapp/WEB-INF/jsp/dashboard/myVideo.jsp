@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="${ cl }/source/img/videoPlayer-icon.png" type="image/x-icon">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="${ cl }/source/css/custom.css">
     <title>whynot - 업로드한 영상</title>
 </head>
 <body class="flex flex-col h-screen">
