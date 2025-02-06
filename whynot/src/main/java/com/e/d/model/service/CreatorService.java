@@ -53,10 +53,7 @@ public class CreatorService {
 	public CreatorEntity creatorSignupFunction2(String creatorName, String creatorEmail, String creatorPassword,
 			String bio, String tel, MultipartFile profileImgPath, HttpSession session) throws IOException {
 		String fileName = UUID.randomUUID() + "_" + profileImgPath.getOriginalFilename().trim().replaceAll(" ", "_");
-
 		String uploadDir = session.getServletContext().getRealPath("/resources/profile-img/");
-
-		String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분"));
 
 		// 파일 저장할 디렉토리 확인 후 생성
 		File dir = new File(uploadDir);
@@ -66,8 +63,13 @@ public class CreatorService {
 
 		profileImgPath.transferTo(new File(uploadDir + fileName));
 
-		CreatorEntity entity = CreatorEntity.builder().creatorName(creatorName).creatorEmail(creatorEmail)
-				.creatorPassword(passwordEncoder.encode(creatorPassword)).createAt(now).bio(bio).tel(tel)
+		CreatorEntity entity = CreatorEntity.builder()
+				.creatorName(creatorName)
+				.creatorEmail(creatorEmail)
+				.creatorPassword(passwordEncoder.encode(creatorPassword))
+				.createAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분")))
+				.bio(bio)
+				.tel(tel)
 				.profileImg(fileName) // 저장된 파일 이름 (UUID 포함)
 				.profileImgPath("/resources/profile-img/" + fileName) // 클라이언트가 접근할 수 있는 상대 경로
 				.build();
