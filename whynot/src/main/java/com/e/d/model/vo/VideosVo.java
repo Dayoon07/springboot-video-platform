@@ -18,7 +18,7 @@ public class VideosVo {
 	private String imgPath;
 	private String createAt;
 	private String frontProfileImg;
-	private String v;
+	private String videoUrl;
 	private long views;
 	private long likes;
 	private long unlikes;

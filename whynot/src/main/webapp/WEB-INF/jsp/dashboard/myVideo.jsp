@@ -39,32 +39,32 @@
 				<c:forEach var="mvdos" items="${ myvideos }">
 					<div class="w-full flex my-5">
 						<div>
-							<a href="${ cl }/watch?v=${ mvdos.v }">
+							<a href="${ cl }/watch?v=${ mvdos.videoUrl }">
 								<img src="${ mvdos.imgPath }" class="w-72 h-auto rounded mr-4">
 							</a>
 						</div>
 						<div class="px-4 py-2">
 							<c:choose>
 								<c:when test="${ mvdos.title.length() > 100}">
-									<a href="${ cl }/watch?v=${ mvdos.v }" class="font-medium hover:underline">
+									<a href="${ cl }/watch?v=${ mvdos.videoUrl }" class="font-medium hover:underline">
 										${ mvdos.title.substring(0, 100) += "..." }
 									</a>
 						        </c:when>
 								<c:otherwise>
-									<a href="${ cl }/watch?v=${ mvdos.v }" class="font-medium hover:underline">
+									<a href="${ cl }/watch?v=${ mvdos.videoUrl }" class="font-medium hover:underline">
 										${ mvdos.title }
 									</a>
 						        </c:otherwise>
 							</c:choose>
 							<c:choose>
 						    	<c:when test="${ mvdos.more.length() > 100 }">
-						        	<a href="${ cl }/watch?v=${ mvdos.v }" class="block text-sm text-gray-400 hover:underline">
+						        	<a href="${ cl }/watch?v=${ mvdos.videoUrl }" class="block text-sm text-gray-400 hover:underline">
 						        		${ mvdos.more.substring(0, 75) } <br>
-						        		${ mvdos.more.substring(75, 125) += "..." }
+						        		${ mvdos.more.substring(75, 125) }...
 						        	</a>
 						        </c:when>
 								<c:otherwise>
-									<a href="${ cl }/watch?v=${ mvdos.v }" class="block text-sm text-gray-400 hover:underline">
+									<a href="${ cl }/watch?v=${ mvdos.videoUrl }" class="block text-sm text-gray-400 hover:underline">
 										${ mvdos.more }
 									</a>
 						        </c:otherwise>

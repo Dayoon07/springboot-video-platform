@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +24,6 @@ import com.e.d.model.repository.VideosRepository;
 import com.e.d.model.service.CommentService;
 import com.e.d.model.service.CreatorService;
 import com.e.d.model.vo.CommentVo;
-import com.e.d.model.vo.CreatorVo;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -88,7 +88,14 @@ public class RestMainController {
 		}
 	}
 	
-	
+	@PostMapping("/likeCount")
+	public long likeCount(@RequestParam long param, @RequestParam long id) {
+		VideosEntity video = videosRepository.findById(id).orElse(null);
+		video.setLikes(param);
+		videosRepository.save(video);
+		log.info("서버가 받은 값 param: {}, id: {}", param, id);
+		return video.getLikes();
+	}
 	
 	
 	

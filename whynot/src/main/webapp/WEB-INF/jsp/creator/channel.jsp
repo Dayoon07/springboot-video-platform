@@ -76,7 +76,7 @@
 	                	<div class="flex flex-col gap-2 p-2 rounded-lg hover:bg-gray-200">
 			                <div class="relative group">
 			                    <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-			                        <a href="${ cl }/watch?v=${ cvl.v }">
+			                        <a href="${ cl }/watch?v=${ cvl.videoUrl }">
 			                        	<img src="${ cvl.imgPath }" alt="Video thumbnail" class="w-full h-full object-cover" loading="lazy">
 			                        </a>
 			                    </div>
@@ -86,7 +86,7 @@
 			                    	<img src="${ cvl.frontProfileImg }" class="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0">
 			                    </a>
 			                    <div class="flex-1 min-w-0">
-			                        <a href="${ cl }/watch?v=${ cvl.v }" class="font-medium text-sm line-clamp-2 hover:underline">
+			                        <a href="${ cl }/watch?v=${ cvl.videoUrl }" class="font-medium text-sm line-clamp-2 hover:underline">
 			                        	${ cvl.title }
 			                        </a>
 			                        <a href="${ cl }/channel/${ cvl.creator }" class="text-sm text-gray-600 hover:underline">
@@ -111,7 +111,7 @@
 	            	<div class="flex flex-col gap-2 p-2 rounded-lg hover:bg-gray-200">
 		                <div class="relative group">
 		                    <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-		                        <a href="${ cl }/watch?v=${ cvl.v }">
+		                        <a href="${ cl }/watch?v=${ cvl.videoUrl }">
 		                        	<img src="${ cvl.imgPath }" alt="Video thumbnail" class="w-full h-full object-cover" loading="lazy">
 		                        </a>
 		                    </div>
@@ -121,7 +121,7 @@
 		                    	<img src="${ cvl.frontProfileImg }" class="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0">
 		                    </a>
 		                    <div class="flex-1 min-w-0">
-		                        <a href="${ cl }/watch?v=${ cvl.v }" class="font-medium text-sm line-clamp-2 hover:underline">
+		                        <a href="${ cl }/watch?v=${ cvl.videoUrl }" class="font-medium text-sm line-clamp-2 hover:underline">
 		                        	${ cvl.title }
 		                        </a>
 		                        <a href="${ cl }/channel/${ cvl.creator }" class="text-sm text-gray-600 hover:underline">

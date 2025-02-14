@@ -1,7 +1,7 @@
 function searchComments() {
 	let keyword = document.getElementById("keywordInput").value;
 
-	fetch(`/searchComments?keyword=${keyword}`)
+	fetch(`http://localhost:9002/searchComments?keyword=${keyword}`)
 		.then(response => response.json())
 		.then(data => {
 			let resultDiv = document.getElementById('searchResults');

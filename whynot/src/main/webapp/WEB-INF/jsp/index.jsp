@@ -23,7 +23,7 @@
 	            <div class="video-item flex flex-col gap-2 p-2 rounded-lg hover:bg-gray-200">
 	                <div class="relative">
 	                    <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-	                        <a href="${ cl }/watch?v=${ video.v }">
+	                        <a href="${ cl }/watch?v=${ video.videoUrl }">
 	                            <img src="${ video.imgPath }" class="w-full h-full object-cover" loading="lazy">
 	                        </a>
 	                    </div>
@@ -33,7 +33,7 @@
 	                        <img src="${ video.frontProfileImg }" class="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0">
 	                    </a>
 	                    <div class="flex-1 min-w-0">
-	                        <a href="${ cl }/watch?v=${ video.v }" class="font-medium text-sm line-clamp-2 hover:underline">
+	                        <a href="${ cl }/watch?v=${ video.videoUrl }" class="font-medium text-sm line-clamp-2 hover:underline">
 	                            ${ video.title }
 	                        </a>
 	                        <a href="${ cl }/channel/${ video.creator }" class="text-sm text-gray-600 hover:underline">

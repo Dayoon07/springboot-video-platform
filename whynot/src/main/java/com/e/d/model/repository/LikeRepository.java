@@ -9,7 +9,6 @@ import com.e.d.model.entity.LikeEntity;
 
 @Repository
 public interface LikeRepository extends JpaRepository<LikeEntity, Long> {
-	boolean existsByLikeVdoIdAndLikerId(long likeVdoId, long likerId);
 	Optional<LikeEntity> findByLikeVdoIdAndLikerId(long likeVdoId, long likerId);
 	long countByLikeVdoId(long likeVdoId);
 }

@@ -14,7 +14,7 @@
 	    <result property="imgPath" column="img_path"/>
 	    <result property="createAt" column="create_at"/>
 	    <result property="frontProfileImg" column="front_profile_img"/>
-	    <result property="v" column="v"/>
+	    <result property="videoUrl" column="video_url"/>
 	    <result property="views" column="views"/>
 	    <result property="likes" column="likes"/>
 	    <result property="unlikes" column="unlikes"/>

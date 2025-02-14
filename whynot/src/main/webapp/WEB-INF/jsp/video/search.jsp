@@ -19,7 +19,7 @@
 		<c:forEach var="searchVideos" items="${ searchList }">
 			<div class="flex justify-start my-3">
 				<div class="pr-2">
-					<a href="${ cl }/watch?v=${ searchVideos.v }">
+					<a href="${ cl }/watch?v=${ searchVideos.videoUrl }">
 						<img src="${ searchVideos.imgPath }" style="height: 220px;" class="w-80 rounded-md object-cover">
 					</a>
 				</div>

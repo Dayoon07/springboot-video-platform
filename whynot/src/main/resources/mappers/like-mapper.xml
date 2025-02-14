@@ -11,15 +11,6 @@
 	    <result property="datetime" column="datetime"/>
 	</resultMap>
 	
-	<select id="countVideoLikes" parameterType="long" resultType="long">
-		SELECT COUNT(like_vdo_id) AS LIKES FROM whynot_like 
-		WHERE like_vdo_id = #{ id }
-	</select>
 	
-	<select id="likeOrNot" parameterType="long" resultType="com.e.d.model.vo.LikeVo">
-		SELECT * FROM whynot_like
-		WHERE like_vdo_id = #{ likeVdoId }
-		    AND liker_id = #{ likerId }
-	</select>
 	
 </mapper>

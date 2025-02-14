@@ -37,12 +37,12 @@
                         <label for="videoPath" class="block text-lg font-semibold mb-2 text-gray-700">영상 파일</label>
                         <div class="mb-2">
                             <p class="text-sm text-gray-600">현재 영상</p>
-                            <video controls class="w-80 py-5">
-					            <source src="${ updatingVideo.videoPath }" type="video/mp4">
+                            <video id="videoPreview" controls class="w-80 py-5">
+					            <source id="videoSource" src="${ updatingVideo.videoPath }" type="video/mp4">
 					        </video>
                         </div>
-                        <input type="file" id="videoPath" name="videoPath" accept="video/*" class="p-6 bg-gray-50 border-2 border-dashed border-gray-300 text-center rounded-lg cursor-pointer">
-                        <!-- 기존 비디오 경로 보존 -->
+                        <input type="file" id="videoPath" name="videoPath" accept="video/*" onchange="previewVideo()" 
+                        	class="p-6 bg-gray-50 border-2 border-dashed border-gray-300 text-center rounded-lg cursor-pointer">
                         <input type="hidden" name="currentVideoPath" value="${ updatingVideo.videoPath }">
                     </div>
                 </div>
@@ -81,7 +81,7 @@
     </div>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="${ cl }/source/js/upload.js"></script>
+    <!-- <script src="${ cl }/source/js/upload.js"></script> -->
     <script src="${ cl }/source/js/script.js"></script>
     <script>
         const imgDropZone = document.getElementById('imgDropZone');
@@ -120,6 +120,19 @@
                     previewImg.classList.remove('hidden');
                 }
                 reader.readAsDataURL(file);
+            }
+        }
+        function previewVideo() {
+            const videoInput = document.getElementById('videoPath');
+            const videoPreview = document.getElementById('videoPreview');
+            const videoSource = document.getElementById('videoSource');
+            
+            const file = videoInput.files[0];
+            if (file) {
+                const fileURL = URL.createObjectURL(file);
+                videoSource.src = fileURL;
+                videoPreview.style.display = 'block'; // 미리보기 비디오 표시
+                videoPreview.load(); // 비디오 로드
             }
         }
     </script>

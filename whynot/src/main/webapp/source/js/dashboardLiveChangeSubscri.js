@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     async function fetchSubscribeCount() {
         try {
-            const response = await fetch(`/subscribeCount`);
+            const response = await fetch(`http://localhost:9002/subscribeCount`);
             if (!response.ok) throw new Error("서버 응답 오류");
 
             const count = await response.json();

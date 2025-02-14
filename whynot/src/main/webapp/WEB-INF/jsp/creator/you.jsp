@@ -1,3 +1,4 @@
+<%@page import="com.e.d.model.entity.CreatorEntity"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
@@ -14,10 +15,10 @@
 </head>
 <body>
     <jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
-
+    
     <div class="max-w-5xl mx-auto mt-12 p-6 bg-white rounded-xl shadow-lg">
         <c:choose>
-            <c:when test="${ empty sessionScope.creatorSession }">
+            <c:when test="${ empty you }">
                 <div class="text-center py-12">
                     <h1 class="text-2xl font-semibold text-gray-800">로그인이 필요합니다</h1>
                     <p class="text-gray-600 mt-2">마이페이지를 이용하려면 로그인하세요.</p>
@@ -30,21 +31,21 @@
             <c:otherwise>
                 <div class="flex items-center space-x-8">
                     <div class="w-32 h-32 overflow-hidden rounded-full border-4 border-gray-300">
-                        <img src="${ sessionScope.creatorSession.profileImgPath }" alt="Profile Image" class="w-full h-full object-cover">
+                        <img src="${ you.profileImgPath }" alt="Profile Image" class="w-full h-full object-cover">
                     </div>
 
                     <div>
-                        <h1 class="text-3xl font-bold text-gray-800">${ sessionScope.creatorSession.creatorName }</h1>
-                        <p class="text-gray-500 mt-1">${ sessionScope.creatorSession.creatorEmail }</p>
-						<p class="text-gray-500 text-md my-2">구독자 : ${ sessionScope.creatorSession.subscribe }명</p>
-						<p class="text-gray-400 text-sm">가입일 : ${ sessionScope.creatorSession.createAt }</p>
+                        <h1 class="text-3xl font-bold text-gray-800">${ you.creatorName }</h1>
+                        <p class="text-gray-500 mt-1">${ you.creatorEmail }</p>
+						<p class="text-gray-500 text-md my-2">구독자 : ${ you.subscribe }명</p>
+						<p class="text-gray-400 text-sm">가입일 : ${ you.createAt }</p>
                     </div>
                 </div>
 
                 <div class="mt-8 p-6 bg-gray-50 rounded-lg shadow-inner">
                     <h2 class="text-xl font-semibold text-gray-800">채널</h2>
                     <p class="text-gray-700 mt-2 leading-relaxed">
-                        ${ empty sessionScope.creatorSession.bio ? "아직 자기소개가 없습니다." : sessionScope.creatorSession.bio }
+                        ${ empty you.bio ? "아직 자기소개가 없습니다." : you.bio }
                     </p>
                 </div>
 

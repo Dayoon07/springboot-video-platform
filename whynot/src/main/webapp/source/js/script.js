@@ -1,3 +1,7 @@
+window.addEventListener("load", () => {
+	document.getElementById("loading").style.display = "none";
+});
+
 const sidebar = document.getElementById("sidebar");
 const sidebarDrop = document.getElementById("sidebar-drop");
 

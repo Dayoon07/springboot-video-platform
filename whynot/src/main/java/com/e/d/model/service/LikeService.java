@@ -2,19 +2,18 @@ package com.e.d.model.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.e.d.model.entity.CreatorEntity;
 import com.e.d.model.entity.LikeEntity;
 import com.e.d.model.entity.VideosEntity;
 import com.e.d.model.mapper.LikeMapper;
 import com.e.d.model.repository.CreatorRepository;
 import com.e.d.model.repository.LikeRepository;
 import com.e.d.model.repository.VideosRepository;
-import com.e.d.model.vo.LikeVo;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,44 +28,28 @@ public class LikeService {
 	private final VideosRepository videosRepository;
 	private final VideosService videosService;
 	
-	// 좋아요 등록
-    @Transactional
-    public void addLike(long videoId, String videoName, long creatorId) {
-        if (likeRepository.existsByLikeVdoIdAndLikerId(videoId, creatorId)) {
-            throw new IllegalStateException("이미 좋아요를 눌렀습니다.");
-        }
-        Optional<VideosEntity> vdo = videosRepository.findById(videoId);
-        
-        LikeEntity like = LikeEntity.builder()
-            .likeVdoId(videoId)
-            .likeVdoName(videoName)
-            .likerId(creatorId)
-            .likerName(creatorRepository.findById(creatorId).get().getCreatorName())
-            .datetime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-            .build();
-        
-        videosService.updateLike(countVideoLikes(videoId), videoId);	// 좋아요를 받은 영상의 likes 필드를 update하는 함수
-        likeRepository.save(like);	// like 테이블에 새로운 레코드를 추가하는 거
-    }
-    
-    // 좋아요 취소
-    @Transactional
-    public void removeLike(long videoId, long likerId) {
-        Optional<LikeEntity> like = likeRepository.findByLikeVdoIdAndLikerId(videoId, likerId);
-        like.ifPresent(likeRepository::delete);
-    }
-    
-    // 특정 동영상의 좋아요 개수 조회
-    public long countLikes(long videoId) {
-        return likeRepository.countByLikeVdoId(videoId);
-    }
-    
-    public long countVideoLikes(long id) {
-    	return likeMapper.countVideoLikes(id);
-    }
+	public void addLike(long likeVdoId, String likeVdoName, HttpSession session) {
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+		
+		String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd a HH:mm:ss"));
+		
+		LikeEntity entity = LikeEntity.builder()
+				.likeVdoId(likeVdoId)
+				.likeVdoName(likeVdoName)
+				.likerId(user.getCreatorId())
+				.likerName(user.getCreatorName())
+				.datetime(now)
+				.build();
+		likeRepository.save(entity);
+		log.info("{}이(가) {}영상에 좋아요를 눌렀습니다", user.getCreatorName(), likeVdoName);
+	}
 	
-    public Optional<LikeVo> likeOrNot(long likeVdoId, long likerId) {
-    	return likeMapper.likeOrNot(likeVdoId, likerId);
-    }
-    
+	public String delLike(long likeId) {
+		LikeEntity like = likeRepository.findById(likeId).get();
+		VideosEntity video = videosRepository.findById(like.getLikeVdoId()).get();
+		likeRepository.deleteById(likeId);;
+		log.info("{}영상에 대한 좋아요 하나가 취소 되었습니다", video.getTitle());
+		return "redirect:/watch?v=" + video.getVideoUrl();
+	}
+	
 }

@@ -45,17 +45,32 @@
                     </div>
 
                     <div class="flex flex-wrap gap-2 items-center mt-2 w-full md:w-auto">
-                    	<form action="${ cl }/like?videoId=${ watchTheVideo.videoId }&creatorId=${ sessionScope.creatorSession.creatorId }&videoName=${ watchTheVideo.videoName }"
-                    		method="post" autocomplete="off">
-                        	<button type="submit" class="px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition text-sm">
-	                            좋아요 ${ watchTheVideo.likes }
-	                        </button>
-                        </form>
-                        <form action="${ cl }/unlike" method="post" autocomplete="off">
-                        	<button type="submit" class="px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition text-sm">
-	                            싫어요 ${ watchTheVideo.unlikes }
-	                        </button>
-                        </form>
+                    	<c:if test="${ likeuser eq true }">
+                    		<form action="${ cl }/delLike"	method="post" autocomplete="off">
+		                        <button type="submit" class="px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition text-sm">
+			                        <span id="watchTheVideounLikes">${ watchTheVideo.likes }</span>
+			                    	좋아요 취소 
+			                	</button>
+			                    <input type="hidden" name="likeId" value="${ delLikeBtn }" required readonly>
+							</form>
+                    	</c:if>
+                    	<c:if test="${ likeuser eq false }">
+                    		<form action="${ cl }/like"	method="post" autocomplete="off" id="likeAddForm">
+		                        <button type="submit" class="px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition text-sm">
+			                	    좋아요 <span id="watchTheVideoLikes">${ watchTheVideo.likes }</span>
+			                    </button>
+			                    <input type="hidden" name="likeVdoId" value="${ watchTheVideo.videoId }" required readonly>
+			                    <input type="hidden" name="likeVdoName" value="${ watchTheVideo.title }" required readonly>
+							</form>
+                    	</c:if>
+                    	<c:if test="${ empty sessionScope.creatorSession }">
+                    		<button type="button" class="px-4 py-2 border-gray-200 border rounded-full hover:bg-gray-300 transition text-sm">
+			                	좋아요 ${ watchTheVideo.likes }
+							</button>
+                    	</c:if>
+                        
+                        <input type="hidden" id="likeCount" value="${ likeCount }">
+                        <input type="hidden" id="likeCountButVideoId" value="${ watchTheVideo.videoId }">
                         
                         <c:if test="${ thisIsSubscribed }">
                             <div class="flex items-center gap-2">
@@ -81,7 +96,16 @@
 
                 <div class="p-4 bg-gray-100 rounded-lg space-y-2">
                     <div class="text-sm text-gray-500 flex flex-wrap gap-3">
-                        <span>조회수: ${ watchTheVideo.views == 0 ? "없음" : watchTheVideo.views += "회" }</span>
+                        <span>
+							<c:choose>
+	                        	<c:when test="${ watchTheVideo.views == 0 }">
+	                        		조회수 없음
+	                        	</c:when>
+	                        	<c:otherwise>
+	                        		조회수 <fmt:formatNumber type="number" value="${ watchTheVideo.views }" /> 회
+	                        	</c:otherwise>
+	                        </c:choose>
+						</span>
                         <span>업로드: ${ watchTheVideo.createAt.substring(0, 13) }</span>
                     </div>
                     <div class="text-sm">
@@ -178,13 +202,13 @@
                         <div class="flex flex-col sm:flex-row lg:flex-col gap-3 p-3 hover:bg-gray-100 rounded-lg">
                             <div class="w-full sm:w-40 lg:w-full">
                                 <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-                                    <a href="${ cl }/watch?v=${ rec.v }">
+                                    <a href="${ cl }/watch?v=${ rec.videoUrl }">
                                         <img src="${ rec.imgPath }" alt="썸네일" class="w-full h-full object-cover">
                                     </a>
                                 </div>
                             </div>
                             <div class="flex-1 min-w-0">
-                                <a href="${ cl }/watch?v=${ rec.v }" class="font-medium text-sm line-clamp-2 hover:underline">
+                                <a href="${ cl }/watch?v=${ rec.videoUrl }" class="font-medium text-sm line-clamp-2 hover:underline">
                                     ${ rec.title }
                                 </a>
                                 <a href="${ cl }/channel/${ rec.creator }" class="text-sm text-gray-600 hover:underline block mt-1">
@@ -204,5 +228,6 @@
     </div>
     
     <jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
+    <script src="${ cl }/source/js/likeCount.js"></script>
 </body>
 </html>
