@@ -22,6 +22,43 @@
 	    <result property="tag" column="tag"/>
 	</resultMap>
 	
+	<resultMap id="LikeVideosResultMap" type="com.e.d.model.dto.LikeVideosDto">
+	    <association property="like" javaType="com.e.d.model.vo.LikeVo">
+	        <result column="like_id" property="likeId"/>
+	        <result column="like_vdo_id" property="likeVdoId"/>
+	        <result column="like_vdo_name" property="likeVdoName"/>
+	        <result column="liker_id" property="likerId"/>
+	        <result column="liker_name" property="likerName"/>
+	        <result column="datetime" property="datetime"/>
+	    </association>
+	    
+	    <association property="videos" javaType="com.e.d.model.vo.VideosVo">
+	        <result column="video_id" property="videoId"/>
+	        <result column="creator" property="creator"/>
+	        <result column="creator_val" property="creatorVal"/>
+	        <result column="title" property="title"/>
+	        <result column="more" property="more"/>
+	        <result column="video_name" property="videoName"/>
+	        <result column="video_path" property="videoPath"/>
+	        <result column="img_name" property="imgName"/>
+	        <result column="img_path" property="imgPath"/>
+	        <result column="create_at" property="createAt"/>
+	        <result column="front_profile_img" property="frontProfileImg"/>
+	        <result column="video_url" property="videoUrl"/>
+	        <result column="views" property="views"/>
+	        <result column="likes" property="likes"/>
+	        <result column="unlikes" property="unlikes"/>
+	        <result column="comment_cnt" property="commentCnt"/>
+	        <result column="tag" property="tag"/>
+	    </association>
+	</resultMap>
+	
+	<select id="selectByMyLikeVideo" parameterType="long" resultMap="LikeVideosResultMap">
+	    select * from whynot_like A JOIN whynot_videos B
+	    ON A.LIKE_VDO_ID = B.VIDEO_ID
+	    WHERE LIKER_ID = #{id}
+	</select>
+	
 	<select id="sumByMyVideoViews" parameterType="long" resultType="long">
 		SELECT SUM(VIEWS) AS VIEWS FROM WHYNOT_VIDEOS WHERE CREATOR_VAL = #{ creatorVal }
 	</select>

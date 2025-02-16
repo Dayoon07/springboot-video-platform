@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.e.d.model.dto.LikeVideosDto;
 import com.e.d.model.entity.CommentEntity;
 import com.e.d.model.entity.CreatorEntity;
 import com.e.d.model.entity.SubscriptionsEntity;
@@ -42,7 +43,7 @@ public class VideosService {
 	private final LikeRepository likeRepository;
 
 	private final VideosMapper mapper;
-
+	
 	public void uploadVideo(String creatorName, String tag, String title, String more, MultipartFile imgPath,
 			MultipartFile videoPath, HttpSession session) throws IOException {
 		Optional<CreatorEntity> user = creatorRepository.findByCreatorName(creatorName);
@@ -189,5 +190,16 @@ public class VideosService {
 	public List<VideosEntity> getCreatorVideos(Long creatorId) {
 		return videosRepository.findByCreatorVal(creatorId);
 	}
-
+	
+	public long addLikeButRestApi(long param, long id) {
+		VideosEntity video = videosRepository.findById(id).orElse(null);
+		video.setLikes(param);
+		videosRepository.save(video);
+		return video.getLikes();
+	}
+	
+	public List<LikeVideosDto> selectByMyLikeVideo(long id) {
+		return mapper.selectByMyLikeVideo(id);
+	}
+	
 }

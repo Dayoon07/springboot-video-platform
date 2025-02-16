@@ -47,8 +47,8 @@
                     <div class="flex flex-wrap gap-2 items-center mt-2 w-full md:w-auto">
                     	<c:if test="${ likeuser eq true }">
                     		<form action="${ cl }/delLike"	method="post" autocomplete="off">
-		                        <button type="submit" class="px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition text-sm">
-			                        <span id="watchTheVideounLikes">${ watchTheVideo.likes }</span>
+		                        <button type="submit" class="px-4 py-2 bg-black text-white rounded-full hover:opacity-70 transition text-sm">
+			                        <span id="watchTheVideoLikeVal">${ watchTheVideo.likes }</span>
 			                    	좋아요 취소 
 			                	</button>
 			                    <input type="hidden" name="likeId" value="${ delLikeBtn }" required readonly>
@@ -56,8 +56,8 @@
                     	</c:if>
                     	<c:if test="${ likeuser eq false }">
                     		<form action="${ cl }/like"	method="post" autocomplete="off" id="likeAddForm">
-		                        <button type="submit" class="px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition text-sm">
-			                	    좋아요 <span id="watchTheVideoLikes">${ watchTheVideo.likes }</span>
+		                        <button type="submit" class="px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300 transition text-sm" onclick="addLike()">
+			                	    좋아요 <span id="watchTheVideoLikeVal">${ watchTheVideo.likes }</span>
 			                    </button>
 			                    <input type="hidden" name="likeVdoId" value="${ watchTheVideo.videoId }" required readonly>
 			                    <input type="hidden" name="likeVdoName" value="${ watchTheVideo.title }" required readonly>
@@ -102,7 +102,7 @@
 	                        		조회수 없음
 	                        	</c:when>
 	                        	<c:otherwise>
-	                        		조회수 <fmt:formatNumber type="number" value="${ watchTheVideo.views }" /> 회
+	                        		조회수 <fmt:formatNumber type="number" value="${ watchTheVideo.views }" />회
 	                        	</c:otherwise>
 	                        </c:choose>
 						</span>

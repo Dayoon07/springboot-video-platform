@@ -15,7 +15,7 @@
 <body>
 	<jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 	
-	<div class="max-w-6xl mx-auto p-4">
+	<div class="max-w-7xl mx-auto p-4">
 		<c:forEach var="searchVideos" items="${ searchList }">
 			<div class="flex justify-start my-3">
 				<div class="pr-2">
@@ -24,15 +24,15 @@
 					</a>
 				</div>
 				<div class="pl-2 py-2">
-					<h1 class="text-2xl">${ searchVideos.title }</h1>
+					<h1 class="text-2xl"><a href="${ cl }/watch?v=${ searchVideos.videoUrl }">${ searchVideos.title }</a></h1>
 					<p class="text-gray-500">
 						<span>조회수 ${ searchVideos.views == 0 ? "없음" : searchVideos.views += "회" } | </span>
 						<span>${ searchVideos.createAt }</span>
 					</p>
-					<div class="flex items-center my-2">
+					<a href="${ cl }/channel/${ searchVideos.creator }" class="flex items-center my-2">
 						<img src="${ searchVideos.frontProfileImg }" class="w-8 h-8 rounded-full object-cover">
 						<p class="text-gray-500 ml-3">${ searchVideos.creator }</p>
-					</div>
+					</a>
 					<div class="text-gray-500">
 						${ searchVideos.more.length() >= 50 ? searchVideos.more.substring(0, 50) : searchVideos.more }
 					</div>

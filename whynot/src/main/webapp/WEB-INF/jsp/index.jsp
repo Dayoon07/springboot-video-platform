@@ -40,7 +40,17 @@
 	                            ${ video.creator }
 	                        </a>
 	                        <div class="text-sm text-gray-600">
-	                            조회수 ${ video.views == 0 ? "없음" : video.views += "회" } |  
+	                            <c:choose>
+								    <c:when test="${ video.views == 0 }">
+								        조회수 없음
+								    </c:when>
+								    <c:when test="${ video.views >= 10000 }">
+								        조회수 <fmt:formatNumber value="${ video.views / 10000 }" pattern="#"/>만회
+								    </c:when>
+								    <c:otherwise>
+								        조회수 <fmt:formatNumber value="${ video.views }" type="number" />회
+								    </c:otherwise>
+								</c:choose> |  
 	                            ${ video.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
 	                            ? video.createAt.substring(6, 13) : video.createAt.substring(0, 13) }
 	                        </div>
@@ -57,8 +67,8 @@
 		        </button>
 		    </c:if>
 		</div>
-	</div> 
-
+	</div>
+	
     <jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
     
 </body>

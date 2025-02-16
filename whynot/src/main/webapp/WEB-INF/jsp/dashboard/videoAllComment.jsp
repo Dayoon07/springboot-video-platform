@@ -15,8 +15,8 @@
 <body class="flex flex-col h-screen">
     <jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 
-    <main class="flex flex-grow" style="height: calc(100% - 76px);">
-        <div class="w-64 bg-gray-200">
+    <main class="flex flex-grow border-t" style="height: calc(100% - 76px);">
+        <div class="w-64 bg-gray-200 border-r">
             <ul>
             	<li>
                     <a href="${ cl }/myVideo" class="block p-4 bg-gray-200 hover:bg-white transition">콘텐츠</a>

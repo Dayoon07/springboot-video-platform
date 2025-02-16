@@ -21,5 +21,6 @@ public interface VideosRepository extends JpaRepository<VideosEntity, Long> {
 	void deleteByCreatorVal(long creatorVal);
 
 	long countByCreatorVal(long creatorVal); // 총 업로드된 영상 개수
-	
+
+	List<VideosEntity> findByVideoIdAndTitle(long videoId, String title);
 }

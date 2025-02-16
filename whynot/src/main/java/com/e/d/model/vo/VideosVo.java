@@ -24,9 +24,4 @@ public class VideosVo {
 	private long unlikes;
 	private long commentCnt;
 	private String tag;
-	
-	public void incrementVideoViews() {
-		this.views++;
-	}
-	
 }

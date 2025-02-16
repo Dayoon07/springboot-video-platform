@@ -119,11 +119,9 @@ public class MainController {
 
 	@GetMapping("/")
 	public String index(@RequestParam(defaultValue = "0") int page, Model model) {
-		int pageSize = 4;
+		ipPrint();		int pageSize = 4;
 		Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Direction.DESC, "videoId"));
 		Page<VideosEntity> videoPage = videosRepository.findAll(pageable);
-
-		ipPrint();
 
 		model.addAttribute("allVideo", videoPage.getContent());
 		model.addAttribute("currentPage", page);
@@ -135,8 +133,7 @@ public class MainController {
 
 	@GetMapping("/search")
 	public String searchMethod(@RequestParam String t, Model model) {
-		List<VideosEntity> searchList = videosRepository.searchByTitleIgnoreCaseContaining(t);
-		model.addAttribute("searchList", searchList);
+		model.addAttribute("searchList", videosRepository.searchByTitleIgnoreCaseContaining(t));
 		model.addAttribute("searchWord", t);
 		return "video/search";
 	}
@@ -186,8 +183,7 @@ public class MainController {
 			@RequestParam String creatorPassword, @RequestParam String bio, @RequestParam String tel,
 			@RequestParam MultipartFile profileImgPath, Model m, HttpSession session) {
 		try {
-			creatorService.creatorSignupFunction2(creatorName, creatorEmail, creatorPassword, bio, tel, profileImgPath,
-					session);
+			creatorService.creatorSignupFunction2(creatorName, creatorEmail, creatorPassword, bio, tel, profileImgPath, session);
 			m.addAttribute("success", "회원가입에 성공 했습니다.");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -199,14 +195,14 @@ public class MainController {
 	@GetMapping("/channel/{creatorName}")
 	public String creatorProfile(@PathVariable String creatorName, Model model, HttpSession session) {
         Optional<CreatorEntity> creatorOpt = creatorService.getCreatorProfile(creatorName);
+        CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+        CreatorEntity creator = creatorOpt.get();
 
         if (creatorOpt.isEmpty()) return "redirect:/"; 
 
-        CreatorEntity creator = creatorOpt.get();
         model.addAttribute("creator", creator);
         model.addAttribute("creatorVideosList", videosService.getCreatorVideos(creator.getCreatorId()));
 
-        CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
         if (user != null) {
             boolean isSubscribed = subscriptionsService.isSubscribed(creator.getCreatorId(), user.getCreatorId());
             model.addAttribute("isSubscribed", isSubscribed);
@@ -214,13 +210,21 @@ public class MainController {
 
         return "creator/channel";
     }
-
+	
 	@GetMapping("/you")
 	public String showCreatorProfile(HttpSession session, Model model) {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 		if (user == null) return "creator/login";
 		model.addAttribute("you", creatorRepository.findById(user.getCreatorId()).orElse(null));
 		return "creator/you";
+	}
+	
+	@GetMapping("/you/like")
+	public String myLikedVideoList(HttpSession session, Model model) {
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+		if (user == null) return "creator/login";
+		model.addAttribute("myLikeVideo", videosService.selectByMyLikeVideo(user.getCreatorId()));
+		return "creator/myLikeVideo";
 	}
 
 	@GetMapping("/upload")

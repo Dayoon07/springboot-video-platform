@@ -1,24 +1,37 @@
 const likeVal = document.getElementById("likeCount").value;
 const id = document.getElementById("likeCountButVideoId").value;
 
-fetch(`http://localhost:9002/likeCount?param=${likeVal}&id=${id}`, {
-	method: "post"})
-	.then(res => res.json())
-	.then((data) => {
-		document.getElementById("watchTheVideoLikes").textContent = data;
-	})
-	.catch((err) => {
-		console.log(err);
-	});
+document.addEventListener("DOMContentLoaded", () => {
+	"use strict";
+	
+	writeLikeValue();
+	setTimeout(writeLikeValue, 1500);
+});
 
-document.getElementById("likeAddForm").addEventListener("submit", (e) => {
+function writeLikeValue() {
 	fetch(`http://localhost:9002/likeCount?param=${likeVal}&id=${id}`, {
-		method: "post"})
+			method: "post"})
+			.then(res => res.json())
+			.then((data) => {
+				if (document.getElementById("watchTheVideoLikeVal") != null) {
+					document.getElementById("watchTheVideoLikeVal").textContent = data;
+				} else {
+					console.log(data);	
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+}
+
+function addLike() {	
+	fetch(`http://localhost:9002/likeCount?param=${likeVal}&id=${id}`, {method: "post"})
 		.then(res => res.json())
 		.then((data) => {
-			document.getElementById("watchTheVideounLikes").textContent = data;
+			document.getElementById("watchTheVideoLikeVal").textContent = data;
+			console.log(data);
 		})
 		.catch((err) => {
 			console.log(err);
 		});
-});
+}

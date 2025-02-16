@@ -15,13 +15,9 @@
 <body>
 	<jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 	
-	<div class="max-w-6xl mx-auto p-4">
-	    <h1 class="text-3xl mb-2">구독한 채널</h1>
-	
-	    <!-- 내가 구독한 채널 목록 -->
-	    <c:if test="${ empty mySubscribers }">
-	        <h2 class="text-lg text-gray-500">구독한 채널이 없습니다.</h2>
-	    </c:if>
+	<div class="max-w-7xl mx-auto p-4">
+	    <h1 class="text-2xl font-bold mb-6">구독한 채널</h1>
+	    <c:if test="${ empty mySubscribers }"><h2 class="text-lg text-gray-500">구독한 채널이 없습니다.</h2></c:if>
 	    
 	    <c:if test="${ not empty mySubscribers }">
 	        <c:forEach var="msl" items="${ mySubscribers }">

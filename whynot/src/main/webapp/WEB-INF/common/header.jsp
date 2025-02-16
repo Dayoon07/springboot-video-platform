@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="jakarta.tags.functions" %>
 <%@ taglib prefix="fmt" uri="jakarta.tags.fmt" %>
 <c:set var="cl" value="${ pageContext.request.contextPath }" />
-	<header class="bg-gray-200 text-black p-4">
+	<header class="text-black p-4">
 	    <div class="flex items-center justify-between w-full mx-auto">
 	        <div class="flex items-center">
 	        	<button class="text-black text-3xl mr-5 cursor-pointer" onclick="openSide()">&#9776;</button>
@@ -13,7 +13,8 @@
 	        </div>
 	
 			<form action="${ cl }/search" method="get" autocomplete="on" class="flex rounded-md border-black border-2 overflow-hidden w-96 mx-auto" id="mainFormId">
-	        	<input type="text" placeholder="검색" name="t" class="w-full outline-none bg-white text-black text-md px-4 py-2" title="검색어를 입력하세요" required>
+	        	<input type="text" placeholder="검색" name="t" class="w-full outline-none bg-white text-black text-md px-4 py-2" title="검색어를 입력하세요" required
+	        		value="${ not empty searchWord ? searchWord : '' }">
 		        <button type="submit" class="flex items-center justify-center bg-black px-5">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" width="20px" class="fill-white">
 						<path d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.142 18.752-51.831C162.381 36.423 125.959 0 81.191 0 36.422 
@@ -72,7 +73,7 @@
 	    <ul class="space-y-2 pt-4 px-4">
 		    <li><a href="${ cl }/" class="block py-2 px-4 rounded-md hover:bg-gray-200">홈</a></li>
 		    <li><a href="${ cl }/mySubscri" class="block py-2 px-4 rounded-md hover:bg-gray-200">구독</a></li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-200">좋아요를 누른 영상</a></li>
+		    <li><a href="${ cl }/you/like" class="block py-2 px-4 rounded-md hover:bg-gray-200">좋아요를 누른 영상</a></li>
 		    <c:if test="${ not empty sessionScope.creatorSession }">
 		        <li><a href="${ cl }/channel/${ sessionScope.creatorSession.creatorName }" class="block py-2 px-4 rounded-md hover:bg-gray-200">내 채널</a></li>
 		    </c:if>
