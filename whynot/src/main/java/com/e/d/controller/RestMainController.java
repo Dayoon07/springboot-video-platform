@@ -42,7 +42,6 @@ public class RestMainController {
 	private final CreatorService creatorService;
 	private final VideosService videosService;
 	
-	
 	@GetMapping("/api/all")
 	List<VideosEntity> list() {
 		return videosRepository.findAll();

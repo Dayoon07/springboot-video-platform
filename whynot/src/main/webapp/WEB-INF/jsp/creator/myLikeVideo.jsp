@@ -20,8 +20,8 @@
 	    
 	    <c:forEach var="mlv" items="${ myLikeVideo }">
 	        <a href="${ cl }/watch?v=${ mlv.videos.videoUrl }" 
-	        	class="block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow p-4 mb-4 flex cursor-pointer">
-	            <div class="relative w-48 h-28 flex-shrink-0">
+	        	class="block bg-white hover:bg-gray-100 transition mb-4 flex cursor-pointer">
+	            <div class="relative w-52 flex-shrink-0">
 	                <img src="${ mlv.videos.imgPath }" alt="thumbnail" class="w-full h-full object-cover rounded-lg"/>
 	            </div>
 	            

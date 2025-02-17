@@ -2,8 +2,6 @@ package com.e.d.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -22,8 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.e.d.model.entity.CreatorEntity;
@@ -35,11 +31,11 @@ import com.e.d.model.repository.SubscriptionsRepository;
 import com.e.d.model.repository.VideosRepository;
 import com.e.d.model.service.CommentService;
 import com.e.d.model.service.CreatorService;
+import com.e.d.model.service.IpService;
 import com.e.d.model.service.LikeService;
 import com.e.d.model.service.SubscriptionsService;
 import com.e.d.model.service.VideosService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,65 +57,15 @@ public class MainController {
 	private final SubscriptionsService subscriptionsService;
 	private final VideosService videosService;
 
+	private final IpService ipService;
+
 	@Autowired
 	private BCryptPasswordEncoder passwordEncode;
 
-	protected void ipPrint() {
-		HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-				.getRequest();
-		String ip = req.getHeader("x-forwarded-for");
-		if (ip == null || ip.isEmpty()) {
-			ip = req.getRemoteAddr();
-			if (ip.equals("0:0:0:0:0:0:0:1")) {
-				try {
-					ip = InetAddress.getLocalHost().getHostAddress();
-				} catch (UnknownHostException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-		log.info("클라이언트 IP : {}", ip);
-		log.info("클라이언트 브라우저 : {}", parseBrowserInfo(req.getHeader("User-Agent")));
-	}
-
-	protected String parseBrowserInfo(String userAgent) {
-		String browserName = "";
-		String version = "";
-
-		userAgent = userAgent.toLowerCase();
-
-		if (userAgent.contains("chrome") && !userAgent.contains("edg")) {
-			browserName = "구글 크롬";
-			version = extractVersion(userAgent, "chrome/");
-		} else if (userAgent.contains("safari") && !userAgent.contains("chrome")) {
-			browserName = "사파리";
-			version = extractVersion(userAgent, "version/");
-		} else if (userAgent.contains("firefox")) {
-			browserName = "파이어폭스";
-			version = extractVersion(userAgent, "firefox/");
-		} else if (userAgent.contains("edg")) {
-			browserName = "엣지";
-			version = extractVersion(userAgent, "edg/");
-		} else {
-			browserName = "기타 브라우저";
-		}
-
-		return version.isEmpty() ? browserName : browserName + " " + version;
-	}
-
-	protected String extractVersion(String userAgent, String keyword) {
-		int start = userAgent.indexOf(keyword) + keyword.length();
-		int end = userAgent.indexOf(" ", start);
-		if (end == -1) {
-			end = userAgent.length();
-		}
-		return userAgent.substring(start, end);
-	}
-
 	@GetMapping("/")
 	public String index(@RequestParam(defaultValue = "0") int page, Model model) {
-		ipPrint();		int pageSize = 4;
+		ipService.ipPrint();
+		int pageSize = 4;
 		Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Direction.DESC, "videoId"));
 		Page<VideosEntity> videoPage = videosRepository.findAll(pageable);
 
@@ -150,23 +96,22 @@ public class MainController {
 
 	@PostMapping("/loginF")
 	public String login(@RequestParam String creatorName, @RequestParam String creatorPassword, HttpSession session) {
-	    try {
-	        Optional<CreatorEntity> creatorOpt = creatorService.authenticate(creatorName, creatorPassword);
-	        
-	        if (creatorOpt.isPresent()) {
-	            CreatorEntity creator = creatorOpt.get();
-	            session.setAttribute("creatorSession", creator);
-	            log.info("로그인 성공: 사용자 [{}], ID [{}]", creator.getCreatorName(), creator.getCreatorId());
-	        } else {
-	            log.warn("로그인 실패: 사용자 이름 [{}]에 해당하는 계정을 찾을 수 없거나 비밀번호 불일치.", creatorName);
-	        }
-	    } catch (IllegalArgumentException e) {
-	        log.warn("로그인 실패: {}", e.getMessage());
-	    }
+		try {
+			Optional<CreatorEntity> creatorOpt = creatorService.authenticate(creatorName, creatorPassword);
 
-	    return "redirect:/";
+			if (creatorOpt.isPresent()) {
+				CreatorEntity creator = creatorOpt.get();
+				session.setAttribute("creatorSession", creator);
+				log.info("로그인 성공: 사용자 [{}], ID [{}]", creator.getCreatorName(), creator.getCreatorId());
+			} else {
+				log.warn("로그인 실패: 사용자 이름 [{}]에 해당하는 계정을 찾을 수 없거나 비밀번호 불일치.", creatorName);
+			}
+		} catch (IllegalArgumentException e) {
+			log.warn("로그인 실패: {}", e.getMessage());
+		}
+
+		return "redirect:/";
 	}
-
 
 	@PostMapping("/logout")
 	public String logout(HttpSession session) {
@@ -194,23 +139,23 @@ public class MainController {
 
 	@GetMapping("/channel/{creatorName}")
 	public String creatorProfile(@PathVariable String creatorName, Model model, HttpSession session) {
-        Optional<CreatorEntity> creatorOpt = creatorService.getCreatorProfile(creatorName);
-        CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
-        CreatorEntity creator = creatorOpt.get();
+		Optional<CreatorEntity> creatorOpt = creatorService.getCreatorProfile(creatorName);
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+		CreatorEntity creator = creatorOpt.get();
 
-        if (creatorOpt.isEmpty()) return "redirect:/"; 
+		if (creatorOpt.isEmpty()) return "redirect:/";
 
-        model.addAttribute("creator", creator);
-        model.addAttribute("creatorVideosList", videosService.getCreatorVideos(creator.getCreatorId()));
+		model.addAttribute("creator", creator);
+		model.addAttribute("creatorVideosList", videosService.getCreatorVideos(creator.getCreatorId()));
 
-        if (user != null) {
-            boolean isSubscribed = subscriptionsService.isSubscribed(creator.getCreatorId(), user.getCreatorId());
-            model.addAttribute("isSubscribed", isSubscribed);
-        }
+		if (user != null) {
+			boolean isSubscribed = subscriptionsService.isSubscribed(creator.getCreatorId(), user.getCreatorId());
+			model.addAttribute("isSubscribed", isSubscribed);
+		}
 
-        return "creator/channel";
-    }
-	
+		return "creator/channel";
+	}
+
 	@GetMapping("/you")
 	public String showCreatorProfile(HttpSession session, Model model) {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
@@ -218,7 +163,7 @@ public class MainController {
 		model.addAttribute("you", creatorRepository.findById(user.getCreatorId()).orElse(null));
 		return "creator/you";
 	}
-	
+
 	@GetMapping("/you/like")
 	public String myLikedVideoList(HttpSession session, Model model) {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
@@ -308,8 +253,7 @@ public class MainController {
 	@GetMapping("/myVideo")
 	public String myVideo(HttpSession session, Model m) {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
-		if (user == null)
-			return "creator/login";
+		if (user == null) return "creator/login";
 		m.addAttribute("myvideos", videosRepository.findByCreatorVal(user.getCreatorId()));
 		return "dashboard/myVideo";
 	}
@@ -317,18 +261,13 @@ public class MainController {
 	@GetMapping("/myVideo/dashboard")
 	public String dashboardPage(HttpSession session, Model m) {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
-		if (user == null)
-			return "creator/login";
+		if (user == null) return "creator/login";
 
 		if (videosRepository.countByCreatorVal(user.getCreatorId()) != 0) {
 			m.addAttribute("countMyVideos", videosRepository.countByCreatorVal(user.getCreatorId())); // 내가 올린 영상
-			m.addAttribute("commentCntMyVideos", commentRepository.countByCommentUserid(user.getCreatorId())); // 내 영상에
-																												// 달린 모든
-																												// 댓글 갯수
-			m.addAttribute("sumMyVideosLikes", videosService.sumByMyVideoLikes(user.getCreatorId())); // 내가 올린 영상의 모든
-																										// 좋아요 수
-			m.addAttribute("sumMyVideosViews", videosService.sumByMyVideoViews(user.getCreatorId())); // 내가 올린 영상의 모든
-																										// 조회수
+			m.addAttribute("commentCntMyVideos", commentRepository.countByCommentUserid(user.getCreatorId())); // 내 영상에 달린 모든 댓글 갯수
+			m.addAttribute("sumMyVideosLikes", videosService.sumByMyVideoLikes(user.getCreatorId())); // 내가 올린 영상의 모든 좋아요 수
+			m.addAttribute("sumMyVideosViews", videosService.sumByMyVideoViews(user.getCreatorId())); // 내가 올린 영상의 모든 조회수
 		}
 
 		return "dashboard/dashboard";
@@ -337,8 +276,7 @@ public class MainController {
 	@GetMapping("/myVideo/comment")
 	public String myVideoComment(HttpSession session, Model m) {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
-		if (user == null)
-			return "creator/login";
+		if (user == null) return "creator/login";
 		m.addAttribute("myVideoCommentList", commentRepository.findByCommentUserid(user.getCreatorId()));
 		return "dashboard/videoAllComment";
 	}
@@ -347,7 +285,7 @@ public class MainController {
 	public String myVideoSubscribe(HttpSession session, Model m) {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 		if (user == null) return "creator/login";
-		
+
 		m.addAttribute("mySubscribeLists", subscriptionsService.myVideoSubscribe(session));
 		return "dashboard/subscribe";
 	}
@@ -366,8 +304,7 @@ public class MainController {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 		Optional<VideosEntity> video = videosRepository.findById(videoId);
 
-		if (user == null)
-			return "creator/login";
+		if (user == null) return "creator/login";
 		if (video.isPresent() && user != null && user.getCreatorId() == video.get().getCreatorVal()) {
 			m.addAttribute("updatingVideo", video.get());
 			return "creator/myVideoUpdate";
@@ -381,8 +318,7 @@ public class MainController {
 			@RequestParam(required = false) MultipartFile imgPath,
 			@RequestParam(required = false) MultipartFile videoPath, @RequestParam String currentImgPath,
 			@RequestParam String currentVideoPath, HttpSession session) {
-		videosService.updateVideo(videoId, creatorName, tag, title, more, imgPath,
-				videoPath, currentImgPath, currentVideoPath, session);
+		videosService.updateVideo(videoId, creatorName, tag, title, more, imgPath, videoPath, currentImgPath, currentVideoPath, session);
 		return "redirect:/myVideo";
 	}
 
@@ -395,8 +331,7 @@ public class MainController {
 	public String confirmPassword(@RequestParam String creatorPassword, HttpSession s, Model m) {
 		CreatorEntity user = (CreatorEntity) s.getAttribute("creatorSession");
 		Optional<CreatorEntity> userInfo = creatorRepository.findById(user.getCreatorId());
-		if (user != null && userInfo.isPresent()
-				&& passwordEncode.matches(creatorPassword, user.getCreatorPassword())) {
+		if (user != null && userInfo.isPresent() && passwordEncode.matches(creatorPassword, user.getCreatorPassword())) {
 			m.addAttribute("creatorInfomation", userInfo.get());
 			m.addAttribute("realCreatorPassword", creatorPassword);
 			return "creator/realUpdateMe";
@@ -410,9 +345,7 @@ public class MainController {
 			@RequestParam MultipartFile profileImgPath, HttpSession session) throws IllegalStateException, IOException {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 
-		creatorService.updateAboutMe(user.getCreatorId(), creatorName, creatorEmail, creatorPassword, bio, tel,
-				profileImgPath, session);
-
+		creatorService.updateAboutMe(user.getCreatorId(), creatorName, creatorEmail, creatorPassword, bio, tel,profileImgPath, session);
 		return "creator/you";
 	}
 
@@ -433,19 +366,17 @@ public class MainController {
 		}
 
 		session.invalidate();
-
 		return "index";
 	}
-	
+
 	@PostMapping("/like")
-	public String addLike(@RequestParam long likeVdoId, 
-			@RequestParam String likeVdoName, HttpSession session) {
+	public String addLike(@RequestParam long likeVdoId, @RequestParam String likeVdoName, HttpSession session) {
 		videosRepository.findById(likeVdoId).ifPresent(vdo -> {
 			likeService.addLike(likeVdoId, likeVdoName, session);
 		});
 		return "redirect:/watch?v=" + videosRepository.findById(likeVdoId).orElse(null).getVideoUrl();
 	}
-	
+
 	@PostMapping("/delLike")
 	public String delLike(@RequestParam long likeId) {
 		return likeService.delLike(likeId);

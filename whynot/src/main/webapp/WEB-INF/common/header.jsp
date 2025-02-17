@@ -39,7 +39,7 @@
 				  	
 				  	<div id="profileDropdownMenu" class="fixed top-0 right-0 w-full h-full z-10 hidden"></div>
 				  	
-				  	<div id="profileDropdown" class="fixed top-16 right-4 bg-white py-1 text-black w-72 border z-20 rounded-lg font-normal shadow hidden">
+				  	<div id="profileDropdown" class="fixed top-16 right-4 bg-white py-1 text-black w-72 border-2 z-20 rounded-lg font-normal shadow-xl hidden">
 				  		<div class="flex px-4 pb-1">
 				  			<img src="${ sessionScope.creatorSession.profileImgPath }" class="w-16 h-16 rounded-full" loading="lazy">
 				  			<div class="ml-2">

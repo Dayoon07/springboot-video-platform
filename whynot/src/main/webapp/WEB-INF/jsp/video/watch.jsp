@@ -125,7 +125,7 @@
                     </c:if>
                 </div>
 
-                <div class="mt-6 space-y-4">
+                <div style="margin-bottom: 300px;" class="mt-6 space-y-4">
                     <h2 class="text-lg font-bold">
                         댓글 
                         <c:if test="${ empty watchTheVideoCommentList }">없음</c:if>
@@ -176,7 +176,7 @@
                                             	<form action="${ cl }/updateComment" method="post" autocomplete="off" class="px-5">
                                             		<button type="button" class="hover:underline hover:text-blue-500">댓글 수정</button>
                                             	</form>
-                                            	<c:if test="${ comment.commentUserid == sessionScope.creatorSession.creatorId || comment.commenterUserid == sessionScope.creatorSession.creatorId }">
+                                            	<c:if test="${ comment.commentUserid eq sessionScope.creatorSession.creatorId || comment.commenterUserid eq sessionScope.creatorSession.creatorId }">
 	                                            	<form action="${ cl }/deleteComment" method="post" autocomplete="off">
 	                                            		<input type="hidden" name="commentId" id="commentId" value="${ comment.commentId }" required readonly>
 	                                            		<input type="hidden" name="videoId" id="videoId" value="${ watchTheVideo.videoId }" required readonly>
