@@ -26,6 +26,7 @@ import com.e.d.model.repository.CreatorRepository;
 import com.e.d.model.repository.LikeRepository;
 import com.e.d.model.repository.SubscriptionsRepository;
 import com.e.d.model.repository.VideosRepository;
+import com.e.d.model.vo.VideosVo;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -44,9 +45,10 @@ public class VideosService {
 
 	private final VideosMapper mapper;
 	
-	public void uploadVideo(String creatorName, String tag, String title, String more, MultipartFile imgPath,
+	public void uploadVideo(String tag, String title, String more, MultipartFile imgPath,
 			MultipartFile videoPath, HttpSession session) throws IOException {
-		Optional<CreatorEntity> user = creatorRepository.findByCreatorName(creatorName);
+		CreatorEntity creator = (CreatorEntity) session.getAttribute("creatorSession");
+		Optional<CreatorEntity> user = creatorRepository.findByCreatorName(creator.getCreatorName());
 		if (user.isEmpty() || user.get().getCreatorName() == null || user.get().getCreatorName().isEmpty()) {
 			throw new IllegalArgumentException("Creator not found");
 		}
@@ -200,6 +202,10 @@ public class VideosService {
 	
 	public List<LikeVideosDto> selectByMyLikeVideo(long id) {
 		return mapper.selectByMyLikeVideo(id);
+	}
+	
+	public List<VideosVo> search(String searchWord) {
+		return mapper.search(searchWord);
 	}
 	
 }

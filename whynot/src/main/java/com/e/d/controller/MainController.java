@@ -79,7 +79,7 @@ public class MainController {
 
 	@GetMapping("/search")
 	public String searchMethod(@RequestParam String t, Model model) {
-		model.addAttribute("searchList", videosRepository.searchByTitleIgnoreCaseContaining(t));
+		model.addAttribute("searchList", videosService.search(t));
 		model.addAttribute("searchWord", t);
 		return "video/search";
 	}
@@ -178,11 +178,10 @@ public class MainController {
 	}
 
 	@PostMapping("/uploadVideo")
-	public String upload(@RequestParam String creatorName, @RequestParam String tag, @RequestParam String title,
-			@RequestParam String more, @RequestParam MultipartFile imgPath, @RequestParam MultipartFile videoPath,
-			HttpSession session) {
+	public String upload(@RequestParam String tag, @RequestParam String title, @RequestParam String more, 
+			@RequestParam MultipartFile imgPath, @RequestParam MultipartFile videoPath, HttpSession session) {
 		try {
-			videosService.uploadVideo(creatorName, tag, title, more, imgPath, videoPath, session);
+			videosService.uploadVideo(tag, title, more, imgPath, videoPath, session);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

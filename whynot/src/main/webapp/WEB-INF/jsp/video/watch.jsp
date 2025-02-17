@@ -141,12 +141,12 @@
                                 <textarea rows="1" name="commentContent" placeholder="댓글을 입력하세요..." 
                                     class="w-full resize-none border-b p-2 focus:border-gray-400 focus:outline-none text-sm" required></textarea>
                             </div>
-                            <div class="flex justify-end gap-2">
-                                <button type="reset" class="px-3 py-1.5 text-sm text-gray-500 bg-gray-100 rounded-md hover:bg-gray-200">
-                                    취소
-                                </button>
-                                <button type="submit" class="px-3 py-1.5 text-sm text-white bg-blue-500 rounded-md hover:bg-blue-600">
+                            <div class="flex justify-end">
+                                <button type="submit" id="commentWriteBtn" class="px-4 py-2 text-md text-white bg-blue-500 rounded-lg hover:bg-blue-600 mx-5">
                                     댓글 작성
+                                </button>
+                                <button type="reset" class="px-4 py-2 text-md text-gray-500 bg-gray-100 rounded-lg hover:bg-gray-200">
+                                    취소
                                 </button>
                             </div>
                         </form>

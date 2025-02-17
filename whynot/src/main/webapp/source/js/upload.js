@@ -1,67 +1,70 @@
-function previewImage(event) {
-    const fileInput = event.target;
-    const previewImg = document.getElementById('previewImg');
-    const maxSize = 1024 * 1024; // 1MB 제한
+document.addEventListener("DOMContentLoaded", () => {
+	const imgDropZone = document.getElementById("imgDropZone");
+	const videoDropZone = document.getElementById("videoDropZone");
+	const imgInput = document.getElementById("imgPath");
+	const videoInput = document.getElementById("videoPath");
 
-    if (fileInput.files && fileInput.files[0]) {
-        let fileSize = fileInput.files[0].size;
+	const handleDragOver = (event) => {
+		event.preventDefault();
+		event.currentTarget.classList.add("border-blue-500", "bg-blue-100");
+	};
 
-        // 파일 크기 체크
-        if (fileSize > maxSize) {
-            alert("썸네일 이미지 업로드 최대 용량은 1MB 입니다");
-            fileInput.value = ''; // 파일 선택 초기화
-            previewImg.src = '';
-            previewImg.classList.add('hidden');
-            return;
-        }
+	const handleDragLeave = (event) => {
+		event.currentTarget.classList.remove("border-blue-500", "bg-blue-100");
+	};
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            previewImg.src = e.target.result; // 미리보기 설정
-            previewImg.classList.remove('hidden'); // 이미지 표시
-        };
-        reader.readAsDataURL(fileInput.files[0]); // 파일을 읽어서 미리보기 설정
-    } else {
-        previewImg.src = '';
-        previewImg.classList.add('hidden');
-    }
-}
+	const handleDrop = (event, input, type) => {
+		event.preventDefault();
+		event.currentTarget.classList.remove("border-blue-500", "bg-blue-100");
 
-// 파일 선택 시 실행
-document.getElementById("imgPath").addEventListener("change", previewImage);
+		const file = event.dataTransfer.files[0];
+		if (!file) return;
 
-// 드래그 앤 드롭 영역 처리
-const imgDropZone = document.getElementById('imgDropZone');
-const imgInput = document.getElementById('imgPath');
+		if (type === "image" && file.size > 3 * 1024 * 1024) {
+			alert("이미지 파일 크기는 최대 3MB까지 가능합니다.");
+			return;
+		}
 
-imgDropZone.addEventListener('click', () => imgInput.click());
+		if (type === "video" && file.size > 100 * 1024 * 1024) {
+			alert("영상 파일 크기는 최대 100MB까지 가능합니다.");
+			return;
+		}
 
-imgDropZone.addEventListener('dragover', (e) => {
-	e.preventDefault();
-	imgDropZone.classList.add('border-blue-400');
-});
+		input.files = event.dataTransfer.files;
+		previewFile(input, type);
+	};
 
-imgDropZone.addEventListener('dragleave', () => {
-	imgDropZone.classList.remove('border-blue-400');
-});
+	const previewFile = (input, type) => {
+		const file = input.files[0];
+		if (!file) return;
 
-imgDropZone.addEventListener('drop', (e) => {
-	e.preventDefault();
-	imgDropZone.classList.remove('border-blue-400');
+		const reader = new FileReader();
+		reader.onload = (e) => {
+			if (type === "image") {
+				const previewImg = document.getElementById("previewImg");
+				previewImg.src = e.target.result;
+				previewImg.classList.remove("hidden");
+			} else if (type === "video") {
+				const previewVideo = document.getElementById("previewVideo");
+				previewVideo.src = e.target.result;
+				previewVideo.classList.remove("hidden");
+			}
+		};
+		reader.readAsDataURL(file);
+	};
 
-	if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-		imgInput.files = e.dataTransfer.files; // 드래그한 파일을 input에 설정
-		const event = new Event('change');
-		imgInput.dispatchEvent(event); // change 이벤트 트리거
-	}
-});
+	imgDropZone.addEventListener("click", () => imgInput.click());
+	videoDropZone.addEventListener("click", () => videoInput.click());
 
-$("#videoPath").on("change", function() {
-	let maxSize = 100 * 1024 * 1024;
-	let fileSize = this.files[0].size;
-	if (fileSize > maxSize) {
-		alert("업로드 최대 용량은 100MB 입니다");
-		$(this).val('');
-		return;
-	}
+	imgDropZone.addEventListener("dragover", handleDragOver);
+	videoDropZone.addEventListener("dragover", handleDragOver);
+
+	imgDropZone.addEventListener("dragleave", handleDragLeave);
+	videoDropZone.addEventListener("dragleave", handleDragLeave);
+
+	imgDropZone.addEventListener("drop", (event) => handleDrop(event, imgInput, "image"));
+	videoDropZone.addEventListener("drop", (event) => handleDrop(event, videoInput, "video"));
+
+	imgInput.addEventListener("change", () => previewFile(imgInput, "image"));
+	videoInput.addEventListener("change", () => previewFile(videoInput, "video"));
 });

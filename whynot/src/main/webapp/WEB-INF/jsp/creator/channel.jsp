@@ -18,9 +18,7 @@
 	<jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 	
 	<div class="flex max-w-4xl py-10 mx-auto">
-        <div class="w-40 h-40 overflow-hidden rounded-full">
-			<img src="${ creator.profileImgPath }" alt="Profile Image" class="w-full h-full object-cover" loading="lazy">
-		</div>
+		<img src="${ creator.profileImgPath }" alt="Profile Image" class="w-28 h-28 md:w-40 md:h-40 rounded-full object-cover" loading="lazy">
         <div class="ml-5"> 
             <h1 class="text-3xl font-semibold">${ creator.creatorName }</h1>
             <h1 class="text-xl py-1">구독자 <fmt:formatNumber value="${ creator.subscribe }" type="number" />명</h1>

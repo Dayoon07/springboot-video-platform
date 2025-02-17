@@ -53,10 +53,18 @@
 	    </association>
 	</resultMap>
 	
+	<select id="search" parameterType="String" resultMap="VideosResultMap">
+		SELECT * FROM whynot_videos 
+		WHERE title LIKE '%' || #{ searchWord } || '%' 
+		OR creator LIKE '%' || #{ searchWord } || '%' 
+		OR more LIKE '%' || #{ searchWord } || '%' 
+		OR tag LIKE '%' || #{ searchWord } || '%'
+	</select>
+	
 	<select id="selectByMyLikeVideo" parameterType="long" resultMap="LikeVideosResultMap">
 	    select * from whynot_like A JOIN whynot_videos B
 	    ON A.LIKE_VDO_ID = B.VIDEO_ID
-	    WHERE LIKER_ID = #{id}
+	    WHERE LIKER_ID = #{ id }
 	</select>
 	
 	<select id="sumByMyVideoViews" parameterType="long" resultType="long">

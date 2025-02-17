@@ -17,8 +17,28 @@ aside {
     left: 50%;
     transform: translate(-50%);
 }
+.drop-zone {
+    transition: all 0.3s ease-in-out;
+}
+#searchBtn {
+	display: none;
+}
 @media (max-width: 840px) {
     #mainFormId {
 		display : none;
+	}
+	#searchBtn {
+		display: block;
+	}
+	#mobileSearchBar {
+		width: 100%;
+		height: 76px;
+		background-color: white;
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	.loginBtn {
+		display: none;
 	}
 }
