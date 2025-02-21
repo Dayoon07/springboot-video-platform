@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			loadMoreBtn.style.display = "none"; // 마지막 페이지면 버튼 숨기기
 		}
 
-		fetch(`http://localhost:9002?page=${currentPage + 1}`)
+		fetch(`${location.origin}?page=${currentPage + 1}`)
 			.then(response => response.text())
 			.then(html => {
 				// 응답 HTML에서 동적으로 영상 리스트 부분 추출 (새로운 데이터만 가져오기)

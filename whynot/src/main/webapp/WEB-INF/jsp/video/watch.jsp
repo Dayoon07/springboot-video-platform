@@ -138,7 +138,7 @@
                                 <img src="${ sessionScope.creatorSession.profileImgPath }" class="w-8 h-8 rounded-full flex-shrink-0">
                                 <input type="hidden" name="creatorId" value="${ sessionScope.creatorSession.creatorId }">
                                 <input type="hidden" name="commentVideo" value="${ watchTheVideo.videoId }">
-                                <textarea rows="1" name="commentContent" placeholder="댓글을 입력하세요..." 
+                                <textarea rows="1" name="commentContent" placeholder="댓글을 입력하세요..." title="댓글을 입력하세요..."  
                                     class="w-full resize-none border-b p-2 focus:border-gray-400 focus:outline-none text-sm" required></textarea>
                             </div>
                             <div class="flex justify-end">
@@ -167,16 +167,17 @@
                                             <div>
                                             	<a href="${ cl }/channel/${ comment.commenter }" 
 	                                                class="${ comment.commenter.equals(videoCreatorProfileInfo.creatorName) ? 
-	                                                'bg-gray-400 rounded-full text-white px-2 py-0.5 text-sm' : 'font-semibold text-sm' }">
+	                                                'bg-gray-400 rounded-full text-white text-sm pl-3 pr-2 pb-1 mr-2' : 'font-semibold text-sm' }">
 	                                                ${ comment.commenter }
 	                                            </a>
 	                                            <span class="text-xs text-gray-400">${ comment.datetime.substring(0, 10) }</span>
                                             </div>
                                             <div class="flex items-center justify-between">
-                                            	<form action="${ cl }/updateComment" method="post" autocomplete="off" class="px-5">
-                                            		<button type="button" class="hover:underline hover:text-blue-500">댓글 수정</button>
-                                            	</form>
-                                            	<c:if test="${ comment.commentUserid eq sessionScope.creatorSession.creatorId || comment.commenterUserid eq sessionScope.creatorSession.creatorId }">
+                                            	<c:if test="${ comment.commenterUserid eq sessionScope.creatorSession.creatorId }">
+                                            		<button type="button" class="hover:underline hover:text-blue-500 px-5" onclick="openUpdateCommentComponent(${ comment.commentId })">댓글 수정</button>
+                                            	</c:if>
+                                            	<!-- 현재 사용자가 업로더 이거나 댓글을 작성한 사람이라면 삭제 버튼 출력 -->
+                                            	<c:if test="${ comment.commentUserid eq sessionScope.creatorSession.creatorId or comment.commenterUserid eq sessionScope.creatorSession.creatorId }">
 	                                            	<form action="${ cl }/deleteComment" method="post" autocomplete="off">
 	                                            		<input type="hidden" name="commentId" id="commentId" value="${ comment.commentId }" required readonly>
 	                                            		<input type="hidden" name="videoId" id="videoId" value="${ watchTheVideo.videoId }" required readonly>
@@ -229,5 +230,7 @@
     
     <jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
     <script src="${ cl }/source/js/likeCount.js"></script>
+    <script src="${ cl }/source/js/commentEdit.js"></script>
+    
 </body>
 </html>

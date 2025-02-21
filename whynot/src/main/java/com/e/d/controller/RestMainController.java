@@ -2,6 +2,7 @@ package com.e.d.controller;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,12 +13,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.e.d.model.dto.CreatorSubscriptionDto;
+import com.e.d.model.entity.CommentEntity;
 import com.e.d.model.entity.CreatorEntity;
 import com.e.d.model.entity.VideosEntity;
+import com.e.d.model.repository.CommentRepository;
 import com.e.d.model.repository.CreatorRepository;
 import com.e.d.model.repository.SubscriptionsRepository;
 import com.e.d.model.repository.VideosRepository;
@@ -38,6 +42,7 @@ public class RestMainController {
 	private final VideosRepository videosRepository;
 	private final CreatorRepository creatorRepository;
 	private final SubscriptionsRepository subscriptionsRepository;
+	private final CommentRepository commentRepository; 
 	private final CommentService commentService;
 	private final CreatorService creatorService;
 	private final VideosService videosService;
@@ -95,7 +100,11 @@ public class RestMainController {
 		return videosService.addLikeButRestApi(param, id);
 	}
 	
-	
+	@PostMapping("/updateCommentFind")
+	public CommentEntity updateCommentFind(@RequestBody Map<String, Long> request) {
+	    long val = request.get("val");
+	    return commentRepository.findById(val).orElse(null);
+	}
 	
 	
 	

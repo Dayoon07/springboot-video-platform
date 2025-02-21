@@ -54,4 +54,11 @@ public class CommentService {
 		}
 	}
 	
+	public String commentEdit(long commentId, String commentContent, long commentVideo) {
+	 	CommentEntity comment = commentRepository.findById(commentId).orElseThrow(() -> new IllegalArgumentException("고유 아이디가 없습니다."));
+	 	comment.setCommentContent(commentContent);
+		commentRepository.save(comment);
+		return "redirect:/watch?v=" + videosRepository.findById(commentVideo).orElse(null).getVideoUrl();
+	}
+	
 }

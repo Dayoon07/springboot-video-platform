@@ -207,6 +207,11 @@ public class MainController {
 		commentService.commentAdd(commentVideo, creatorId, commentContent);
 		return "redirect:/watch?v=" + video.getVideoUrl();
 	}
+	
+	@PostMapping("/commentEdit")
+	public String commentEdit(@RequestParam long commentId, @RequestParam String commentContent, @RequestParam long commentVideo) {
+		return commentService.commentEdit(commentId, commentContent, commentVideo);
+	}
 
 	@Transactional
 	@PostMapping("/deleteComment")
@@ -345,7 +350,8 @@ public class MainController {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 
 		creatorService.updateAboutMe(user.getCreatorId(), creatorName, creatorEmail, creatorPassword, bio, tel,profileImgPath, session);
-		return "creator/you";
+		session.invalidate();
+		return "redirect:/";
 	}
 
 	@Transactional

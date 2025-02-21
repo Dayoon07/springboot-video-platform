@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function writeLikeValue() {
-	fetch(`http://localhost:9002/likeCount?param=${likeVal}&id=${id}`, {
+	fetch(`${location.origin}/likeCount?param=${likeVal}&id=${id}`, {
 			method: "post"})
 			.then(res => res.json())
 			.then((data) => {
