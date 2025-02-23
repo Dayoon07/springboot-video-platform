@@ -109,18 +109,20 @@
                         <span>업로드: ${ watchTheVideo.createAt.substring(0, 13) }</span>
                     </div>
                     <div class="text-sm">
-                        <span class="font-semibold">태그: </span>
-                        <a href="${ cl }/tag/${ watchTheVideo.tag }" class="text-blue-600 hover:underline">
-                            #${ watchTheVideo.tag }
-                        </a>
+                    	<c:if test="${ not empty watchTheVideo.tag }">
+                    		<span class="font-semibold">태그: </span>
+	                        <a href="${ cl }/tag/${ watchTheVideo.tag }" class="text-blue-600 hover:underline">
+	                            #${ watchTheVideo.tag }
+	                        </a>
+                    	</c:if>
                     </div>
-                    <c:if test="${ watchTheVideo.more.length() > 10 }">
+                    <c:if test="${ not empty watchTheVideo.more and watchTheVideo.more.length() > 10 }">
                         <details class="text-sm text-gray-700">
                             <summary class="cursor-pointer hover:text-blue-600">더보기...</summary>
                             <p class="mt-2 whitespace-pre-wrap">${ watchTheVideo.more }</p>
                         </details>
                     </c:if>
-                    <c:if test="${ watchTheVideo.more.length() < 10 }">
+                    <c:if test="${ not empty watchTheVideo.more and watchTheVideo.more.length() < 10 }">
                         <p class="text-sm whitespace-pre-wrap">${ watchTheVideo.more }</p>
                     </c:if>
                 </div>

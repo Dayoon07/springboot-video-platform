@@ -276,6 +276,14 @@ public class MainController {
 
 		return "dashboard/dashboard";
 	}
+	
+	@GetMapping("/myVideo/myComment")
+	public String myAllComment(HttpSession session, Model m) {
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+		if (user == null) return "creator/login";
+		m.addAttribute("myAllComment", commentService.findMyAllComment(user.getCreatorId()));
+		return "dashboard/myComment";
+	}
 
 	@GetMapping("/myVideo/comment")
 	public String myVideoComment(HttpSession session, Model m) {

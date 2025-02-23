@@ -38,15 +38,13 @@
 	        <p class="text-center text-sm text-gray-700 mb-6">계정을 삭제하면 모든 데이터가 영구적으로 사라집니다. 이 작업은 되돌릴 수 없습니다.</p>
 	        <form action="${ cl }/deleteAccount" method="post" autocomplete="off">
 	            <input type="text" name="creatorId" value="${ sessionScope.creatorSession.creatorId }" class="hidden" required readonly>
-	            <div class="flex justify-center space-x-4">
-	                <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-600">
-	                    삭제
-	                </button>
-	                <button type="button" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
-	                	onclick="closeDeleteAccountModal()">
-	                    취소
-	                </button>
-	            </div>
+				<button type="submit" class="w-full bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-600">
+	            	삭제
+	            </button>
+	            <button type="button" class="w-full mt-2 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400"
+	            	onclick="closeDeleteAccountModal()">
+	            	취소
+	            </button>
 	        </form>
 	    </div>
 	</div>

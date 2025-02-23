@@ -2,11 +2,13 @@ package com.e.d.model.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.e.d.model.dto.CommentVideosDto;
 import com.e.d.model.entity.CommentEntity;
 import com.e.d.model.entity.CreatorEntity;
 import com.e.d.model.entity.VideosEntity;
@@ -59,6 +61,10 @@ public class CommentService {
 	 	comment.setCommentContent(commentContent);
 		commentRepository.save(comment);
 		return "redirect:/watch?v=" + videosRepository.findById(commentVideo).orElse(null).getVideoUrl();
+	}
+	
+	public List<CommentVideosDto> findMyAllComment(long commentId) {
+		return commentMapper.findMyAllComment(commentId);
 	}
 	
 }

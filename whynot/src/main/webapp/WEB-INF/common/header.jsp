@@ -78,15 +78,13 @@
 	    <div class="w-full bg-white flex items-center p-4" style="height: 56px;">
 	        <button class="text-black text-3xl mr-5 cursor-pointer" onclick="closeSide()">&#9776;</button>
 	        <a href="/" class="text-2xl font-bold">
-		    	<span class="text-red-600">Why</span>
-		    	<span class="text-black">not</span>
+		    	<span class="text-red-600">Why</span><span class="text-black">not</span>
 			</a>
 		</div>
 	    <ul class="space-y-2 pt-4 px-4">
 	    	<c:if test="${ empty sessionScope.creatorSession }">
 	    		<li><a href="${ cl }/login" class="block py-2 px-4 rounded-md hover:bg-gray-200">로그인</a></li>
 	    	</c:if>
-	    	<hr class="my-2 border-gray-300">
 		    <li><a href="${ cl }/" class="block py-2 px-4 rounded-md hover:bg-gray-200">홈</a></li>
 		    <li><a href="${ cl }/mySubscri" class="block py-2 px-4 rounded-md hover:bg-gray-200">구독</a></li>
 		    <li><a href="${ cl }/you/like" class="block py-2 px-4 rounded-md hover:bg-gray-200">좋아요를 누른 영상</a></li>

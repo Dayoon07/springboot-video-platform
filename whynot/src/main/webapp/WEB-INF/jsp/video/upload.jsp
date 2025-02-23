@@ -52,7 +52,7 @@
 	                <div>
 	                    <label for="tag" class="block text-lg font-semibold mb-2 text-gray-700">영상 태그</label>
 	                    <input class="w-full p-3 bg-gray-50 rounded-lg border border-gray-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400" 
-	                    	id="tag" name="tag" placeholder="태그를 입력하세요" required>
+	                    	id="tag" name="tag" placeholder="태그를 입력하세요">
 	                </div>
 	                <div>
 	                    <label for="more" class="block text-lg font-semibold mb-2 text-gray-700">영상 설명</label>
