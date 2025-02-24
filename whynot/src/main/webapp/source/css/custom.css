@@ -40,7 +40,7 @@ aside {
 	left: 0;
 }
 
-@media ( max-width : 840px) {
+@media (max-width : 840px) {
 	#mainFormId {
 		display: none;
 	}

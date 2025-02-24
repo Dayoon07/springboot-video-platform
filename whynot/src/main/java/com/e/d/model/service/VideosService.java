@@ -208,4 +208,8 @@ public class VideosService {
 		return mapper.search(searchWord);
 	}
 	
+	public List<VideosVo> allVideo() {
+		return mapper.allVideo();
+	}
+	
 }

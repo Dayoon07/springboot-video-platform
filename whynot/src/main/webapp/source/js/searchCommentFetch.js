@@ -20,12 +20,15 @@ function searchComments() {
 								<img src="${comment.commenterProfilepath}" class="w-10 h-10 rounded-full">
 										
 								<div class="flex-1">
-									<div class="flex justify-between">
-										<span class="font-semibold">${comment.commenter}</span>
-										<span class="text-sm text-gray-500">${comment.datetime}</span>
-									</div>
-										                
+									<p class="text-sm text-gray-500">${comment.datetime}</p>
+									<span class="font-semibold">${comment.commenter}</span>
 									<p class="mt-1 text-gray-700">${comment.commentContent}</p>
+								</div>
+								<div>
+									<form action="${location.origin}/deleteCommentButAdminAccount" method="post" autocomplete="off">
+										<input type="hidden" name="commentId" id="commentId" value="${comment.commentId}" required readonly>
+	                                    <button type="submit" class="hover:underline hover:text-red-500 mr-5">댓글 삭제</button>
+									</form>
 								</div>
 							</div>
 						</div>

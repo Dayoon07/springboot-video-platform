@@ -53,6 +53,10 @@
 	    </association>
 	</resultMap>
 	
+	<select id="allVideo" resultType="com.e.d.model.vo.VideosVo">
+		SELECT * FROM WHYNOT_VIDEOS ORDER BY VIDEO_ID DESC
+	</select>
+	
 	<select id="search" parameterType="String" resultMap="VideosResultMap">
 		SELECT * FROM whynot_videos 
 		WHERE title LIKE '%' || #{ searchWord } || '%' 

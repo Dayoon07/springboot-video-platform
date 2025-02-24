@@ -14,4 +14,5 @@ public interface VideosMapper {
 	int updateLike(long likes, long videoId);
 	List<LikeVideosDto> selectByMyLikeVideo(long id);
 	List<VideosVo> search(String searchWord);
+	List<VideosVo> allVideo();
 }

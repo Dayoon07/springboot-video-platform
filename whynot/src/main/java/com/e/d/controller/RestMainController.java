@@ -52,15 +52,6 @@ public class RestMainController {
 		return videosRepository.findAll();
 	}
 	
-	@GetMapping("/loadMore")
-	public List<VideosEntity> loadMore(@RequestParam(defaultValue = "0") int page) {
-	    int pageSize = 8;
-	    Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Direction.DESC, "videoId"));
-	    Page<VideosEntity> videoPage = videosRepository.findAll(pageable);
-
-	    return videoPage.getContent();
-	}
-	
 	@GetMapping("/subscribeCount")
 	public ResponseEntity<Long> subscribeCount(HttpSession s) {
 	    CreatorEntity user = (CreatorEntity) s.getAttribute("creatorSession");

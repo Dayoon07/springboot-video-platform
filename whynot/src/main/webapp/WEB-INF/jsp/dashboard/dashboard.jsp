@@ -18,18 +18,11 @@
     <main class="flex flex-grow border-t" style="height: calc(100% - 76px);">
 	    <div class="w-64 bg-gray-200 border-r">
 	        <ul>
-	        	<li>
-	                <a href="${ cl }/myVideo" class="block p-4 bg-gray-200 hover:bg-white transition">콘텐츠</a>
-	            </li>
-	            <li>
-	                <a href="${ cl }/myVideo/dashboard" class="block p-4 bg-white hover:bg-white transition">대시보드</a>
-	            </li>
-	            <li>
-	                <a href="${ cl }/myVideo/comment" class="block p-4 bg-gray-200 hover:bg-white transition">댓글</a>
-	            </li>
-	            <li>
-	                <a href="${ cl }/myVideo/subscribe" class="block p-4 bg-gray-200 hover:bg-white transition">나를 구독한 유저</a>
-	            </li>
+	        	<li><a href="${ cl }/myVideo" class="block p-4 bg-gray-200 hover:bg-white transition">콘텐츠</a></li>
+	            <li><a href="${ cl }/myVideo/dashboard" class="block p-4 bg-white hover:bg-white transition">대시보드</a></li>
+	            <li><a href="${ cl }/myVideo/comment" class="block p-4 bg-gray-200 hover:bg-white transition">댓글</a></li>
+	            <li><a href="${ cl }/myVideo/myComment" class="block p-4 bg-gray-200 hover:bg-white transition">작성한 댓글</a></li>
+	            <li><a href="${ cl }/myVideo/subscribe" class="block p-4 bg-gray-200 hover:bg-white transition">나를 구독한 유저</a></li>
 	        </ul>
 	    </div>
 	

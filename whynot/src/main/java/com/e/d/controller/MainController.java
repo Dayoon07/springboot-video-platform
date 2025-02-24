@@ -63,17 +63,9 @@ public class MainController {
 	private BCryptPasswordEncoder passwordEncode;
 
 	@GetMapping("/")
-	public String index(@RequestParam(defaultValue = "0") int page, Model model) {
+	public String index(Model model) {
 		ipService.ipPrint();
-		int pageSize = 4;
-		Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Direction.DESC, "videoId"));
-		Page<VideosEntity> videoPage = videosRepository.findAll(pageable);
-
-		model.addAttribute("allVideo", videoPage.getContent());
-		model.addAttribute("currentPage", page);
-		model.addAttribute("totalPages", videoPage.getTotalPages());
-		model.addAttribute("countVideos", videosRepository.count());
-
+		model.addAttribute("allVideo", videosRepository.findAll(Sort.by(Direction.DESC, "videoId")));
 		return "index";
 	}
 
@@ -224,7 +216,7 @@ public class MainController {
 	@PostMapping("/deleteCommentButAdminAccount")
 	public String deleteCommentButAdminAccount(@RequestParam long commentId) {
 		commentRepository.deleteById(commentId);
-		return "redirect:/myVideo/analysis";
+		return "redirect:/myVideo/comment";
 	}
 
 	@PostMapping("/subscri")

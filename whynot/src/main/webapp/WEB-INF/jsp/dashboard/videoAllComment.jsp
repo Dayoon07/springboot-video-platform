@@ -18,18 +18,11 @@
     <main class="flex flex-grow border-t" style="height: calc(100% - 76px);">
         <div class="w-64 bg-gray-200 border-r">
             <ul>
-            	<li>
-                    <a href="${ cl }/myVideo" class="block p-4 bg-gray-200 hover:bg-white transition">콘텐츠</a>
-                </li>
-                <li>
-                    <a href="${ cl }/myVideo/dashboard" class="block p-4 bg-gray-200 hover:bg-white transition">대시보드</a>
-                </li>
-                <li>
-                    <a href="${ cl }/myVideo/comment" class="block p-4 bg-white hover:bg-white transition">댓글</a>
-                </li>
-                <li>
-	                <a href="${ cl }/myVideo/subscribe" class="block p-4 bg-gray-200 hover:bg-white transition">나를 구독한 유저</a>
-	            </li>
+            	<li><a href="${ cl }/myVideo" class="block p-4 bg-gray-200 hover:bg-white transition">콘텐츠</a></li>
+	            <li><a href="${ cl }/myVideo/dashboard" class="block p-4 bg-gray-200 hover:bg-white transition">대시보드</a></li>
+	            <li><a href="${ cl }/myVideo/comment" class="block p-4 bg-white hover:bg-white transition">댓글</a></li>
+	            <li><a href="${ cl }/myVideo/myComment" class="block p-4 bg-gray-200 hover:bg-white transition">작성한 댓글</a></li>
+	            <li><a href="${ cl }/myVideo/subscribe" class="block p-4 bg-gray-200 hover:bg-white transition">나를 구독한 유저</a></li>
             </ul>
         </div>
 
@@ -57,7 +50,7 @@
 					                    <div>
 					                    	<span class="text-sm text-gray-500">${ mvcl.datetime }</span><br>
 						                    <span class="font-semibold text-md">${ mvcl.commenter }</span>
-							                <p class="mt-1 text-gray-700">${ mvcl.commentContent }</p>
+							                <p class="mt-1 text-gray-700 w-4/5">${ mvcl.commentContent }</p>
 					                    </div>
 					                    <div>
 					                    	<form action="${ cl }/deleteCommentButAdminAccount" method="post" autocomplete="off">
@@ -92,6 +85,5 @@
     <script src="${ cl }/source/js/searchCommentFetch.js"></script>
 	<script src="${ cl }/source/js/script.js"></script>
 	<script src="${ cl }/source/js/myVideoTab.js"></script>
-	<script src="${ cl }/source/js/main.js"></script>
 </body>
 </html>
