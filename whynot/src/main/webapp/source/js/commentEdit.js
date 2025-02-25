@@ -1,11 +1,12 @@
 function openUpdateCommentComponent(commentId) {
-    fetch(`/updateCommentFind`, {
+    fetch(`${location.origin}/updateCommentFind`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ val: commentId })
     })
-    .then((res) => res.json())
+    .then(async (res) => await res.json())
     .then((data) => {
+		console.log(data);
         const body = document.querySelector("body");
         const $div = document.createElement("div");
         $div.classList.add("fixed", "top-0", "right-0", "w-96", "h-full", "p-4", "bg-white", "border-l", "z-20", "shadow-lg");
@@ -13,7 +14,7 @@ function openUpdateCommentComponent(commentId) {
         $div.innerHTML = `
             <div class="w-full flex justify-between items-center">
                 <h2 class="text-md font-semibold">댓글 수정</h2>
-                <p onclick="closeUpdateCommentComponent()" class="text-4xl cursor-pointer  hover:bg-gray-200 transition">&times;</p>
+                <p onclick="closeUpdateCommentComponent()" class="text-4xl pr-1 pl-1 pb-1 cursor-pointer hover:bg-gray-200 transition">&times;</p>
             </div>
 			<div class="w-full flex items-center my-2">
 				<img src="${data.commenterProfilepath}" class="w-10 h-10 rounded-full object-cover border-0">

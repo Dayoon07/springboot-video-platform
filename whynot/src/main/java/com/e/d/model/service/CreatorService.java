@@ -15,9 +15,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.e.d.model.dto.CreatorSubscriptionDto;
 import com.e.d.model.entity.CreatorEntity;
 import com.e.d.model.mapper.CreatorMapper;
+import com.e.d.model.repository.CommentRepository;
 import com.e.d.model.repository.CreatorRepository;
+import com.e.d.model.repository.LikeRepository;
+import com.e.d.model.repository.SubscriptionsRepository;
+import com.e.d.model.repository.VideosRepository;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,7 +31,12 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class CreatorService {
 
+	private final CommentRepository commentRepository;
 	private final CreatorRepository creatorRepository;
+	private final LikeRepository likeRepository;
+	private final SubscriptionsRepository subscriptionsRepository;
+	private final VideosRepository videosRepository;
+	
 	private final CreatorMapper creatorMapper;
 	private final PasswordEncoder passwordEncoder;
 
@@ -53,7 +63,7 @@ public class CreatorService {
 
 	/** 서버에 저장하는 용도 */
 	public CreatorEntity creatorSignupFunction2(String creatorName, String creatorEmail, String creatorPassword,
-			String bio, String tel, MultipartFile profileImgPath, HttpSession session) throws IOException {
+			String tel, MultipartFile profileImgPath, HttpSession session) throws IOException {
 		String n = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss"));
 		String exten = profileImgPath.getOriginalFilename().substring(profileImgPath.getOriginalFilename().lastIndexOf("."));
 		String fileName = n + UUID.randomUUID().toString().replaceAll("[^a-zA-Z0-9]", "") + exten;
@@ -70,7 +80,6 @@ public class CreatorService {
 				.creatorEmail(creatorEmail)
 				.creatorPassword(passwordEncoder.encode(creatorPassword))
 				.createAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분")))
-				.bio(bio)
 				.tel(tel)
 				.profileImg(fileName) // 저장된 파일 이름 (UUID 포함)
 				.profileImgPath("/resources/profile-img/" + fileName) // 클라이언트가 접근할 수 있는 상대 경로
@@ -136,5 +145,33 @@ public class CreatorService {
 	public Optional<CreatorEntity> getCreatorProfile(String creatorName) {
         return creatorRepository.findByCreatorName(creatorName);
     }
+	
+	@Transactional
+	public void deleteCreatorAccount(long creatorId) {
+        if (creatorRepository.findById(creatorId).isEmpty()) {
+            log.warn("creatorId {}에 해당하는 계정이 존재하지 않습니다.", creatorId);
+        } else {
+            log.info("creatorId {}에 해당하는 계정을 삭제합니다.", creatorId);
+            
+            commentRepository.deleteByCommenterUserid(creatorId);
+            likeRepository.deleteByLikerId(creatorId);
+            subscriptionsRepository.deleteBySubscribingId(creatorId);
+            videosRepository.deleteByCreatorVal(creatorId);
+            creatorRepository.deleteById(creatorId);
+            
+            log.info("creatorId {}에 해당하는 계정을 성공적으로 삭제했습니다.", creatorId);
+        }
+    }
+	
+	public void createBio(String bio, HttpSession session) {
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+		CreatorEntity creator = creatorRepository.findById(user.getCreatorId()).get();
+		creator.setBio(bio);
+		creatorRepository.save(creator);
+	}
+	
+	public CreatorEntity myInfo(long creatorId) {
+		return creatorRepository.findById(creatorId).orElse(null);
+	}
 
 }

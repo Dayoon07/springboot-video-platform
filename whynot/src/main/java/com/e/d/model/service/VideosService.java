@@ -141,10 +141,8 @@ public class VideosService {
 	public void updateVideo(Long videoId, String creatorName, String tag, String title, String more,
 			MultipartFile imgPath, MultipartFile videoPath, String currentImgPath, String currentVideoPath,
 			HttpSession session) {
-		VideosEntity video = videosRepository.findById(videoId)
-				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 비디오입니다."));
-		creatorRepository.findByCreatorName(creatorName)
-				.orElseThrow(() -> new IllegalArgumentException("크리에이터를 찾을 수 없습니다."));
+		VideosEntity video = videosRepository.findById(videoId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 비디오입니다."));
+		creatorRepository.findByCreatorName(creatorName).orElseThrow(() -> new IllegalArgumentException("크리에이터를 찾을 수 없습니다."));
 
 		video.setTitle(title);
 		video.setMore(more);
@@ -159,10 +157,8 @@ public class VideosService {
 			File imgDir = new File(thumbnailDir);
 			File vdoDir = new File(videoDir);
 
-			if (!imgDir.exists())
-				imgDir.mkdirs();
-			if (!vdoDir.exists())
-				vdoDir.mkdirs();
+			if (!imgDir.exists()) imgDir.mkdirs();
+			if (!vdoDir.exists()) vdoDir.mkdirs();
 
 			if (imgPath != null && !imgPath.isEmpty() && !currentImgPath.equals(imgPath.getOriginalFilename())) {
 				String imgExten = imgPath.getOriginalFilename().substring(imgPath.getOriginalFilename().lastIndexOf("."));
@@ -173,8 +169,7 @@ public class VideosService {
 			}
 			if (videoPath != null && !videoPath.isEmpty()
 					&& !currentVideoPath.equals(videoPath.getOriginalFilename())) {
-				String videoExten = videoPath.getOriginalFilename()
-						.substring(videoPath.getOriginalFilename().lastIndexOf("."));
+				String videoExten = videoPath.getOriginalFilename().substring(videoPath.getOriginalFilename().lastIndexOf("."));
 				String videoName = n + UUID.randomUUID().toString() + videoExten;
 				videoPath.transferTo(new File(videoDir + videoName));
 				video.setVideoName(videoName);

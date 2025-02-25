@@ -34,6 +34,8 @@ public class CommentEntity {
 	@Column(name = "commenter_profilepath", nullable = false)
 	private String commenterProfilepath;
 	
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
 	@Column(name = "comment_content", nullable = false)
 	private String commentContent;
 	

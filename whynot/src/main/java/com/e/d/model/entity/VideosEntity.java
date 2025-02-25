@@ -25,6 +25,8 @@ public class VideosEntity {
 	@Column(name = "title", nullable = false)
 	private String title;
 	
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
 	@Column(name = "more")
 	private String more;
 	

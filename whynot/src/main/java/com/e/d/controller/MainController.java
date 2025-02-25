@@ -7,9 +7,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,12 +26,14 @@ import com.e.d.model.repository.CreatorRepository;
 import com.e.d.model.repository.LikeRepository;
 import com.e.d.model.repository.SubscriptionsRepository;
 import com.e.d.model.repository.VideosRepository;
+import com.e.d.model.repository.ViewStoryRepository;
 import com.e.d.model.service.CommentService;
 import com.e.d.model.service.CreatorService;
 import com.e.d.model.service.IpService;
 import com.e.d.model.service.LikeService;
 import com.e.d.model.service.SubscriptionsService;
 import com.e.d.model.service.VideosService;
+import com.e.d.model.service.ViewStoryService;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -50,15 +49,17 @@ public class MainController {
 	private final LikeRepository likeRepository;
 	private final SubscriptionsRepository subscriptionsRepository;
 	private final VideosRepository videosRepository;
+	private final ViewStoryRepository viewStoryRepository;
 
 	private final CommentService commentService;
 	private final CreatorService creatorService;
 	private final LikeService likeService;
 	private final SubscriptionsService subscriptionsService;
 	private final VideosService videosService;
+	private final ViewStoryService viewStoryService;
 
 	private final IpService ipService;
-
+	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncode;
 
@@ -116,11 +117,11 @@ public class MainController {
 	}
 
 	@PostMapping("/signupF")
-	public String signup(@RequestParam String creatorName, @RequestParam String creatorEmail,
-			@RequestParam String creatorPassword, @RequestParam String bio, @RequestParam String tel,
-			@RequestParam MultipartFile profileImgPath, Model m, HttpSession session) {
+	public String signup(@RequestParam String creatorName, @RequestParam String creatorEmail, 
+			@RequestParam String creatorPassword, @RequestParam String tel, @RequestParam MultipartFile profileImgPath, 
+			Model m, HttpSession session) {
 		try {
-			creatorService.creatorSignupFunction2(creatorName, creatorEmail, creatorPassword, bio, tel, profileImgPath, session);
+			creatorService.creatorSignupFunction2(creatorName, creatorEmail, creatorPassword, tel, profileImgPath, session);
 			m.addAttribute("success", "회원가입에 성공 했습니다.");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -149,11 +150,14 @@ public class MainController {
 	}
 
 	@GetMapping("/you")
-	public String showCreatorProfile(HttpSession session, Model model) {
-		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
-		if (user == null) return "creator/login";
-		model.addAttribute("you", creatorRepository.findById(user.getCreatorId()).orElse(null));
-		return "creator/you";
+	public String showCreatorProfile() {
+		return "me/you";
+	}
+	
+	@PostMapping("/createBio")
+	public String createBio(@RequestParam String bio, HttpSession session) {
+		creatorService.createBio(bio, session);
+		return "me/you";
 	}
 
 	@GetMapping("/you/like")
@@ -163,6 +167,14 @@ public class MainController {
 		model.addAttribute("myLikeVideo", videosService.selectByMyLikeVideo(user.getCreatorId()));
 		return "creator/myLikeVideo";
 	}
+	
+	@GetMapping("/you/viewstory")
+	public String yourViewStory(HttpSession session, Model m) {
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+		if (user == null) return "creator/login";
+		m.addAttribute("myViewStory", viewStoryService.myViewStorySelect(user.getCreatorId()));
+		return "me/viewstory";
+	}
 
 	@GetMapping("/upload")
 	public String moveOnUploadForm(HttpSession session) {
@@ -170,7 +182,7 @@ public class MainController {
 	}
 
 	@PostMapping("/uploadVideo")
-	public String upload(@RequestParam String tag, @RequestParam String title, @RequestParam String more, 
+	public String upload(@RequestParam String tag, @RequestParam String title, @RequestParam String more,
 			@RequestParam MultipartFile imgPath, @RequestParam MultipartFile videoPath, HttpSession session) {
 		try {
 			videosService.uploadVideo(tag, title, more, imgPath, videoPath, session);
@@ -182,6 +194,7 @@ public class MainController {
 
 	@GetMapping("/watch")
 	public String watchTheVideo(@RequestParam String v, Model model, HttpSession session) {
+		if (session.getAttribute("creatorSession") != null) viewStoryService.viewStoryInsert(v, session);
 		try {
 			Map<String, Object> videoDetails = videosService.watchVideo(v, session);
 			model.addAllAttributes(videoDetails);
@@ -193,29 +206,29 @@ public class MainController {
 	}
 
 	@PostMapping("/commentAdd")
-	public String addVideoComment(@RequestParam long commentVideo, @RequestParam String commentContent,
-			@RequestParam long creatorId) throws UnsupportedEncodingException {
+	public String addVideoComment(@RequestParam long commentVideo, @RequestParam String commentContent, 
+			HttpSession session) throws UnsupportedEncodingException {
 		VideosEntity video = videosRepository.findById(commentVideo).get();
-		commentService.commentAdd(commentVideo, creatorId, commentContent);
+		if (session.getAttribute("creatorSession") != null) {
+			commentService.commentAdd(commentVideo, session, commentContent);
+		}
 		return "redirect:/watch?v=" + video.getVideoUrl();
 	}
-	
+
 	@PostMapping("/commentEdit")
 	public String commentEdit(@RequestParam long commentId, @RequestParam String commentContent, @RequestParam long commentVideo) {
 		return commentService.commentEdit(commentId, commentContent, commentVideo);
 	}
 
-	@Transactional
 	@PostMapping("/deleteComment")
 	public String deleteComment(@RequestParam long commentId, @RequestParam long videoId) {
-		commentRepository.deleteById(commentId);
+		commentService.deleteComment(commentId);
 		return "redirect:/watch?v=" + videosRepository.findById(videoId).orElse(null).getVideoUrl();
 	}
 
-	@Transactional
 	@PostMapping("/deleteCommentButAdminAccount")
 	public String deleteCommentButAdminAccount(@RequestParam long commentId) {
-		commentRepository.deleteById(commentId);
+		commentService.deleteCommentButAdminAccount(commentId);
 		return "redirect:/myVideo/comment";
 	}
 
@@ -226,7 +239,8 @@ public class MainController {
 
 	@PostMapping("/deleteSubscri")
 	public String deleteMySubscri(@RequestParam long subscriberId, HttpSession session) {
-		if (session.getAttribute("creatorSession") == null) return "redirect:/login";
+		if (session.getAttribute("creatorSession") == null)
+			return "redirect:/login";
 		subscriptionsService.unsubscribe(subscriberId, session);
 		return "redirect:/mySubscri";
 	}
@@ -261,18 +275,19 @@ public class MainController {
 
 		if (videosRepository.countByCreatorVal(user.getCreatorId()) != 0) {
 			m.addAttribute("countMyVideos", videosRepository.countByCreatorVal(user.getCreatorId())); // 내가 올린 영상
-			m.addAttribute("commentCntMyVideos", commentRepository.countByCommentUserid(user.getCreatorId())); // 내 영상에 달린 모든 댓글 갯수
+			m.addAttribute("commentCntMyVideos", commentRepository.countByCommentUserid(user.getCreatorId())); // 내 영상에 작성된 모든 댓글 갯수
 			m.addAttribute("sumMyVideosLikes", videosService.sumByMyVideoLikes(user.getCreatorId())); // 내가 올린 영상의 모든 좋아요 수
 			m.addAttribute("sumMyVideosViews", videosService.sumByMyVideoViews(user.getCreatorId())); // 내가 올린 영상의 모든 조회수
 		}
 
 		return "dashboard/dashboard";
 	}
-	
+
 	@GetMapping("/myVideo/myComment")
 	public String myAllComment(HttpSession session, Model m) {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 		if (user == null) return "creator/login";
+		
 		m.addAttribute("myAllComment", commentService.findMyAllComment(user.getCreatorId()));
 		return "dashboard/myComment";
 	}
@@ -281,15 +296,14 @@ public class MainController {
 	public String myVideoComment(HttpSession session, Model m) {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 		if (user == null) return "creator/login";
+		
 		m.addAttribute("myVideoCommentList", commentRepository.findByCommentUserid(user.getCreatorId()));
 		return "dashboard/videoAllComment";
 	}
 
 	@GetMapping("/myVideo/subscribe")
 	public String myVideoSubscribe(HttpSession session, Model m) {
-		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
-		if (user == null) return "creator/login";
-
+		if (session.getAttribute("creatorSession") == null) return "creator/login";
 		m.addAttribute("mySubscribeLists", subscriptionsService.myVideoSubscribe(session));
 		return "dashboard/subscribe";
 	}
@@ -318,8 +332,7 @@ public class MainController {
 
 	@PostMapping("/updateVideo")
 	public String updateVideo(@RequestParam long videoId, @RequestParam String creatorName, @RequestParam String tag,
-			@RequestParam String title, @RequestParam String more,
-			@RequestParam(required = false) MultipartFile imgPath,
+			@RequestParam String title, @RequestParam String more, @RequestParam(required = false) MultipartFile imgPath,
 			@RequestParam(required = false) MultipartFile videoPath, @RequestParam String currentImgPath,
 			@RequestParam String currentVideoPath, HttpSession session) {
 		videosService.updateVideo(videoId, creatorName, tag, title, more, imgPath, videoPath, currentImgPath, currentVideoPath, session);
@@ -348,28 +361,16 @@ public class MainController {
 			@RequestParam String creatorPassword, @RequestParam String bio, @RequestParam String tel,
 			@RequestParam MultipartFile profileImgPath, HttpSession session) throws IllegalStateException, IOException {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
-
-		creatorService.updateAboutMe(user.getCreatorId(), creatorName, creatorEmail, creatorPassword, bio, tel,profileImgPath, session);
+		creatorService.updateAboutMe(user.getCreatorId(), creatorName, creatorEmail, creatorPassword, bio, tel,
+				profileImgPath, session);
 		session.invalidate();
 		return "redirect:/";
 	}
 
-	@Transactional
 	@PostMapping("/deleteAccount")
 	public String deleteAccount(@RequestParam long creatorId, HttpSession session) {
 		log.info("deleteAccount 요청이 들어왔습니다. creatorId: {}", creatorId);
-
-		if (creatorRepository.findById(creatorId).isEmpty()) {
-			log.warn("creatorId {}에 해당하는 계정이 존재하지 않습니다.", creatorId);
-		} else {
-			log.info("creatorId {}에 해당하는 계정을 삭제합니다.", creatorId);
-			creatorRepository.deleteById(creatorId);
-			commentRepository.deleteByCommenterUserid(creatorId);
-			subscriptionsRepository.deleteBySubscribingId(creatorId);
-			videosRepository.deleteByCreatorVal(creatorId);
-			log.info("creatorId {}에 해당하는 계정을 성공적으로 삭제했습니다.", creatorId);
-		}
-
+		creatorService.deleteCreatorAccount(creatorId);
 		session.invalidate();
 		return "index";
 	}

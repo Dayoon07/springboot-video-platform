@@ -97,7 +97,10 @@ public class RestMainController {
 	    return commentRepository.findById(val).orElse(null);
 	}
 	
-	
+	@PostMapping("/myInfo")
+	public CreatorEntity userInfomation(@RequestParam long creatorId) {
+		return creatorService.myInfo(creatorId);
+	}
 	
 	
 	

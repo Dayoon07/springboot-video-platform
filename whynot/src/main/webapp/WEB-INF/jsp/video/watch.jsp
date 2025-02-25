@@ -21,7 +21,8 @@
         <div class="w-full lg:w-10/12 lg:px-4">
             <div class="aspect-video bg-black rounded-lg overflow-hidden shadow-lg">
                 <video controls autoplay muted class="w-full h-full">
-                    <source src="${ watchTheVideo.videoPath }" type="video/mp4">
+                    <source src="${ watchTheVideo.videoPath }" 
+                    	type="video/${ watchTheVideo.videoPath.substring(watchTheVideo.videoPath.lastIndexOf('.') + 1) }">
                 </video>
             </div>
 
@@ -138,10 +139,9 @@
                         <form action="${ cl }/commentAdd" method="post" autocomplete="off" class="space-y-3">
                             <div class="flex gap-3">
                                 <img src="${ sessionScope.creatorSession.profileImgPath }" class="w-8 h-8 rounded-full flex-shrink-0">
-                                <input type="hidden" name="creatorId" value="${ sessionScope.creatorSession.creatorId }">
                                 <input type="hidden" name="commentVideo" value="${ watchTheVideo.videoId }">
-                                <textarea rows="1" name="commentContent" placeholder="댓글을 입력하세요..." title="댓글을 입력하세요..."  
-                                    class="w-full resize-none border-b p-2 focus:border-gray-400 focus:outline-none text-sm" required></textarea>
+                                <textarea rows="1" name="commentContent" placeholder="댓글을 입력하세요..." title="댓글을 입력하세요..." oninput="autoResize(this)"   
+                                    class="w-full resize-none border-b p-2 focus:border-gray-400 focus:outline-none text-sm overflow-y-hidden" required></textarea>
                             </div>
                             <div class="flex justify-end">
                                 <button type="submit" id="commentWriteBtn" class="px-4 py-2 text-md text-white bg-blue-500 rounded-lg hover:bg-blue-600 mx-5">
@@ -229,6 +229,29 @@
             </div>
         </div>
     </div>
+    
+    <script>
+    	"use strict";
+	    function autoResize(textarea) {
+	    	textarea.style.height = "auto";
+	        textarea.style.height = textarea.scrollHeight + "px";
+	    }
+	    document.addEventListener("keydown", (e) => {
+            const video = document.querySelector("video");
+        
+            if (e.key === "l") {
+                video.currentTime += 10;
+            } else if (e.key === "j") {
+                video.currentTime -= 10;
+            } else if (e.key === "k") {
+                if (video.paused) {
+                    video.play();
+                } else {
+                    video.pause();
+                }
+            }
+        });
+    </script>
     
     <jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
     <script src="${ cl }/source/js/likeCount.js"></script>

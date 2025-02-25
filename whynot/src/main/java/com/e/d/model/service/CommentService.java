@@ -18,6 +18,7 @@ import com.e.d.model.repository.CreatorRepository;
 import com.e.d.model.repository.VideosRepository;
 import com.e.d.model.vo.CommentVo;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,20 +37,22 @@ public class CommentService {
 		return commentMapper.findCommentsByKeyword(myid, keyword);
 	}
 	
-	public void commentAdd(long commentVideo, long creatorId, String commentContent) {
+	public void commentAdd(long commentVideo, HttpSession session, String commentContent) {
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 		VideosEntity video = videosRepository.findById(commentVideo)
 				.orElseThrow(() -> new IllegalArgumentException("videoId가 비어있습니다"));
 
-		Optional<CreatorEntity> creator = creatorRepository.findById(creatorId);
+		CreatorEntity creator = creatorRepository.findById(user.getCreatorId()).orElse(null);
 		Optional<CreatorEntity> uploder = creatorRepository.findById(video.getCreatorVal());
 
-		if (creator.isPresent()) {
-			CommentEntity comment = CommentEntity.builder().commentVideo(commentVideo)
-					.commenter(creator.get().getCreatorName()).commentUserid(uploder.get().getCreatorId())
-					.commenterUserid(creatorId)
-					.commenterProfile(creator.get().getProfileImg() != null ? creator.get().getProfileImg() : "없음")
-					.commenterProfilepath(
-							creator.get().getProfileImgPath() != null ? creator.get().getProfileImgPath() : "없음")
+		if (creator != null) {
+			CommentEntity comment = CommentEntity.builder()
+					.commentVideo(commentVideo)
+					.commentUserid(uploder.get().getCreatorId())
+					.commenter(creator.getCreatorName()).commentUserid(uploder.get().getCreatorId())
+					.commenterUserid(user.getCreatorId())
+					.commenterProfile(creator.getProfileImg())
+					.commenterProfilepath(creator.getProfileImgPath())
 					.commentContent(commentContent)
 					.datetime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))).build();
 			commentRepository.save(comment);
@@ -65,6 +68,14 @@ public class CommentService {
 	
 	public List<CommentVideosDto> findMyAllComment(long commentId) {
 		return commentMapper.findMyAllComment(commentId);
+	}
+	
+	public void deleteComment(long commentId) {
+		commentRepository.deleteById(commentId);
+	}
+	
+	public void deleteCommentButAdminAccount(long commentId) {
+		commentRepository.deleteById(commentId);
 	}
 	
 }

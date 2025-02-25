@@ -15,4 +15,6 @@ public interface LikeRepository extends JpaRepository<LikeEntity, Long> {
 	long countByLikeVdoId(long likeVdoId);
 	
 	List<LikeEntity> findByLikerId(Long likerId);
+	
+	void deleteByLikerId(long likerId);
 }

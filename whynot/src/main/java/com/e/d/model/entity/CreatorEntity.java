@@ -28,6 +28,8 @@ public class CreatorEntity {
 	@Column(name = "create_at", nullable = false)
 	private String createAt;
 
+	@Lob
+	@Basic(fetch = FetchType.LAZY)
 	@Column(name = "bio")
 	private String bio;
 

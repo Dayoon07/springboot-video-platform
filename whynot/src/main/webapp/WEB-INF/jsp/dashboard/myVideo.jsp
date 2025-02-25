@@ -10,19 +10,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="${ cl }/source/img/videoPlayer-icon.png" type="image/x-icon">
     <link rel="stylesheet" href="${ cl }/source/css/custom.css">
-    <title>whynot - 업로드한 영상</title>
+    <title>whynot - 콘텐츠</title>
 </head>
 <body class="flex flex-col h-screen">
     <jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 
     <main class="flex flex-grow border-t" style="height: calc(100% - 76px);">
-        <div class="w-64 bg-gray-200 border-r">
+        <div class="w-64 bg-gray-200">
             <ul>
             	<li><a href="${ cl }/myVideo" class="block p-4 bg-white hover:bg-white transition">콘텐츠</a></li>
 	            <li><a href="${ cl }/myVideo/dashboard" class="block p-4 bg-gray-200 hover:bg-white transition">대시보드</a></li>
-	            <li><a href="${ cl }/myVideo/comment" class="block p-4 bg-gray-200 hover:bg-white transition">댓글</a></li>
-	            <li><a href="${ cl }/myVideo/myComment" class="block p-4 bg-gray-200 hover:bg-white transition">작성한 댓글</a></li>
-	            <li><a href="${ cl }/myVideo/subscribe" class="block p-4 bg-gray-200 hover:bg-white transition">나를 구독한 유저</a></li>
+	            <li><a href="${ cl }/myVideo/comment" class="block p-4 bg-gray-200 hover:bg-white transition">영상 피드백</a></li>
+	            <li><a href="${ cl }/myVideo/myComment" class="block p-4 bg-gray-200 hover:bg-white transition">나의 댓글</a></li>
+	            <li><a href="${ cl }/myVideo/subscribe" class="block p-4 bg-gray-200 hover:bg-white transition">구독자 조회</a></li>
             </ul>
         </div>
 
@@ -30,7 +30,7 @@
 			<h2 class="text-2xl font-bold mb-4">업로드된 영상</h2>
 			<c:if test="${ not empty myvideos }">
 				<c:forEach var="mvdos" items="${ myvideos }">
-					<div class="w-full flex my-5">
+					<div class="w-full flex my-5 p-2 hover:bg-gray-100 transition">
 						<div>
 							<a href="${ cl }/watch?v=${ mvdos.videoUrl }">
 								<img src="${ mvdos.imgPath }" class="w-72 h-auto rounded mr-4">

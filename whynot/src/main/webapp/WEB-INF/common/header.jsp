@@ -101,7 +101,7 @@
 		    <hr class="my-2 border-gray-300">
 		    <li class="font-semibold text-gray-400 uppercase">내 콘텐츠</li>
 		    <li><a href="${ cl }/myVideo" class="block py-2 px-4 rounded-md hover:bg-gray-200">내 영상</a></li>
-		    <li><a href="#" class="block py-2 px-4 rounded-md hover:bg-gray-200">시청 기록</a></li>
+		    <li><a href="${ cl }/you/viewstory" class="block py-2 px-4 rounded-md hover:bg-gray-200">시청 기록</a></li>
 		</ul><br>
 		<div class="w-full border-gray-300 border-t">
 	    	<p class="text-sm text-gray-500 mt-4 px-4">

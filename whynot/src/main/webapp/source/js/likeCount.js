@@ -14,6 +14,7 @@ function writeLikeValue() {
 			.then(res => res.json())
 			.then((data) => {
 				if (document.getElementById("watchTheVideoLikeVal") != null) {
+					console.log(data);
 					document.getElementById("watchTheVideoLikeVal").textContent = data;
 				} else {
 					console.log(data);	

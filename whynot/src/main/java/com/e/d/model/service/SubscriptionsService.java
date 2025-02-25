@@ -74,7 +74,7 @@ public class SubscriptionsService {
 	}
 
 	public void unsubscribe(long subscriberId, HttpSession session) {
-		CreatorEntity user = (CreatorEntity) session.getAttribute("creator");
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 		Optional<SubscriptionsEntity> mySubscribe = subscriptionsRepository
 				.findBySubscriberIdAndSubscribingId(subscriberId, user.getCreatorId());
 		CreatorEntity channel = creatorRepository.findById(subscriberId).orElse(null);
