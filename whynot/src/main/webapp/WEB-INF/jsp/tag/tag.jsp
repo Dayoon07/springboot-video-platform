@@ -20,7 +20,7 @@
 		<h1 class="text-lg my-2 text-gray-600">관련 태그 영상 ${ videosTagList.size() }개</h1>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         	<c:if test="${ empty videosTagList }">
-        		<h1>없는 태그입니다</h1>
+        		<h1>관련 태그 영상이 없습니다</h1>
         	</c:if>
         	<c:if test="${ not empty videosTagList }">
 	        	<c:forEach var="tagVideo" items="${ videosTagList }">

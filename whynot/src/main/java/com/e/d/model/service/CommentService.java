@@ -78,4 +78,9 @@ public class CommentService {
 		commentRepository.deleteById(commentId);
 	}
 	
+	public String getFullComment(long commentId) {
+		return commentRepository.findById(commentId)
+				.orElse(null).getCommentContent();
+    }
+	
 }

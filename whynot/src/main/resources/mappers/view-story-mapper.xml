@@ -33,9 +33,11 @@
     </resultMap>
     
     <select id="myViewStorySelect" parameterType="long" resultMap="ViewStoryVideosDtoResultMap">
-    	SELECT * FROM WHYNOT_VIDEOS A 
-		JOIN WHYNOT_VIEWSTORY B ON A.VIDEO_ID = B.WATCHED_VIDEO_ID 
-		WHERE B.VIEW_USER_ID = #{id}
+    	SELECT A.* FROM WHYNOT_VIDEOS A
+		WHERE A.VIDEO_ID IN (
+		    SELECT B.WATCHED_VIDEO_ID
+		    FROM WHYNOT_VIEWSTORY B
+		    WHERE B.VIEW_USER_ID = #{id}) 
     </select>
 
 </mapper>

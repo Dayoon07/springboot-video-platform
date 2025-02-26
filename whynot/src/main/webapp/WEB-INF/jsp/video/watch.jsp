@@ -20,7 +20,7 @@
     <div class="container mx-auto py-5 px-3 md:px-5 flex flex-col lg:flex-row lg:justify-between">
         <div class="w-full lg:w-10/12 lg:px-4">
             <div class="aspect-video bg-black rounded-lg overflow-hidden shadow-lg">
-                <video controls autoplay muted class="w-full h-full">
+                <video controls autoplay poster="${ watchTheVideo.imgPath }" class="w-full h-full">
                     <source src="${ watchTheVideo.videoPath }" 
                     	type="video/${ watchTheVideo.videoPath.substring(watchTheVideo.videoPath.lastIndexOf('.') + 1) }">
                 </video>
@@ -140,16 +140,19 @@
                             <div class="flex gap-3">
                                 <img src="${ sessionScope.creatorSession.profileImgPath }" class="w-8 h-8 rounded-full flex-shrink-0">
                                 <input type="hidden" name="commentVideo" value="${ watchTheVideo.videoId }">
-                                <textarea rows="1" name="commentContent" placeholder="댓글을 입력하세요..." title="댓글을 입력하세요..." oninput="autoResize(this)"   
+                                <textarea rows="1" name="commentContent" id="commentContent" placeholder="댓글을 입력하세요..." title="댓글을 입력하세요..." oninput="autoResize(this)"  
                                     class="w-full resize-none border-b p-2 focus:border-gray-400 focus:outline-none text-sm overflow-y-hidden" required></textarea>
                             </div>
                             <div class="flex justify-end">
-                                <button type="submit" id="commentWriteBtn" class="px-4 py-2 text-md text-white bg-blue-500 rounded-lg hover:bg-blue-600 mx-5">
-                                    댓글 작성
-                                </button>
-                                <button type="reset" class="px-4 py-2 text-md text-gray-500 bg-gray-100 rounded-lg hover:bg-gray-200">
-                                    취소
-                                </button>
+                            	<div id="commentContentLength" class="w-auto h-auto"></div>
+                                <div class="flex justify-end">
+                                	<button type="submit" id="commentWriteBtn" class="px-4 py-2 text-md text-white bg-blue-500 rounded-lg hover:bg-blue-600 mx-5">
+	                                    댓글 작성
+	                                </button>
+	                                <button type="reset" class="px-4 py-2 text-md text-gray-500 bg-gray-100 rounded-lg hover:bg-gray-200">
+	                                    취소
+	                                </button>
+                                </div>
                             </div>
                         </form>
                     </c:if>
@@ -188,7 +191,18 @@
 	                                            </c:if>
                                             </div>
                                         </div>
-                                        <p class="mt-1 text-sm break-words">${ comment.commentContent }</p>
+                                        <p class="mt-1 text-sm break-words">
+								            <c:choose>
+								                <c:when test="${ fn:length(comment.commentContent) > 120 }">
+								                    <span class="short-text cursor-pointer" onclick="moreBtn(event, ${ comment.commentId })">
+													    ${ fn:substring(comment.commentContent, 0, 120) }...
+													</span>
+								                </c:when>
+								                <c:otherwise>
+								                    ${ comment.commentContent }
+								                </c:otherwise>
+								            </c:choose>
+								        </p>
                                     </div>
                                 </div>
                             </c:forEach>
@@ -231,31 +245,15 @@
     </div>
     
     <script>
-    	"use strict";
-	    function autoResize(textarea) {
-	    	textarea.style.height = "auto";
-	        textarea.style.height = textarea.scrollHeight + "px";
-	    }
-	    document.addEventListener("keydown", (e) => {
-            const video = document.querySelector("video");
-        
-            if (e.key === "l") {
-                video.currentTime += 10;
-            } else if (e.key === "j") {
-                video.currentTime -= 10;
-            } else if (e.key === "k") {
-                if (video.paused) {
-                    video.play();
-                } else {
-                    video.pause();
-                }
-            }
-        });
+    	
+	    
     </script>
     
     <jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
+    <script src="${ cl }/source/js/watch.js"></script>
     <script src="${ cl }/source/js/likeCount.js"></script>
     <script src="${ cl }/source/js/commentEdit.js"></script>
+    <script src="${ cl }/source/js/commentContentExpansion.js"></script>
     
 </body>
 </html>

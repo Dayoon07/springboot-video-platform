@@ -207,4 +207,8 @@ public class VideosService {
 		return mapper.allVideo();
 	}
 	
+	public List<VideosEntity> repositoryAllVideo() {
+		return videosRepository.findAll();
+	}
+	
 }

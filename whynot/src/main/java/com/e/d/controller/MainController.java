@@ -11,7 +11,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +33,8 @@ import com.e.d.model.service.LikeService;
 import com.e.d.model.service.SubscriptionsService;
 import com.e.d.model.service.VideosService;
 import com.e.d.model.service.ViewStoryService;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.pool.HikariPool;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +63,7 @@ public class MainController {
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncode;
-
+	
 	@GetMapping("/")
 	public String index(Model model) {
 		ipService.ipPrint();

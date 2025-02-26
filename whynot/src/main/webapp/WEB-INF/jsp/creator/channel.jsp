@@ -32,10 +32,8 @@
             </p>
 
             <c:if test="${ isSubscribed }">
-			    <div class="flex justify-center items-center">
-			    	<div>
-			    		<p>구독중</p>
-			    	</div>
+			    <div class="flex items-center">
+			    	<p>구독중</p>
 			    	<div class="px-4">
 			    		<form action="${ cl }/deleteSubscri" method="post" autocomplete="off">
 				    		<input type="hidden" name="subscriberId" id="subscriberId" value="${ creator.creatorId }" readonly readonly>

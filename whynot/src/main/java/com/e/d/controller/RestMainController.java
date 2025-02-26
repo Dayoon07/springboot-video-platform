@@ -4,14 +4,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,8 +44,8 @@ public class RestMainController {
 	private final VideosService videosService;
 	
 	@GetMapping("/api/all")
-	List<VideosEntity> list() {
-		return videosRepository.findAll();
+	public List<VideosEntity> list() {
+		return videosService.repositoryAllVideo();
 	}
 	
 	@GetMapping("/subscribeCount")
@@ -58,12 +54,8 @@ public class RestMainController {
 	    if (user == null) {
 	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(0L);
 	    }
-
-	    Long subscribeCount = creatorRepository.findById(user.getCreatorId())
-	        .map(CreatorEntity::getSubscribe)
-	        .orElse(0L);  // Optional 처리 간단하게
-
-	    return ResponseEntity.ok(subscribeCount);
+	    
+	    return ResponseEntity.ok(creatorService.getSubscribeCount(user.getCreatorId()));
 	}
 	
 	@GetMapping("/searchComments")
@@ -94,13 +86,18 @@ public class RestMainController {
 	@PostMapping("/updateCommentFind")
 	public CommentEntity updateCommentFind(@RequestBody Map<String, Long> request) {
 	    long val = request.get("val");
-	    return commentRepository.findById(val).orElse(null);
+	    return commentRepository.findByCommentId(val);
 	}
 	
 	@PostMapping("/myInfo")
 	public CreatorEntity userInfomation(@RequestParam long creatorId) {
 		return creatorService.myInfo(creatorId);
 	}
+	
+	@PostMapping("/api/findFullComment")
+	public ResponseEntity<String> getFullComment(@RequestBody Map<String, Long> req) {
+        return ResponseEntity.ok(commentService.getFullComment(req.get("commentId")));
+    }
 	
 	
 	

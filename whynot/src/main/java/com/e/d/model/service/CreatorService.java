@@ -173,5 +173,11 @@ public class CreatorService {
 	public CreatorEntity myInfo(long creatorId) {
 		return creatorRepository.findById(creatorId).orElse(null);
 	}
+	
+	public Long getSubscribeCount(long creatorId) {
+		return creatorRepository.findById(creatorId)
+		        .map(CreatorEntity::getSubscribe)
+		        .orElse(0L);
+	}
 
 }
