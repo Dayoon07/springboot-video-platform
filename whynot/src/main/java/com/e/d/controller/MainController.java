@@ -154,12 +154,6 @@ public class MainController {
 	public String showCreatorProfile() {
 		return "me/you";
 	}
-	
-	@PostMapping("/createBio")
-	public String createBio(@RequestParam String bio, HttpSession session) {
-		creatorService.createBio(bio, session);
-		return "me/you";
-	}
 
 	@GetMapping("/you/like")
 	public String myLikedVideoList(HttpSession session, Model model) {
@@ -175,6 +169,12 @@ public class MainController {
 		if (user == null) return "creator/login";
 		m.addAttribute("myViewStory", viewStoryService.myViewStorySelect(user.getCreatorId()));
 		return "me/viewstory";
+	}
+	
+	@PostMapping("/createBio")
+	public String createBio(@RequestParam String bio, HttpSession session) {
+		creatorService.createBio(bio, session);
+		return "me/you";
 	}
 
 	@GetMapping("/upload")

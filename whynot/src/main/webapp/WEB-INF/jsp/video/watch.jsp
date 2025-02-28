@@ -243,12 +243,7 @@
             </div>
         </div>
     </div>
-    
-    <script>
-    	
-	    
-    </script>
-    
+
     <jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
     <script src="${ cl }/source/js/watch.js"></script>
     <script src="${ cl }/source/js/likeCount.js"></script>

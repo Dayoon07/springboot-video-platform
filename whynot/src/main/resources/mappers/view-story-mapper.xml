@@ -33,11 +33,15 @@
     </resultMap>
     
     <select id="myViewStorySelect" parameterType="long" resultMap="ViewStoryVideosDtoResultMap">
-    	SELECT A.* FROM WHYNOT_VIDEOS A
-		WHERE A.VIDEO_ID IN (
-		    SELECT B.WATCHED_VIDEO_ID
-		    FROM WHYNOT_VIEWSTORY B
-		    WHERE B.VIEW_USER_ID = #{id}) 
+    	SELECT A.video_id, A.creator, A.title, A.video_name, A.video_path, A.img_name, A.img_path, 
+		       A.create_at, A.front_profile_img, A.video_url, A.views, A.likes, A.comment_cnt, A.tag,
+		       MAX(B.datetime) AS latest_view_datetime 
+		FROM WHYNOT_VIDEOS A
+		JOIN WHYNOT_VIEWSTORY B ON A.video_id = B.watched_video_id
+		WHERE B.view_user_id = #{id}
+		GROUP BY A.video_id, A.creator, A.title, A.video_name, A.video_path, A.img_name, A.img_path, 
+		         A.create_at, A.front_profile_img, A.video_url, A.views, A.likes, A.comment_cnt, A.tag
+		ORDER BY latest_view_datetime DESC
     </select>
 
 </mapper>

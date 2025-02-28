@@ -99,6 +99,4 @@ public class RestMainController {
         return ResponseEntity.ok(commentService.getFullComment(req.get("commentId")));
     }
 	
-	
-	
 }

@@ -44,18 +44,27 @@
 
                 <div class="mt-8 p-6 bg-gray-50 rounded-lg shadow-inner">
                     <h2 class="text-xl font-semibold text-gray-800">자기소개말</h2>
-                    <p class="text-gray-700 mt-2 leading-relaxed">
-                        ${ empty sessionScope.creatorSession.bio ? "아직 자기소개말이 없습니다." : sessionScope.creatorSession.bio }
-                    </p><br>
-                    <c:if test="${ empty sessionScope.creatorSession.bio }">
-                    	<button type="button" onclick="model()" 
-                    		class="px-6 py-2 bg-black text-white rounded-md hover:opacity-70 transition">자기소개말 만들기</button>
-                    </c:if>
-                    <c:if test="${ not empty sessionScope.creatorSession.bio }">
-                    	<input type="hidden" id="youPk" value="${ sessionScope.creatorSession.creatorId }">
-                    	<button type="button" onclick="modelVer2()" 
-                    		class="px-6 py-2 bg-black text-white rounded-md hover:opacity-70 transition">자기소개말 수정하기</button>
-                    </c:if>
+					<p class="text-gray-700 mt-2 leading-relaxed" id="myBio">
+	                	${ empty sessionScope.creatorSession.bio ? "아직 자기소개말이 없습니다." : sessionScope.creatorSession.bio }
+					</p><br>
+	                <c:if test="${ empty sessionScope.creatorSession.bio }">
+	                	<div class="flex items-center">
+	                		<button type="button" class="hidden px-6 py-2 rounded-md hover:bg-gray-200 transition" id="cancelBtn"
+	                			onclick="cancelBio()">취소</button>
+	                		<button type="button" class="px-6 py-2 bg-black text-white rounded-md hover:opacity-70 transition"
+	                			onclick="createBio()">자기소개말 만들기</button>
+		            		<div id="textLen"></div>
+	                	</div>
+					</c:if>
+	                <c:if test="${ not empty sessionScope.creatorSession.bio }">
+	                	<div class="flex items-center">
+	                		<button type="button" class="hidden px-6 py-2 rounded-md hover:bg-gray-200 transition" id="cancelBtn"
+	                			onclick="EditVerCancelBio()">취소</button>
+	                		<button type="button" class="px-6 py-2 bg-black text-white rounded-md hover:opacity-70 transition"
+	                			onclick="EditBio()">자기소개말 수정하기</button>
+		            		<div id="textLen"></div>
+	                	</div>
+	                </c:if>
                 </div>
 
                 <div class="mt-6 bg-white p-6 rounded-lg border border-gray-200 md:shadow-sm">
