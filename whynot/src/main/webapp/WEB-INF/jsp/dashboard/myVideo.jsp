@@ -16,7 +16,7 @@
     <jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 
     <main class="flex flex-grow border-t" style="height: calc(100% - 76px);">
-        <div class="w-64 bg-gray-200">
+        <div class="hidden md:block w-64 bg-gray-200">
             <ul>
             	<li><a href="${ cl }/myVideo" class="block p-4 bg-white hover:bg-white transition">콘텐츠</a></li>
 	            <li><a href="${ cl }/myVideo/dashboard" class="block p-4 bg-gray-200 hover:bg-white transition">대시보드</a></li>
@@ -30,10 +30,10 @@
 			<h2 class="text-2xl font-bold mb-4">업로드된 영상</h2>
 			<c:if test="${ not empty myvideos }">
 				<c:forEach var="mvdos" items="${ myvideos }">
-					<div class="w-full flex my-5 p-2 hover:bg-gray-100 transition">
+					<div class="w-full md:flex my-5 p-2 hover:bg-gray-100 transition">
 						<div>
 							<a href="${ cl }/watch?v=${ mvdos.videoUrl }">
-								<img src="${ mvdos.imgPath }" class="w-72 h-auto rounded mr-4">
+								<img src="${ mvdos.imgPath }" class="w-full h-auto rounded mr-4">
 							</a>
 						</div>
 						<div class="px-4 py-2">

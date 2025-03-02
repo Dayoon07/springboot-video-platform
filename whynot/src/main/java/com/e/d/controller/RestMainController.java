@@ -99,4 +99,10 @@ public class RestMainController {
         return ResponseEntity.ok(commentService.getFullComment(req.get("commentId")));
     }
 	
+	@PostMapping("/createBio")
+	public String createBio(@RequestParam String bio, HttpSession session) {
+		creatorService.createBio(bio, session);
+		return bio;
+	}
+	
 }

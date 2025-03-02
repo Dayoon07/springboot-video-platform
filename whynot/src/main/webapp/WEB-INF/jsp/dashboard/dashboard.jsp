@@ -16,7 +16,7 @@
     <jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 
     <main class="flex flex-grow border-t" style="height: calc(100% - 76px);">
-	    <div class="w-64 bg-gray-200">
+	    <div class="hidden md:block w-64 bg-gray-200">
             <ul>
             	<li><a href="${ cl }/myVideo" class="block p-4 bg-gray-200 hover:bg-white transition">콘텐츠</a></li>
 	            <li><a href="${ cl }/myVideo/dashboard" class="block p-4 bg-white hover:bg-white transition">대시보드</a></li>

@@ -33,8 +33,6 @@ import com.e.d.model.service.LikeService;
 import com.e.d.model.service.SubscriptionsService;
 import com.e.d.model.service.VideosService;
 import com.e.d.model.service.ViewStoryService;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.pool.HikariPool;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -163,18 +161,18 @@ public class MainController {
 		return "creator/myLikeVideo";
 	}
 	
+	@PostMapping("/editBio")
+	public String editBio(HttpSession s, @RequestParam String bio) {
+		creatorService.editBio(s, bio);
+		return "redirect:/you";
+	}
+	
 	@GetMapping("/you/viewstory")
 	public String yourViewStory(HttpSession session, Model m) {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 		if (user == null) return "creator/login";
 		m.addAttribute("myViewStory", viewStoryService.myViewStorySelect(user.getCreatorId()));
 		return "me/viewstory";
-	}
-	
-	@PostMapping("/createBio")
-	public String createBio(@RequestParam String bio, HttpSession session) {
-		creatorService.createBio(bio, session);
-		return "me/you";
 	}
 
 	@GetMapping("/upload")
@@ -236,6 +234,11 @@ public class MainController {
 	@PostMapping("/subscri")
 	public String subscri(@RequestParam long subscriberId, @RequestParam long subscribingId) {
 		return subscriptionsService.subscribe(subscriberId, subscribingId);
+	}
+	
+	@PostMapping("/watchPageSubscri")
+	public String watchPageSubscri(@RequestParam long subscriberId, @RequestParam long subscribingId, @RequestParam String videoUrl) {
+		return subscriptionsService.watchPageSubscribe(subscriberId, subscribingId, videoUrl);
 	}
 
 	@PostMapping("/deleteSubscri")

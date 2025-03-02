@@ -44,7 +44,9 @@
 				<c:if test="${ not empty sessionScope.creatorSession }">
 				  	<a href="${ cl }/upload" class="hidden sm:block btn text-black hover:text-white hover:bg-black border-black border-2 border-gray rounded-lg px-4 py-2 
 				  		transition-all duration-300">업로드</a>
-			        <a href="${ cl }/you" class="text-black text-xl">${ sessionScope.creatorSession.creatorName }</a>
+			        <a href="${ cl }/you" class="text-black text-xl">
+			        	${ sessionScope.creatorSession.creatorName.length() >= 5 ? sessionScope.creatorSession.creatorName.substring(0, 5) += '..' : sessionScope.creatorSession.creatorName }
+			        </a>
 				  	<img src="${ sessionScope.creatorSession.profileImgPath }" id="profile" class="w-10 h-10 border-white border-2 rounded-full cursor-pointer" loading="lazy">
 				  	
 				  	<div id="profileDropdownMenu" class="fixed top-0 right-0 w-full h-full z-10 hidden"></div>
@@ -91,6 +93,7 @@
 		    <c:if test="${ not empty sessionScope.creatorSession }">
 		        <li><a href="${ cl }/channel/${ sessionScope.creatorSession.creatorName }" class="block py-2 px-4 rounded-md hover:bg-gray-200">내 채널</a></li>
 		    </c:if>
+		    <li><a href="${ cl }/you/viewstory" class="block py-2 px-4 rounded-md hover:bg-gray-200">시청 기록</a></li>
 		    <hr class="my-2 border-gray-300">
 		    <li class="font-semibold text-gray-400 uppercase">탐색</li>
 		    <li><a href="${ cl }/tag/music" class="block py-2 px-4 rounded-md hover:bg-gray-200">음악</a></li>
@@ -101,7 +104,10 @@
 		    <hr class="my-2 border-gray-300">
 		    <li class="font-semibold text-gray-400 uppercase">내 콘텐츠</li>
 		    <li><a href="${ cl }/myVideo" class="block py-2 px-4 rounded-md hover:bg-gray-200">내 영상</a></li>
-		    <li><a href="${ cl }/you/viewstory" class="block py-2 px-4 rounded-md hover:bg-gray-200">시청 기록</a></li>
+		    <li><a href="${ cl }/myVideo/dashboard" class="block py-2 px-4 rounded-md hover:bg-gray-200">대시보드</a></li>
+	        <li><a href="${ cl }/myVideo/comment" class="block py-2 px-4 rounded-md hover:bg-gray-200">영상 피드백</a></li>
+	        <li><a href="${ cl }/myVideo/myComment" class="block py-2 px-4 rounded-md hover:bg-gray-200">나의 댓글</a></li>
+	        <li><a href="${ cl }/myVideo/subscribe" class="block py-2 px-4 rounded-md hover:bg-gray-200">구독자 조회</a></li>
 		</ul><br>
 		<div class="w-full border-gray-300 border-t">
 	    	<p class="text-sm text-gray-500 mt-4 px-4">

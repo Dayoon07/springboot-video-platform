@@ -16,7 +16,7 @@
 <body>
     <jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
     
-    <div class="max-w-5xl mx-auto mt-12 p-6 bg-white rounded-xl shadow-lg">
+    <div class="max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-lg">
         <c:choose>
             <c:when test="${ empty sessionScope.creatorSession }">
                 <div class="text-center py-12">
@@ -30,15 +30,13 @@
 
             <c:otherwise>
                 <div class="flex items-center space-x-8">
-                    <div class="w-32 h-32 overflow-hidden rounded-full border-4 border-gray-300">
-                        <img src="${ sessionScope.creatorSession.profileImgPath }" alt="Profile Image" class="w-full h-full object-cover">
-                    </div>
-
+                	<img src="${ sessionScope.creatorSession.profileImgPath }" alt="Profile Image"
+                    	class="w-32 h-32 overflow-hidden rounded-full border-4 border-gray-300 object-cover">
                     <div>
                         <h1 class="text-3xl font-bold text-gray-800">${ sessionScope.creatorSession.creatorName }</h1>
                         <p class="text-gray-500 mt-1">${ sessionScope.creatorSession.creatorEmail }</p>
 						<p class="text-gray-500 text-md my-2">구독자 : ${ sessionScope.creatorSession.subscribe }명</p>
-						<p class="text-gray-400 text-sm">가입일 : ${ sessionScope.creatorSession.createAt }</p>
+						<p class="text-gray-400 text-sm">가입일 : <br class="md:hidden"> ${ sessionScope.creatorSession.createAt }</p>
                     </div>
                 </div>
 
@@ -48,23 +46,11 @@
 	                	${ empty sessionScope.creatorSession.bio ? "아직 자기소개말이 없습니다." : sessionScope.creatorSession.bio }
 					</p><br>
 	                <c:if test="${ empty sessionScope.creatorSession.bio }">
-	                	<div class="flex items-center">
-	                		<button type="button" class="hidden px-6 py-2 rounded-md hover:bg-gray-200 transition" id="cancelBtn"
-	                			onclick="cancelBio()">취소</button>
-	                		<button type="button" class="px-6 py-2 bg-black text-white rounded-md hover:opacity-70 transition"
-	                			onclick="createBio()">자기소개말 만들기</button>
-		            		<div id="textLen"></div>
-	                	</div>
-					</c:if>
-	                <c:if test="${ not empty sessionScope.creatorSession.bio }">
-	                	<div class="flex items-center">
-	                		<button type="button" class="hidden px-6 py-2 rounded-md hover:bg-gray-200 transition" id="cancelBtn"
-	                			onclick="EditVerCancelBio()">취소</button>
-	                		<button type="button" class="px-6 py-2 bg-black text-white rounded-md hover:opacity-70 transition"
-	                			onclick="EditBio()">자기소개말 수정하기</button>
-		            		<div id="textLen"></div>
-	                	</div>
-	                </c:if>
+						<span class="px-6 py-2 bg-black text-white rounded-md hover:opacity-70 cursor-pointer transition" onclick="createBio()">자기소개말 만들기</span>
+                    </c:if>
+                    <c:if test="${ not empty sessionScope.creatorSession.bio }">
+                    	<span class="px-6 py-2 bg-black text-white rounded-md hover:opacity-70 cursor-pointer transition" onclick="EditBio(${ sessionScope.creatorSession.creatorId })">자기소개말 수정하기</span>
+                    </c:if>
                 </div>
 
                 <div class="mt-6 bg-white p-6 rounded-lg border border-gray-200 md:shadow-sm">

@@ -1,120 +1,78 @@
 function createBio() {
-	const bioDiv = document.getElementById("myBio");
-	const createDiv = document.createElement("textarea");
-	const lenDiv = document.getElementById("textLen");
+	const m = document.createElement("div");
+	m.id = "realModalCreateBioFuckShit";
+	m.classList.add("fixed", "w-full", "h-full", "top-0", "left-0", "bg-white", "opacity-70", "text-right");
+	m.innerHTML = "<h1 class='text-4xl m-4 cursor-pointer text-black' onclick='closeModal()'>&times;</h1>";
 
-	createDiv.classList.add("w-full", "py-2", "border", "focus:ring-2", "focus:ring-black",
-		"focus:outline-none", "resize-none", "overflow-y-hidden");
+	const d = document.createElement("div");
+	d.id = "dadsasdasdasdasd";
+	d.classList.add("absolute", "top-20", "top-0", "w-full", "px-4", "py-8", "bg-white", "text-black", "border-t", "border-b", "shadow");
+	d.innerHTML = `
+		<form action="${location.origin}/createBio" method="post">
+			<textarea oninput="autoResize(this)" id="myBio" name="bio" rows="3" class="w-full py-2 border focus:ring-2 
+	        	focus:ring-black focus:outline-none resize-none overflow-y-hidden qwertyuio" required></textarea>
+	        <div class="text-right">
+	        	<button type="button" class="px-6 py-2 bg-black text-white rounded hover:opacity-70" onclick="cbl()">만들기</button>
+	        </div>
+		</form>
+    `;
 
-	document.getElementById("cancelBtn").classList.remove("hidden");
-
-	const createButton = document.querySelector("button[onclick='createBio()']");
-	createButton.classList.add("mx-5");
-	createButton.textContent = "만들기";
-
-	createDiv.id = bioDiv.id;
-	createDiv.name = "bio";
-	createDiv.onclick = bioDiv.onclick;
-	createDiv.textContent = "아직 자기소개말이 없습니다.";
-
-	createDiv.addEventListener('input', autoResize);
-	bioDiv.replaceWith(createDiv);
-
-	lenDiv.textContent = createDiv.value.length;
-
-	createButton.addEventListener("click", (e) => {
-		if (document.querySelector("form")) {
-			document.querySelector("form").submit();
-		} else {
-			e.preventDefault();
-		}
-	});
-}
-function cancelBio() {
-	const bioDiv = document.getElementById("myBio");
-	const lenDiv = document.getElementById("textLen");
-
-	document.querySelector("button[onclick='createBio()']").classList.remove("mx-5");
-	const createButton = document.querySelector("button[onclick='createBio()']");
-	createButton.textContent = "자기소개말 만들기";
-	createButton.setAttribute("type", "button");
-
-	const createDiv = document.createElement("div");
-	createDiv.id = bioDiv.id;
-	createDiv.textContent = "아직 자기소개말이 없습니다.";
-
-	document.getElementById("cancelBtn").classList.add("hidden");
-
-	bioDiv.replaceWith(createDiv);
-
-	lenDiv.textContent = "";
+	document.querySelector("body").append(m);
+	document.querySelector("body").append(d);
 }
 
-function EditBio() {
-	const bioDiv = document.getElementById("myBio");
-	const createDiv = document.createElement("textarea");
-	const lenDiv = document.getElementById("textLen");
+function closeModal() {
+	document.getElementById("realModalCreateBioFuckShit").style.display = "none";
+	document.getElementById("realModalCreateBioFuckShit").id = "";
 
-	createDiv.classList.add("w-full", "py-2", "border", "focus:ring-2", "focus:ring-black",
-		"focus:outline-none", "resize-none", "overflow-y-hidden");
-
-	// 취소 버튼 보이기
-	document.getElementById("cancelBtn").classList.remove("hidden");
-
-	// "수정하기" 버튼을 "저장하기"로 변경
-	const createButton = document.querySelector("button[onclick='EditBio()']");
-	createButton.classList.add("mx-5");
-	createButton.textContent = "저장하기";
-
-	// textarea에 기존 내용 넣기 (세션에 저장된 bio로 채운다)
-	createDiv.id = bioDiv.id;
-	createDiv.name = "bio";
-	createDiv.value = bioDiv.textContent.trim() === "아직 자기소개말이 없습니다." ? "" : bioDiv.textContent.trim(); // 기존 bio가 없으면 빈 값으로 처리
-
-	// 텍스트 입력 시 자동 크기 조절
-	createDiv.addEventListener('input', autoResize);
-	bioDiv.replaceWith(createDiv);
-
-	// 글자 수 업데이트
-	lenDiv.textContent = createDiv.value.length;
-
-	// 수정 완료 버튼 클릭 시 폼 제출
-	createButton.addEventListener("click", (e) => {
-		if (document.querySelector("form")) {
-			document.querySelector("form").submit();
-		} else {
-			e.preventDefault();
-		}
-	});
+	document.getElementById("dadsasdasdasdasd").style.display = "none";
+	document.getElementById("dadsasdasdasdasd").id = "";
 }
 
-function EditVerCancelBio() {
-	const bioDiv = document.getElementById("myBio");
-	const lenDiv = document.getElementById("textLen");
-
-	// "수정하기" 버튼을 원래대로 돌리기
-	document.querySelector("button[onclick='EditBio()']").classList.remove("mx-5");
-	document.querySelector("button[onclick='EditBio()']").textContent = "자기소개말 수정하기";
-
-	// 기존 bioDiv 복원
-	const createDiv = document.createElement("div");
-	createDiv.id = bioDiv.id;
-
-	// 취소 버튼 숨기기
-	document.getElementById("cancelBtn").classList.add("hidden");
-
-	bioDiv.replaceWith(createDiv);
-
-	// 글자 수 초기화
-	lenDiv.textContent = "";
-}
-
-function autoResize() {
-	const textarea = document.getElementById("myBio");
-	const lenDiv = document.getElementById("textLen");
-
+function autoResize(textarea) {
 	textarea.style.height = "auto";
 	textarea.style.height = textarea.scrollHeight + "px";
-
-	lenDiv.textContent = textarea.value.length;
 }
+
+async function cbl() {
+	const res = await fetch(`${location.origin}/createBio`, {
+		method: "post",
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ bio: document.querySelector("textarea[oninput='autoResize(this)']").value })
+	});
+	const data = await res.text();
+	console.log(data);
+	document.getElementById("myBio").textContent = data;
+}
+
+async function EditBio(pk) {
+	const res = await fetch(`${location.origin}/myInfo?creatorId=${pk}`, {
+		method: "post"
+	});
+	const abcdedf = await res.json();
+
+	const m = document.createElement("div");
+	m.id = "realModalCreateBioFuckShit";
+	m.classList.add("fixed", "w-full", "h-full", "top-0", "left-0", "bg-white", "opacity-70", "text-right");
+	m.innerHTML = "<h1 class='text-4xl m-4 cursor-pointer text-black' onclick='closeModal()'>&times;</h1>";
+
+	const d = document.createElement("div");
+	d.id = "dadsasdasdasdasd";
+	d.classList.add("absolute", "top-20", "top-0", "w-full", "px-4", "py-8", "bg-white", "text-black", "border-t", "border-b", "shadow");
+	d.innerHTML = `
+			<form action="${location.origin}/EditBio" method="post">
+				<textarea oninput="autoResize(this)" id="myBio" name="bio" rows="3" class="w-full py-2 border focus:ring-2 
+		        	focus:ring-black focus:outline-none resize-none overflow-y-hidden qwertyuio" required>${abcdedf.bio}</textarea>
+		        <div class="text-right">
+		        	<button type="submit" class="px-6 py-2 bg-black text-white rounded hover:opacity-70">만들기</button>
+		        </div>
+			</form>        
+	    `;
+
+	document.querySelector("body").append(m);
+	document.querySelector("body").append(d);
+}
+
+document.addEventListener("keydown", (e) => {
+	if (e.key === "Escape") closeModal();
+})

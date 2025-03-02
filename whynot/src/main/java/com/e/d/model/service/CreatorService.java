@@ -179,5 +179,12 @@ public class CreatorService {
 		        .map(CreatorEntity::getSubscribe)
 		        .orElse(0L);
 	}
+	
+	public void editBio(HttpSession session, String bio) {
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+		CreatorEntity creator = creatorRepository.findById(user.getCreatorId()).get();
+		creator.setBio(bio);
+		creatorRepository.save(creator);
+	}
 
 }

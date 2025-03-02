@@ -85,8 +85,7 @@
                             </div>
                         </c:if>
                         <c:if test="${ sessionScope.creatorSession != null && !thisIsSubscribed }">
-                            <form action="${ cl }/subscri?subscriberId=${ watchTheVideo.creatorVal }&subscribingId=${ sessionScope.creatorSession.creatorId }" 
-                                method="post" autocomplete="off">
+                            <form action="${ cl }/watchPageSubscri?subscriberId=${ watchTheVideo.creatorVal }&subscribingId=${ sessionScope.creatorSession.creatorId }&videoUrl=${ watchTheVideo.videoUrl }" method="post" autocomplete="off">
                                 <button type="submit" class="px-4 py-2 bg-black text-white rounded-full hover:bg-gray-800 text-sm">
                                     구독
                                 </button>

@@ -58,6 +58,38 @@ public class SubscriptionsService {
 
 		return "redirect:/channel/" + convertToUrlEncoded(subscriber.getCreatorName());
 	}
+	
+	public String watchPageSubscribe(long subscriberId, long subscribingId, String videoUrl) {
+		Optional<CreatorEntity> subscriberOpt = creatorRepository.findById(subscriberId);
+		Optional<CreatorEntity> subscribingOpt = creatorRepository.findById(subscribingId);
+
+		if (subscriberOpt.isEmpty() || subscribingOpt.isEmpty()) {
+			throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다.");
+		}
+
+		CreatorEntity subscriber = subscriberOpt.get();
+		CreatorEntity subscribing = subscribingOpt.get();
+
+		// 구독 정보 저장
+		SubscriptionsEntity subscription = SubscriptionsEntity.builder().subscriberName(subscriber.getCreatorName())
+				.subscriberId(subscriberId).subscribingName(subscribing.getCreatorName()).subscribingId(subscribingId)
+				.subscribedAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a HH:mm:ss")))
+				.build();
+		subscriptionsRepository.save(subscription);
+
+		// 구독자 수 업데이트
+		long subscriberCount = subscriptionsRepository.countBySubscriberId(subscriberId);
+		CreatorEntity updatedSubscriber = CreatorEntity.builder().creatorId(subscriberId)
+				.creatorName(subscriber.getCreatorName()).creatorEmail(subscriber.getCreatorEmail())
+				.creatorPassword(subscriber.getCreatorPassword()).createAt(subscriber.getCreateAt())
+				.bio(subscriber.getBio()).tel(subscriber.getTel()).profileImg(subscriber.getProfileImg())
+				.profileImgPath(subscriber.getProfileImgPath()).subscribe(subscriberCount).build();
+		creatorRepository.save(updatedSubscriber);
+
+		log.info("{}님이 {}님을 구독했습니다.", subscribing.getCreatorName(), subscriber.getCreatorName());
+
+		return "redirect:/watch?v=" + videoUrl;
+	}
 
 	private String convertToUrlEncoded(String text) {
 		try {
