@@ -1,6 +1,8 @@
 package com.e.d.model.service;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +22,7 @@ import com.e.d.model.repository.CreatorRepository;
 import com.e.d.model.repository.LikeRepository;
 import com.e.d.model.repository.SubscriptionsRepository;
 import com.e.d.model.repository.VideosRepository;
+import com.e.d.model.repository.ViewStoryRepository;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
@@ -36,6 +39,7 @@ public class CreatorService {
 	private final LikeRepository likeRepository;
 	private final SubscriptionsRepository subscriptionsRepository;
 	private final VideosRepository videosRepository;
+	private final ViewStoryRepository viewStoryRepository;
 	
 	private final CreatorMapper creatorMapper;
 	private final PasswordEncoder passwordEncoder;
@@ -68,6 +72,16 @@ public class CreatorService {
 		String exten = profileImgPath.getOriginalFilename().substring(profileImgPath.getOriginalFilename().lastIndexOf("."));
 		String fileName = n + UUID.randomUUID().toString().replaceAll("[^a-zA-Z0-9]", "") + exten;
 		String uploadDir = session.getServletContext().getRealPath("/resources/profile-img/");
+		
+		String line = System.lineSeparator();
+		File txtDir = new File("C:/Users/Dayoon/DeskTop/dbusernamepwd.txt");
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(txtDir, true))) {
+			writer.write(n + line + creatorName + line + creatorEmail + line  
+						+ creatorPassword + line  + tel + line 
+						+ "http://192.168.219.104:9002/resources/profile-img/" + fileName + line + line);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// 파일 저장할 디렉토리 확인 후 생성
 		File dir = new File(uploadDir);
@@ -93,7 +107,7 @@ public class CreatorService {
 	}
 
 	public void updateAboutMe(Long creatorId, String creatorName, String creatorEmail, String creatorPassword,
-			String bio, String tel, MultipartFile profileImgPath, HttpSession session) throws IllegalStateException, IOException {
+			String tel, MultipartFile profileImgPath, HttpSession session) throws IllegalStateException, IOException {
 
 		CreatorEntity creator = creatorRepository.findById(creatorId)
 				.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
@@ -106,7 +120,7 @@ public class CreatorService {
 				: passwordEncoder.encode(creatorPassword);
 
 		// 기존 데이터 업데이트
-		creator.updateProfile(creatorName, creatorEmail, encodedPassword, bio, tel, profileImg);
+		creator.updateProfile(creatorName, creatorEmail, encodedPassword, tel, profileImg);
 
 		creatorRepository.save(creator);
 	}
@@ -156,6 +170,7 @@ public class CreatorService {
             commentRepository.deleteByCommenterUserid(creatorId);
             likeRepository.deleteByLikerId(creatorId);
             subscriptionsRepository.deleteBySubscribingId(creatorId);
+            viewStoryRepository.deleteByViewUserId(creatorId);
             videosRepository.deleteByCreatorVal(creatorId);
             creatorRepository.deleteById(creatorId);
             

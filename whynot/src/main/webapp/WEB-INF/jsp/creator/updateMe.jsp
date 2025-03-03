@@ -33,8 +33,8 @@
 	
 	<div class="fixed top-0 left-0 w-full h-full z-70 bg-black opacity-50 hidden" id="deleteMyAccountBg"></div>
 	<div style="position: fixed; top: 25%; left: 50%; transform: translate(-50%, 0%); z-index: 80;" class="hidden" id="deleteMyAccount">
-	    <div class="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-	        <h2 class="text-center text-xl font-semibold text-red-600 mb-4">정말로 계정을 삭제하시겠습니까?</h2>
+	    <div class="bg-white rounded-lg shadow-lg p-8 md:max-w-md md:w-full w-80">
+	        <h2 class="text-center text-xl font-semibold text-red-600 mb-4">정말로 계정을 <br class="md:hidden"> 삭제하시겠습니까?</h2>
 	        <p class="text-center text-sm text-gray-700 mb-6">계정을 삭제하면 모든 데이터가 영구적으로 사라집니다. 이 작업은 되돌릴 수 없습니다.</p>
 	        <form action="${ cl }/deleteAccount" method="post" autocomplete="off">
 	            <input type="text" name="creatorId" value="${ sessionScope.creatorSession.creatorId }" class="hidden" required readonly>

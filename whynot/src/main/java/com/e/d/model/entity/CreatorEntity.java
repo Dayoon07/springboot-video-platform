@@ -45,12 +45,11 @@ public class CreatorEntity {
 	@Column(name = "subscribe")
 	private long subscribe;
 
-	public void updateProfile(String creatorName, String creatorEmail, String creatorPassword, String bio, String tel,
+	public void updateProfile(String creatorName, String creatorEmail, String creatorPassword, String tel,
 			String profileImgPath) {
 		this.creatorName = creatorName;
 		this.creatorEmail = creatorEmail;
 		this.creatorPassword = creatorPassword;
-		this.bio = bio;
 		this.tel = tel;
 		this.profileImgPath = profileImgPath;
 	}

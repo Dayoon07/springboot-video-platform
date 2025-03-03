@@ -19,44 +19,60 @@
 	    <h1 class="text-2xl font-bold mb-6">시청 기록</h1>
 	
 	    <c:forEach var="mvs" items="${ myViewStory }">
-	        <div class="w-full flex p-2 hover:bg-gray-100 rounded-lg transition duration-200">
-	            <a href="${ cl }/watch?v=${ mvs.videosVo.videoUrl }" style="width: 170px; height: 109px;" class="overflow-hidden">
-	                <img class="w-full h-full object-cover rounded-lg" src="${ mvs.videosVo.imgPath }" alt="${ mvs.videosVo.title } 영상의 섬네일">
-	            </a>
-				<div class="mx-2">
-					<c:choose>
-						<c:when test="${ mvs.videosVo.title.length() > 10 }">
-			                <span class="text-lg font-semibold line-clamp-2">${ mvs.videosVo.title.substring(0, 10) }...</span>
-						</c:when>
-						<c:otherwise>
-			                <span class="text-lg font-semibold line-clamp-2">${ mvs.videosVo.title }</span>
-						</c:otherwise>
-					</c:choose>
-					<c:choose>
-						<c:when test="${ mvs.videosVo.creator.length() > 10 }">
-							<span class="text-sm text-gray-500">${ mvs.videosVo.creator.substring(0, 10) }...</span><br>
-						</c:when>
-						<c:otherwise>
-			                <span class="text-sm text-gray-500">${ mvs.videosVo.creator }</span><br>
-						</c:otherwise>
-					</c:choose>
-					<c:choose>
-						<c:when test="${ mvs.videosVo.views == 0 }">
-							<span class="text-sm text-gray-500">조회수 없음</span>
-						</c:when>
-						<c:when test="${ mvs.videosVo.views >= 10000 }">
-							<span class="text-sm text-gray-500">
-								조회수 <fmt:formatNumber value="${ mvs.videosVo.views / 10000 }" pattern="#"/>만회
-							</span>
-						</c:when>
-						<c:otherwise>
-							<span class="text-sm text-gray-500">
-								조회수 <fmt:formatNumber value="${ mvs.videosVo.views }" type="number" />회
-							</span>
-						</c:otherwise>
-					</c:choose>
-	            </div>
-	        </div>
+	    	<div class="hidden md:flex hover:bg-gray-200 cursor-pointer transition">
+	    		<div class="relative py-4">
+	    			<a href="${ cl }/watch?v=${ mvs.videosVo.videoUrl }">
+	    				<img src="${ mvs.videosVo.imgPath }" alt="poster 쓰고 싶다" width="300" class="px-4 object-cover cursor-pointer">
+	    			</a>
+		    		<span class="absolute bottom-4 right-4 bg-black text-white text-xs px-2 py-1 rounded">${ mvs.videosVo.videoLen }</span>
+	    		</div>
+	    		<div class="mx-4 py-4">
+	    			<h1 class="font-semibold text-xl"><a href="${ cl }/watch?v=${ mvs.videosVo.videoUrl }">${ mvs.videosVo.title }</a></h1>
+	    			<span class="block pt-2">
+	    				<a href="${ cl }/channel/${ mvs.videosVo.creator }">${ mvs.videosVo.creator }</a> 
+	    				• 조회수 ${ mvs.videosVo.views == 0 ? '없음' : mvs.videosVo.views += '회' } 
+	    				• ${ mvs.videosVo.createAt }
+	    			</span>
+	    		</div>
+	    	</div>
+	    	<div class="md:hidden video-item flex flex-col gap-2 p-2 rounded-lg hover:bg-gray-200">
+			    <div class="relative">
+			        <div class="aspect-video bg-gray-200 rounded-lg overflow-hidden">
+			            <a href="${ cl }/watch?v=${ mvs.videosVo.videoUrl }">
+			                <img src="${ mvs.videosVo.imgPath }" class="w-full h-full object-cover" loading="lazy">
+			            </a>
+			        </div>
+			        <span class="absolute bottom-2 right-2 bg-black text-white text-xs px-2 py-1 rounded">${ mvs.videosVo.videoLen }</span>
+			    </div>
+			    <div class="flex gap-2">
+			        <a href="${ cl }/channel/${ mvs.videosVo.creator }">
+			            <img src="${ mvs.videosVo.frontProfileImg }" class="w-10 h-10 rounded-full bg-gray-200 flex-shrink-0">
+			        </a>
+			        <div class="flex-1 min-w-0">
+			            <a href="${ cl }/watch?v=${ mvs.videosVo.videoUrl }" class="font-medium text-sm line-clamp-2 hover:underline">
+			                ${ mvs.videosVo.title }
+			            </a>
+			            <a href="${ cl }/channel/${ mvs.videosVo.creator }" class="text-sm text-gray-600 hover:underline">
+			                ${ mvs.videosVo.creator }
+			            </a>
+			            <div class="text-sm text-gray-600">
+			                <c:choose>
+			                    <c:when test="${ mvs.videosVo.views == 0 }">
+			                        조회수 없음
+			                    </c:when>
+			                    <c:when test="${ mvs.videosVo.views >= 10000 }">
+			                        조회수 <fmt:formatNumber value="${ mvs.videosVo.views / 10000 }" pattern="#"/>만회
+			                    </c:when>
+			                    <c:otherwise>
+			                        조회수 <fmt:formatNumber value="${ mvs.videosVo.views }" type="number" />회
+			                    </c:otherwise>
+			                </c:choose> • 
+			                ${ mvs.videosVo.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
+			                ? mvs.videosVo.createAt.substring(6, 13) : mvs.videosVo.createAt.substring(0, 13) }
+			            </div>
+			        </div>
+			    </div>
+			</div>
 	    </c:forEach>
 	</div>
 	

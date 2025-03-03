@@ -40,11 +40,31 @@ aside {
 	left: 0;
 }
 
-@media (max-width : 840px) {
+#createBioModalFuck {
+	position: absolute;
+	top: 100px;
+	left: 50%;
+	transform: translate(-50%, 0px);
+}
+
+#cdmcibWhatTheFuck {
+	position: absolute;
+	top: 100px;
+	left: 50%;
+	transform: translate(-50%, 0px);
+}
+
+@media ( max-width : 840px) {
 	#mainFormId {
 		display: none;
 	}
 	.loginBtn {
 		display: none;
+	}
+	#createBioModalFuck {
+		position: absolute;
+		top: 100px;
+		left: 50%;
+		transform: translate(-50%, 0px);
 	}
 }

@@ -14,6 +14,7 @@ public class VideosVo {
 	private String more;
 	private String videoName;
 	private String videoPath;
+	private String videoLen;
 	private String imgName;
 	private String imgPath;
 	private String createAt;

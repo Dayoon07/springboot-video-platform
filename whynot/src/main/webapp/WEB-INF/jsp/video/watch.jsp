@@ -1,3 +1,4 @@
+<%@page import="java.util.Arrays"%>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -111,9 +112,11 @@
                     <div class="text-sm">
                     	<c:if test="${ not empty watchTheVideo.tag }">
                     		<span class="font-semibold">태그: </span>
-	                        <a href="${ cl }/tag/${ watchTheVideo.tag }" class="text-blue-600 hover:underline">
-	                            #${ watchTheVideo.tag }
-	                        </a>
+                    		<c:forEach var="t" items="${ fn:split(watchTheVideo.tag, ' ') }">
+                    			<a href="${ cl }/tag/${ t }" class="text-blue-600 hover:underline">
+		                            #${ t }
+		                        </a>
+                    		</c:forEach>
                     	</c:if>
                     </div>
                     <c:if test="${ not empty watchTheVideo.more and watchTheVideo.more.length() > 10 }">
@@ -190,18 +193,16 @@
 	                                            </c:if>
                                             </div>
                                         </div>
-                                        <p class="mt-1 text-sm break-words">
-								            <c:choose>
-								                <c:when test="${ fn:length(comment.commentContent) > 120 }">
-								                    <span class="short-text cursor-pointer" onclick="moreBtn(event, ${ comment.commentId })">
-													    ${ fn:substring(comment.commentContent, 0, 120) }...
-													</span>
-								                </c:when>
-								                <c:otherwise>
-								                    ${ comment.commentContent }
-								                </c:otherwise>
-								            </c:choose>
-								        </p>
+                                        <div>
+										    <c:choose>
+										        <c:when test="${ comment.commentContent.length() > 120 }">
+										        	<textarea class="w-full mt-1 text-sm short-text cursor-pointer resize-none focus:outline-none overflow-hidden" onclick="moreBtn(event, ${ comment.commentId })" oninput="resizeTextarea(this)" readonly>${ comment.commentContent.substring(0, 120) }...</textarea>
+										        </c:when>
+										        <c:otherwise>
+										        	<textarea class="w-full mt-1 text-sm short-text cursor-pointer resize-none focus:outline-none overflow-hidden" oninput="resizeTextarea(this)" readonly>${ comment.commentContent }</textarea>
+										        </c:otherwise>
+										    </c:choose>
+										</div>
                                     </div>
                                 </div>
                             </c:forEach>
@@ -248,6 +249,18 @@
     <script src="${ cl }/source/js/likeCount.js"></script>
     <script src="${ cl }/source/js/commentEdit.js"></script>
     <script src="${ cl }/source/js/commentContentExpansion.js"></script>
+    
+    <script>
+	    function resizeTextarea(textarea) {
+	        textarea.style.height = 'auto'; // 높이를 초기화해서 스크롤 생기는 걸 방지
+	        textarea.style.height = textarea.scrollHeight + 'px'; // 내용에 맞게 높이 조절
+	    }
+	
+	    // 페이지 로드 시 모든 textarea 높이 자동 조절
+	    document.addEventListener("DOMContentLoaded", function () {
+	        document.querySelectorAll("textarea").forEach(textarea => resizeTextarea(textarea));
+	    });
+    </script>
     
 </body>
 </html>

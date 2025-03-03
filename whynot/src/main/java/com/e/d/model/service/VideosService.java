@@ -45,7 +45,7 @@ public class VideosService {
 
 	private final VideosMapper mapper;
 	
-	public void uploadVideo(String tag, String title, String more, MultipartFile imgPath,
+	public void uploadVideo(String tag, String title, String more, String videoLen, MultipartFile imgPath,
 			MultipartFile videoPath, HttpSession session) throws IOException {
 		CreatorEntity creator = (CreatorEntity) session.getAttribute("creatorSession");
 		Optional<CreatorEntity> user = creatorRepository.findByCreatorName(creator.getCreatorName());
@@ -74,9 +74,16 @@ public class VideosService {
 		imgPath.transferTo(new File(thumbnailDir + imgName));
 		videoPath.transferTo(new File(videoDir + videoName));
 
-		VideosEntity video = VideosEntity.builder().creator(user.get().getCreatorName())
-				.creatorVal(user.get().getCreatorId()).title(title).more(more).videoName(videoName)
-				.videoPath("/resources/video/" + videoName).imgName(imgName).imgPath("/resources/video-img/" + imgName)
+		VideosEntity video = VideosEntity.builder()
+				.creator(user.get().getCreatorName())
+				.creatorVal(user.get().getCreatorId())
+				.title(title)
+				.more(more)
+				.videoName(videoName)
+				.videoPath("/resources/video/" + videoName)
+				.videoLen(videoLen)
+				.imgName(imgName)
+				.imgPath("/resources/video-img/" + imgName)
 				.createAt(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH시 mm분")))
 				.frontProfileImg(user.get().getProfileImgPath())
 				.videoUrl(UUID.randomUUID().toString().replaceAll("-", "")).tag(tag).build();
@@ -139,14 +146,24 @@ public class VideosService {
 	}
 
 	public void updateVideo(Long videoId, String creatorName, String tag, String title, String more,
-			MultipartFile imgPath, MultipartFile videoPath, String currentImgPath, String currentVideoPath,
-			HttpSession session) {
+			MultipartFile imgPath, MultipartFile videoPath, String videoLen, String currentImgPath, 
+			String currentVideoPath, HttpSession session) {
+		System.out.println("videoId: " + videoId);
+		System.out.println("creatorName: " + creatorName);
+		System.out.println("tag: " + tag);
+		System.out.println("title: " + title);
+		System.out.println("more: " + more);
+		System.out.println("videoLen: " + videoLen);
+		System.out.println("currentImgPath: " + currentImgPath);
+		System.out.println("currentVideoPath: " + currentVideoPath);
+
 		VideosEntity video = videosRepository.findById(videoId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 비디오입니다."));
 		creatorRepository.findByCreatorName(creatorName).orElseThrow(() -> new IllegalArgumentException("크리에이터를 찾을 수 없습니다."));
 
 		video.setTitle(title);
 		video.setMore(more);
 		video.setTag(tag);
+		video.setVideoLen(videoLen);
 
 		try {
 			String thumbnailDir = session.getServletContext().getRealPath("/resources/video-img/");

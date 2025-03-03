@@ -30,10 +30,10 @@
 			<h2 class="text-2xl font-bold mb-4">업로드된 영상</h2>
 			<c:if test="${ not empty myvideos }">
 				<c:forEach var="mvdos" items="${ myvideos }">
-					<div class="w-full md:flex my-5 p-2 hover:bg-gray-100 transition">
+					<div class="w-full md:flex my-5 p-2 hover:bg-gray-200 transition">
 						<div>
 							<a href="${ cl }/watch?v=${ mvdos.videoUrl }">
-								<img src="${ mvdos.imgPath }" class="w-full h-auto rounded mr-4">
+								<img src="${ mvdos.imgPath }" class="w-full md:w-96 h-auto rounded mr-4">
 							</a>
 						</div>
 						<div class="px-4 py-2">
@@ -62,11 +62,9 @@
 									</a>
 						        </c:otherwise>
 							</c:choose>
-							<div class="w-96 mt-2 my-1">
+							<div class="w-full mt-2 my-1">
 					        	<p class="text-md text-black">
-					        		조회수 : ${ mvdos.views }회 &nbsp; | &nbsp;
-					       			좋아요 : ${ mvdos.likes } &nbsp; | &nbsp;
-									댓글수 : ${ mvdos.commentCnt }
+					        		조회수 : ${ mvdos.views }회 • 좋아요 : ${ mvdos.likes } • 댓글수 : ${ mvdos.commentCnt }
 								</p>
 					        </div>
 					        <div class="w-96 mt-2 my-1">

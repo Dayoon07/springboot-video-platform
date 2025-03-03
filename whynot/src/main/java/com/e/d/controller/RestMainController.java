@@ -100,9 +100,9 @@ public class RestMainController {
     }
 	
 	@PostMapping("/createBio")
-	public String createBio(@RequestParam String bio, HttpSession session) {
+	public ResponseEntity<String> createBio(@RequestParam String bio, HttpSession session) {
 		creatorService.createBio(bio, session);
-		return bio;
+		return ResponseEntity.ok(bio);
 	}
 	
 }

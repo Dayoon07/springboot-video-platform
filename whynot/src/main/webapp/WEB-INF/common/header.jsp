@@ -89,11 +89,12 @@
 	    	</c:if>
 		    <li><a href="${ cl }/" class="block py-2 px-4 rounded-md hover:bg-gray-200">홈</a></li>
 		    <li><a href="${ cl }/mySubscri" class="block py-2 px-4 rounded-md hover:bg-gray-200">구독</a></li>
-		    <li><a href="${ cl }/you/like" class="block py-2 px-4 rounded-md hover:bg-gray-200">좋아요를 누른 영상</a></li>
 		    <c:if test="${ not empty sessionScope.creatorSession }">
 		        <li><a href="${ cl }/channel/${ sessionScope.creatorSession.creatorName }" class="block py-2 px-4 rounded-md hover:bg-gray-200">내 채널</a></li>
 		    </c:if>
+		    <li><a href="${ cl }/you/like" class="block py-2 px-4 rounded-md hover:bg-gray-200">좋아요를 누른 영상</a></li>
 		    <li><a href="${ cl }/you/viewstory" class="block py-2 px-4 rounded-md hover:bg-gray-200">시청 기록</a></li>
+		    <li><a href="${ cl }/you" class="block py-2 px-4 rounded-md hover:bg-gray-200">내 페이지</a></li>
 		    <hr class="my-2 border-gray-300">
 		    <li class="font-semibold text-gray-400 uppercase">탐색</li>
 		    <li><a href="${ cl }/tag/music" class="block py-2 px-4 rounded-md hover:bg-gray-200">음악</a></li>

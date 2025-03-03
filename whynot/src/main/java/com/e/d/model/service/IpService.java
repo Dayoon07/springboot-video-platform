@@ -1,5 +1,8 @@
 package com.e.d.model.service;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -28,6 +31,8 @@ public class IpService {
 				}
 			}
 		}
+		
+		// addressTxtSave(ip, req);
 
 		log.info("클라이언트 IP : {}", ip);
 		log.info("클라이언트 브라우저 : {}", parseBrowserInfo(req.getHeader("User-Agent")));
@@ -65,6 +70,16 @@ public class IpService {
 			end = userAgent.length();
 		}
 		return userAgent.substring(start, end);
+	}
+	
+	public void addressTxtSave(String ip, HttpServletRequest req) {
+		String line = System.lineSeparator();
+		File txtDir = new File("C:/Users/Dayoon/DeskTop/myserconnectaddress.txt");
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(txtDir, true))) {
+			writer.write(ip + line + parseBrowserInfo(req.getHeader("User-Agent")) + line + line);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

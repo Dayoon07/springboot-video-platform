@@ -36,6 +36,9 @@ public class VideosEntity {
 	@Column(name = "video_path", nullable = false)
 	private String videoPath;
 	
+	@Column(name = "video_len", nullable = false)
+	private String videoLen;
+	
 	@Column(name = "img_name", nullable = false)
 	private String imgName;
 	

@@ -31,6 +31,7 @@
 		                        	<img src="${ tagVideo.imgPath }" class="w-full h-full object-cover">
 		                        </a>
 		                    </div>
+		                    <span class="absolute bottom-2 right-2 bg-black text-white text-xs px-2 py-1 rounded">${ tagVideo.videoLen }</span>
 		                </div>
 		                <div class="flex gap-2">
 		                    <a href="${ cl }/channel/${ tagVideo.creator }">
@@ -44,7 +45,7 @@
 			                        ${ tagVideo.creator }
 								</a>
 		                        <div class="text-sm text-gray-600">
-		                        	조회수 ${ tagVideo.views == 0 ? "없음" : tagVideo.views } | ${ tagVideo.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
+		                        	조회수 ${ tagVideo.views == 0 ? "없음" : tagVideo.views += '회' } • ${ tagVideo.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
 		                        	 ? tagVideo.createAt.substring(6, 13) : tagVideo.createAt.substring(0, 13) }
 		                        </div>
 		                    </div>

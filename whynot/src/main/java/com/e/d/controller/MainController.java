@@ -149,7 +149,13 @@ public class MainController {
 	}
 
 	@GetMapping("/you")
-	public String showCreatorProfile() {
+	public String showCreatorProfile(Model m, HttpSession s) {
+		CreatorEntity user = (CreatorEntity) s.getAttribute("creatorSession");
+		if (user != null) {
+			m.addAttribute("you", creatorRepository.findById(user.getCreatorId()).orElse(null));
+			m.addAttribute("myViewStoryButMyPageData", viewStoryService.myViewStorySelect(user.getCreatorId()));
+			m.addAttribute("myLikeVideoButMyPageData", videosService.selectByMyLikeVideo(user.getCreatorId()));
+		}
 		return "me/you";
 	}
 
@@ -158,7 +164,7 @@ public class MainController {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 		if (user == null) return "creator/login";
 		model.addAttribute("myLikeVideo", videosService.selectByMyLikeVideo(user.getCreatorId()));
-		return "creator/myLikeVideo";
+		return "me/myLikeVideo";
 	}
 	
 	@PostMapping("/editBio")
@@ -181,10 +187,10 @@ public class MainController {
 	}
 
 	@PostMapping("/uploadVideo")
-	public String upload(@RequestParam String tag, @RequestParam String title, @RequestParam String more,
+	public String upload(@RequestParam String tag, @RequestParam String title, @RequestParam String more, @RequestParam String videoLen,
 			@RequestParam MultipartFile imgPath, @RequestParam MultipartFile videoPath, HttpSession session) {
 		try {
-			videosService.uploadVideo(tag, title, more, imgPath, videoPath, session);
+			videosService.uploadVideo(tag, title, more, videoLen, imgPath, videoPath, session);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -251,7 +257,7 @@ public class MainController {
 
 	@GetMapping("/tag/{tag}")
 	public String hashTag(@PathVariable String tag, Model model) {
-		List<VideosEntity> videoTagList = videosRepository.findByTagOrderByVideoIdDesc(tag);
+		List<VideosEntity> videoTagList = videosRepository.findByTagContainingOrderByVideoIdDesc(tag);
 		model.addAttribute("videosTagList", videoTagList);
 		model.addAttribute("tagWord", tag);
 		return "tag/tag";
@@ -336,10 +342,10 @@ public class MainController {
 
 	@PostMapping("/updateVideo")
 	public String updateVideo(@RequestParam long videoId, @RequestParam String creatorName, @RequestParam String tag,
-			@RequestParam String title, @RequestParam String more, @RequestParam(required = false) MultipartFile imgPath,
-			@RequestParam(required = false) MultipartFile videoPath, @RequestParam String currentImgPath,
+			@RequestParam String title, @RequestParam String more, @RequestParam MultipartFile imgPath,
+			@RequestParam MultipartFile videoPath, @RequestParam String videoLen, @RequestParam String currentImgPath,
 			@RequestParam String currentVideoPath, HttpSession session) {
-		videosService.updateVideo(videoId, creatorName, tag, title, more, imgPath, videoPath, currentImgPath, currentVideoPath, session);
+		videosService.updateVideo(videoId, creatorName, tag, title, more, imgPath, videoPath, videoLen, currentImgPath, currentVideoPath, session);
 		return "redirect:/myVideo";
 	}
 
@@ -362,11 +368,10 @@ public class MainController {
 
 	@PostMapping("/updateAboutMe")
 	public String updateAboutMe(@RequestParam String creatorName, @RequestParam String creatorEmail,
-			@RequestParam String creatorPassword, @RequestParam String bio, @RequestParam String tel,
+			@RequestParam String creatorPassword, @RequestParam String tel,
 			@RequestParam MultipartFile profileImgPath, HttpSession session) throws IllegalStateException, IOException {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
-		creatorService.updateAboutMe(user.getCreatorId(), creatorName, creatorEmail, creatorPassword, bio, tel,
-				profileImgPath, session);
+		creatorService.updateAboutMe(user.getCreatorId(), creatorName, creatorEmail, creatorPassword, tel, profileImgPath, session);
 		session.invalidate();
 		return "redirect:/";
 	}

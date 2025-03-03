@@ -18,17 +18,21 @@
 	<jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 	
 	<div class="flex max-w-4xl py-10 mx-auto">
-		<img src="${ creator.profileImgPath }" alt="Profile Image" class="w-28 h-28 md:w-40 md:h-40 rounded-full object-cover" loading="lazy">
+		<div class="pl-2">
+			<img src="${ creator.profileImgPath }" alt="Profile Image" class="w-28 h-28 md:w-40 md:h-40 rounded-full object-cover" loading="lazy">
+        </div>
         <div class="ml-5"> 
             <h1 class="text-3xl font-semibold">${ creator.creatorName }</h1>
             <h1 class="text-xl py-1">구독자 <fmt:formatNumber value="${ creator.subscribe }" type="number" />명</h1>
-            <p class="text-lg py-1 text-gray-700 truncate max-w-xl">
-            	<c:if test="${ creator.bio.length() >= 50 }">
-	                ${ creator.bio.substring(0, 50) }
-            	</c:if>
-            	<c:if test="${ creator.bio.length() < 50 }">
-            		${ creator.bio }
-            	</c:if>
+            <p class="text-lg py-1 text-gray-700 truncate max-w-xl cursor-pointer" onclick="openModal()">
+            	<c:choose>
+            		<c:when test="${ creator.bio.length() >= 15 }">
+            			${ creator.bio.substring(0, 15) }...더보기
+            		</c:when>
+            		<c:otherwise>
+            			${ creator.bio }
+            		</c:otherwise>
+            	</c:choose>
             </p>
 
             <c:if test="${ isSubscribed }">
@@ -137,22 +141,21 @@
 	
 	<jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
 	
-	<script>
-		document.addEventListener('DOMContentLoaded', function() {
-		    document.getElementById('latest').classList.remove('hidden');
-		    document.querySelectorAll('.tab-button')[0].classList.add('border-red-500', 'text-red-500', 'border-b-2');
-		});
-		function showTab(tab, event) {
-		    document.querySelectorAll('.tab-con').forEach(el => el.classList.add('hidden'));
-		    document.getElementById(tab).classList.remove('hidden');
-		    
-		    document.querySelectorAll('.tab-button').forEach(btn => {
-		        btn.classList.remove('border-red-500', 'text-red-500');
-		        btn.classList.remove('border-b-2'); // 비활성 탭의 밑줄 제거
-		    });
-		    event.target.classList.add('border-red-500', 'text-red-500', 'border-b-2');
-		}
-	</script>
+	<div id="modalOverlay" class="hidden fixed inset-0 bg-black/70 z-50 transition-opacity" onclick="closeModal()"></div>
+	<div id="modalContent" class="hidden fixed inset-0 flex items-center justify-center z-50">
+	    <div class="w-[350px] md:w-[500px] bg-white rounded-lg shadow-xl p-4 relative">
+	        <h1 class="text-xl font-semibold mb-2">정보</h1>
+	        <button type="button" onclick="closeModal()" class="text-4xl absolute top-1 right-4 hover:bg-gray-200 rounded-full px-2 pb-1">&times;</button>
+	        <textarea style="height: 300px;" class="w-full resize-none focus:outline-none overflow-y-scroll" readonly>${ creator.bio }</textarea><br>
+	        <h1 class="text-xl font-semibold mb-2">채널 세부정보</h1>
+	        <ul class="space-y-1">
+	            <li><span class="font-semibold">구독자</span> &nbsp; <fmt:formatNumber value="${ creator.subscribe }" type="number" />명</li>
+	            <li><span class="font-semibold">가입일</span> &nbsp; ${ creator.createAt }</li>
+	        </ul>
+	    </div>
+	</div>
+	
+	<script src="${ cl }/source/js/channel.js"></script>
 	
 </body>
 </html>

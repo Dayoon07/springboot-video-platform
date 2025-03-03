@@ -7,5 +7,5 @@ import com.e.d.model.entity.ViewStoryEntity;
 
 @Repository
 public interface ViewStoryRepository extends JpaRepository<ViewStoryEntity, Long> {
-
+	void deleteByViewUserId(long viewUserId);
 }

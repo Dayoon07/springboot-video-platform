@@ -15,7 +15,7 @@
 <body>
 	<jsp:include page="${ cl }/WEB-INF/common/header.jsp" />
 	
-	<div class="mt-24 flex items-center justify-center text-black">
+	<div class="mt-6 flex items-center justify-center text-black">
 	    <div class="bg-gray-200 p-8 rounded-lg shadow-lg w-96">
 	        <h2 class="text-center text-2xl font-bold mb-4">로그인</h2>
 	        <form action="${ cl }/loginF" method="post">

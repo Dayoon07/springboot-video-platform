@@ -28,6 +28,7 @@
 		                            <img src="${ video.imgPath }" class="w-full h-full object-cover" loading="lazy">
 		                        </a>
 		                    </div>
+		                    <span class="absolute bottom-2 right-2 bg-black text-white text-xs px-2 py-1 rounded">${ video.videoLen }</span>
 		                </div>
 		                <div class="flex gap-2">
 		                    <a href="${ cl }/channel/${ video.creator }">
@@ -51,7 +52,7 @@
 									    <c:otherwise>
 									        조회수 <fmt:formatNumber value="${ video.views }" type="number" />회
 									    </c:otherwise>
-									</c:choose> |  
+									</c:choose> • 
 		                            ${ video.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
 		                            ? video.createAt.substring(6, 13) : video.createAt.substring(0, 13) }
 		                        </div>

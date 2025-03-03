@@ -39,10 +39,6 @@
 	            <input type="text" id="creatorPassword" name="creatorPassword" class="w-full p-2 rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-black" required>
 			</div>
 	        <div class="mb-4">
-	        	<label for="confirmPassword" class="block text-sm mb-2">비밀번호 확인</label>
-	            <input type="text" id="confirmPassword" name="confirmPassword" class="w-full p-2 rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-black" required>
-			</div>
-	        <div class="mb-4">
 	        	<label for="tel" class="block text-sm mb-2">전화번호</label>
 	            <input type="tel" id="tel" name="tel" class="w-full p-2 rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-black" maxlength="13" required>
 			</div>

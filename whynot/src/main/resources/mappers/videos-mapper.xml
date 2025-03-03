@@ -10,6 +10,7 @@
 	    <result property="more" column="more"/>
 	    <result property="videoName" column="video_name"/>
 	    <result property="videoPath" column="video_path"/>
+	    <result property="videoLen" column="video_len" />
 	    <result property="imgName" column="img_name"/>
 	    <result property="imgPath" column="img_path"/>
 	    <result property="createAt" column="create_at"/>
@@ -40,6 +41,7 @@
 	        <result column="more" property="more"/>
 	        <result column="video_name" property="videoName"/>
 	        <result column="video_path" property="videoPath"/>
+	        <result column="video_len" property="videoLen" />
 	        <result column="img_name" property="imgName"/>
 	        <result column="img_path" property="imgPath"/>
 	        <result column="create_at" property="createAt"/>
