@@ -2,16 +2,12 @@ package com.e.d.model.service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
 import com.e.d.model.entity.CreatorEntity;
 import com.e.d.model.entity.LikeEntity;
 import com.e.d.model.entity.VideosEntity;
-import com.e.d.model.mapper.LikeMapper;
-import com.e.d.model.repository.CreatorRepository;
 import com.e.d.model.repository.LikeRepository;
 import com.e.d.model.repository.VideosRepository;
 
@@ -25,10 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 public class LikeService {
 
 	private final LikeRepository likeRepository;
-	private final LikeMapper likeMapper;
-	private final CreatorRepository creatorRepository;
 	private final VideosRepository videosRepository;
-	private final VideosService videosService;
 	
 	public void addLike(long likeVdoId, String likeVdoName, HttpSession session) {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");

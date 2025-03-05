@@ -104,11 +104,12 @@
 		    <li><a href="${ cl }/tag/edu" class="block py-2 px-4 rounded-md hover:bg-gray-200">교육</a></li>
 		    <hr class="my-2 border-gray-300">
 		    <li class="font-semibold text-gray-400 uppercase">내 콘텐츠</li>
-		    <li><a href="${ cl }/myVideo" class="block py-2 px-4 rounded-md hover:bg-gray-200">내 영상</a></li>
-		    <li><a href="${ cl }/myVideo/dashboard" class="block py-2 px-4 rounded-md hover:bg-gray-200">대시보드</a></li>
-	        <li><a href="${ cl }/myVideo/comment" class="block py-2 px-4 rounded-md hover:bg-gray-200">영상 피드백</a></li>
-	        <li><a href="${ cl }/myVideo/myComment" class="block py-2 px-4 rounded-md hover:bg-gray-200">나의 댓글</a></li>
-	        <li><a href="${ cl }/myVideo/subscribe" class="block py-2 px-4 rounded-md hover:bg-gray-200">구독자 조회</a></li>
+		    <li><a href="${ cl }/myVideo" class="hidden md:block py-2 px-4 rounded-md hover:bg-gray-200">스튜디오</a></li>
+		    <li><a href="${ cl }/myVideo" class="md:hidden block py-2 px-4 rounded-md hover:bg-gray-200">내 영상</a></li>
+		    <li><a href="${ cl }/myVideo/dashboard" class="md:hidden block py-2 px-4 rounded-md hover:bg-gray-200">대시보드</a></li>
+	        <li><a href="${ cl }/myVideo/comment" class="md:hidden block py-2 px-4 rounded-md hover:bg-gray-200">영상 피드백</a></li>
+	        <li><a href="${ cl }/myVideo/myComment" class="md:hidden block py-2 px-4 rounded-md hover:bg-gray-200">나의 댓글</a></li>
+	        <li><a href="${ cl }/myVideo/subscribe" class="md:hidden block py-2 px-4 rounded-md hover:bg-gray-200">구독자 조회</a></li>
 		</ul><br>
 		<div class="w-full border-gray-300 border-t">
 	    	<p class="text-sm text-gray-500 mt-4 px-4">

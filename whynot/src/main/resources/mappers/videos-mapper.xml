@@ -68,9 +68,10 @@
 	</select>
 	
 	<select id="selectByMyLikeVideo" parameterType="long" resultMap="LikeVideosResultMap">
-	    select * from whynot_like A JOIN whynot_videos B
+	    SELECT * FROM whynot_like A JOIN whynot_videos B
 	    ON A.LIKE_VDO_ID = B.VIDEO_ID
-	    WHERE LIKER_ID = #{ id }
+	    WHERE LIKER_ID = #{ id } 
+	    ORDER BY datetime DESC
 	</select>
 	
 	<select id="sumByMyVideoViews" parameterType="long" resultType="long">

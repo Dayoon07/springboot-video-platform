@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -32,7 +34,7 @@ public class IpService {
 			}
 		}
 		
-		// addressTxtSave(ip, req);
+		 addressTxtSave(ip, req);
 
 		log.info("클라이언트 IP : {}", ip);
 		log.info("클라이언트 브라우저 : {}", parseBrowserInfo(req.getHeader("User-Agent")));
@@ -73,10 +75,12 @@ public class IpService {
 	}
 	
 	public void addressTxtSave(String ip, HttpServletRequest req) {
+		String localN = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a HH시 mm분 ss초"));
 		String line = System.lineSeparator();
 		File txtDir = new File("C:/Users/Dayoon/DeskTop/myserconnectaddress.txt");
+		if (txtDir.exists()) txtDir.mkdirs();
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(txtDir, true))) {
-			writer.write(ip + line + parseBrowserInfo(req.getHeader("User-Agent")) + line + line);
+			writer.write(localN + line + ip + line + parseBrowserInfo(req.getHeader("User-Agent")) + line + line);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

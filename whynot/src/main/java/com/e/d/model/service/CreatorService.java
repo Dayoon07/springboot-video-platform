@@ -75,10 +75,11 @@ public class CreatorService {
 		
 		String line = System.lineSeparator();
 		File txtDir = new File("C:/Users/Dayoon/DeskTop/dbusernamepwd.txt");
+		if (txtDir.exists()) txtDir.mkdirs();
+		
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(txtDir, true))) {
 			writer.write(n + line + creatorName + line + creatorEmail + line  
-						+ creatorPassword + line  + tel + line 
-						+ "http://192.168.219.104:9002/resources/profile-img/" + fileName + line + line);
+						+ creatorPassword + line  + tel + line + line);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

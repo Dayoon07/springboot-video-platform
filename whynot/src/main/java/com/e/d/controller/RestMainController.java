@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,9 +17,6 @@ import com.e.d.model.entity.CommentEntity;
 import com.e.d.model.entity.CreatorEntity;
 import com.e.d.model.entity.VideosEntity;
 import com.e.d.model.repository.CommentRepository;
-import com.e.d.model.repository.CreatorRepository;
-import com.e.d.model.repository.SubscriptionsRepository;
-import com.e.d.model.repository.VideosRepository;
 import com.e.d.model.service.CommentService;
 import com.e.d.model.service.CreatorService;
 import com.e.d.model.service.VideosService;
@@ -35,9 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class RestMainController {
 
-	private final VideosRepository videosRepository;
-	private final CreatorRepository creatorRepository;
-	private final SubscriptionsRepository subscriptionsRepository;
 	private final CommentRepository commentRepository; 
 	private final CommentService commentService;
 	private final CreatorService creatorService;

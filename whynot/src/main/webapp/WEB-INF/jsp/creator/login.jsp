@@ -35,6 +35,9 @@
 	    </div>
 	</div>
 	
-	<jsp:include page="${ cl }/WEB-INF/common/footer.jsp" />
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	<script src="/source/js/script.js"></script>
+	
 </body>
 </html>

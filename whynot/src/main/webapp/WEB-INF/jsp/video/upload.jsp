@@ -30,7 +30,7 @@
 					    <!-- 드래그 앤 드롭 영역 -->
 					    <div id="imgDropZone" class="w-full p-6 bg-gray-50 border-2 border-dashed border-gray-300 text-center rounded-lg cursor-pointer">
 					        <p class="text-gray-600">이미지를 드래그 앤 드롭 <br> 하거나 클릭하여 선택하세요</p>
-					        <input type="file" id="imgPath" name="imgPath" accept="image/*" class="hidden">
+					        <input type="file" id="imgPath" name="imgPath" accept="image/*" class="hidden" required>
 					    </div>
 					    <!-- 섬네일 미리보기 영역 -->
 					    <div id="thumbnailPreview" class="mt-4 flex justify-center items-center">
@@ -44,7 +44,7 @@
 					    <!-- 드래그 앤 드롭 영역 -->
 					    <div id="videoDropZone" class="w-full p-6 bg-gray-50 border-2 border-dashed border-gray-300 text-center rounded-lg cursor-pointer">
 					        <p class="text-gray-600">영상을 드래그 앤 드롭 <br> 하거나 클릭하여 선택하세요</p>
-					        <input type="file" id="videoPath" name="videoPath" accept="video/*" class="hidden" onchange="videoLen(event)">
+					        <input type="file" id="videoPath" name="videoPath" accept="video/*" class="hidden" onchange="videoLen(event)" required>
 					    </div>
 					    <!-- 비디오 미리보기 영역 -->
 					    <div id="videoPreview" class="mt-4 flex justify-center items-center">
@@ -94,5 +94,46 @@
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script> <!-- jQuery -->
 	<script src="${ cl }/source/js/upload.js"></script> <!-- 업로드 관련 자바스크립트 -->
 	<script src="${ cl }/source/js/script.js"></script> <!-- 공통 자바스크립트 -->
+	
+	<script>
+		document.querySelector("button[type='submit']").addEventListener("click", function(e) {
+			const title = document.getElementById("title");
+			const tag = document.getElementById("tag");
+			const more = document.getElementById("more");
+			const imgPath = document.getElementById("imgPath");
+			const videoPath = document.getElementById("videoPath");
+	
+			if (title.value == "") {
+				alert("영상 제목을 입력하세요.");
+				e.preventDefault();
+				return;
+			}
+	
+			if (tag.value == "") {
+				alert("영상 태그를 입력하세요.");
+				e.preventDefault();
+				return;
+			}
+	
+			if (more.value == "") {
+				alert("영상 설명을 입력하세요.");
+				e.preventDefault();
+				return;
+			}
+	
+			if (imgPath.files.length != 1) {
+				alert("섬네일 이미지를 선택하세요.");
+				e.preventDefault();
+				return;
+			}
+	
+			if (videoPath.files.length != 1) {
+				alert("영상 파일을 선택하세요.");
+				e.preventDefault();
+				return;
+			}
+		});
+	</script>
+	
 </body>
 </html>

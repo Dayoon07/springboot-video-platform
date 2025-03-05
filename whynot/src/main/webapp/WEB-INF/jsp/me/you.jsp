@@ -42,7 +42,7 @@
 
                 <div class="mt-8 p-6 bg-gray-50 border-gray-200 border rounded-lg">
                     <h2 class="text-xl font-semibold text-gray-800">자기소개말</h2>
-                    <textarea class="text-gray-700 my-2 w-full focus:outline-none" id="myBio" readonly>${ empty you.bio ? "아직 자기소개말이 없습니다." : you.bio }</textarea>
+                    <textarea class="text-gray-700 my-2 w-full resize-none bg-gray-50 focus:outline-none" id="myBio" readonly>${ empty you.bio ? "아직 자기소개말이 없습니다." : you.bio }</textarea>
 	                <c:if test="${ empty you.bio }">
 						<span class="px-6 py-2 bg-black text-white rounded-md hover:opacity-70 cursor-pointer transition" onclick="bioModal()">자기소개말 만들기</span>
                     </c:if>
@@ -65,13 +65,13 @@
                     </ul>
                 </div>
                 
-                <div class="p-6">
-                	<div class="flex justify-between items-center">
-                		<h2 class="text-xl font-semibold text-gray-800"><a href="${ cl }/you/viewstory">시청 기록</a></h2>
-                		<a href="${ cl }/you/viewstory" class="px-4 py-2 text-sm border-gray-300 border cursor-pointer rounded-full hover:bg-gray-200">모두 보기</a>
-                	</div>
-                	<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
-                		<c:if test="${ not empty myViewStoryButMyPageData }">
+                <c:if test="${ not empty myViewStoryButMyPageData }">
+                	<div class="p-6">
+	                	<div class="flex justify-between items-center">
+	                		<h2 class="text-xl font-semibold text-gray-800"><a href="${ cl }/you/viewstory">시청 기록</a></h2>
+	                		<a href="${ cl }/you/viewstory" class="px-4 py-2 text-sm border-gray-300 border cursor-pointer rounded-full hover:bg-gray-200">모두 보기</a>
+	                	</div>
+                		<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
 						    <c:forEach var="mvsbmpd" items="${ myViewStoryButMyPageData }" varStatus="mvsbmpdStatus">
 						    	<c:if test="${ mvsbmpdStatus.index < 4 }">
 							        <div class="bg-white shadow-md rounded-lg overflow-hidden">
@@ -98,17 +98,17 @@
 							        </div>
 						        </c:if>
 						    </c:forEach>
-						</c:if>
-					</div>
-                </div>
-                
-                <div class="p-6 mb-96">
-                	<div class="flex justify-between items-center">
-                		<h2 class="text-xl font-semibold text-gray-800"><a href="${ cl }/you/viewstory">좋아요 표시한 영상</a></h2>
-                		<a href="${ cl }/you/like" class="px-4 py-2 text-sm border-gray-300 border cursor-pointer rounded-full hover:bg-gray-200">모두 보기</a>
+						</div>
                 	</div>
-                	<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
-                		<c:if test="${ not empty myLikeVideoButMyPageData }">
+				</c:if>
+                
+                <c:if test="${ not empty myLikeVideoButMyPageData }">
+                	<div class="p-6 mb-96">
+	                	<div class="flex justify-between items-center">
+	                		<h2 class="text-xl font-semibold text-gray-800"><a href="${ cl }/you/viewstory">좋아요 표시한 영상</a></h2>
+	                		<a href="${ cl }/you/like" class="px-4 py-2 text-sm border-gray-300 border cursor-pointer rounded-full hover:bg-gray-200">모두 보기</a>
+	                	</div>
+                		<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
 						    <c:forEach var="mlvbmpd" items="${ myLikeVideoButMyPageData }" varStatus="mlvbmpdStatus">
 						    	<c:if test="${ mlvbmpdStatus.index < 4 }">
 							        <div class="bg-white shadow-md rounded-lg overflow-hidden">
@@ -135,9 +135,9 @@
 							        </div>
 						        </c:if>
 						    </c:forEach>
-						</c:if>
-					</div>
-                </div>
+						</div>
+                	</div>
+				</c:if>
             </c:otherwise>
         </c:choose>
     </div>
