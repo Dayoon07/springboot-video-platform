@@ -320,10 +320,7 @@ public class MainController {
 
 	@PostMapping("/myVideoDelete")
 	public String myVideoDelete(HttpSession session, @RequestParam long videoId) {
-		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
-		if (user != null && videosRepository.findById(videoId).isPresent()) {
-			videosRepository.deleteById(videoId);
-		}
+		videosService.myVideoDelete(videoId, session);
 		return "redirect:/myVideo";
 	}
 

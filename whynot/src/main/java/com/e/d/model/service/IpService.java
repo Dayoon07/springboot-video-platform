@@ -34,7 +34,7 @@ public class IpService {
 			}
 		}
 		
-		 addressTxtSave(ip, req);
+		 // addressTxtSave(ip, req);
 
 		log.info("클라이언트 IP : {}", ip);
 		log.info("클라이언트 브라우저 : {}", parseBrowserInfo(req.getHeader("User-Agent")));

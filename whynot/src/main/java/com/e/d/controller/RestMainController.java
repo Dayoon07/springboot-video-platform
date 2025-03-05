@@ -98,4 +98,10 @@ public class RestMainController {
 		return ResponseEntity.ok(bio);
 	}
 	
+	@PostMapping("/deleteButMyComment")
+	public ResponseEntity<Long> deleteButMyComment(@RequestParam long commentId) {
+		commentService.deleteComment(commentId);
+		return ResponseEntity.ok(commentId);
+	}
+	
 }

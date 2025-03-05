@@ -37,7 +37,7 @@
 					    <h2 class="text-xl font-bold text-gray-800">영상 제목 : 
 					    	<a href="${ cl }/watch?v=${ mac.videosVo.videoUrl }" class="hover:underline">${ mac.videosVo.title }</a>
 					    </h2>
-					    <p class="text-gray-600 mt-2">댓글을 작성했습니다</p>
+					    <button onclick="myCommentFunc(${ mac.commentVo.commentId })" class="px-4 py-1 mt-1 bg-black text-white text-md rounded-full cursor-pointer hover:opacity-70">댓글 삭제</button>
 					    <div class="mt-4 p-3 bg-gray-100 rounded-lg border-l-4 border-blue-500">
 					        <p class="text-gray-700"><span class="font-semibold">작성 댓글:</span> ${ mac.commentVo.commentContent }</p>
 					    </div>
@@ -49,5 +49,6 @@
     
 	<script src="https://cdn.tailwindcss.com"></script>
 	<script src="${ cl }/source/js/script.js"></script>
+	<script src="${ cl }/source/js/myComment.js"></script>
 </body>
 </html>

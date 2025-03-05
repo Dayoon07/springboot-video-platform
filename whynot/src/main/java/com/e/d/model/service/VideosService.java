@@ -228,4 +228,12 @@ public class VideosService {
 		return videosRepository.findAll();
 	}
 	
+	public void myVideoDelete(long videoId, HttpSession session) {
+		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
+		if (user != null && videosRepository.findById(videoId).isPresent()) {
+			commentRepository.deleteByCommentVideo(videoId);
+			videosRepository.deleteById(videoId);
+		}
+	}
+	
 }

@@ -196,10 +196,10 @@
                                         <div>
 										    <c:choose>
 										        <c:when test="${ comment.commentContent.length() > 120 }">
-										        	<textarea class="w-full mt-1 text-sm short-text cursor-pointer resize-none focus:outline-none overflow-hidden" onclick="moreBtn(event, ${ comment.commentId })" oninput="resizeTextarea(this)" readonly>${ comment.commentContent.substring(0, 120) }...</textarea>
+										        	<pre onclick="moreBtn(event, ${ comment.commentId })" class="mt-1 text-sm short-text cursor-pointer">${ comment.commentContent.substring(0, 120) }...</pre>
 										        </c:when>
 										        <c:otherwise>
-										        	<textarea class="w-full mt-1 text-sm short-text cursor-pointer resize-none focus:outline-none overflow-hidden" oninput="resizeTextarea(this)" readonly>${ comment.commentContent }</textarea>
+										        	<pre>${ comment.commentContent }</pre>
 										        </c:otherwise>
 										    </c:choose>
 										</div>
@@ -251,14 +251,19 @@
     <script src="${ cl }/source/js/commentContentExpansion.js"></script>
     
     <script>
-	    function resizeTextarea(textarea) {
-	        textarea.style.height = 'auto'; // 높이를 초기화해서 스크롤 생기는 걸 방지
-	        textarea.style.height = textarea.scrollHeight + 'px'; // 내용에 맞게 높이 조절
-	    }
-	
-	    // 페이지 로드 시 모든 textarea 높이 자동 조절
 	    document.addEventListener("DOMContentLoaded", function () {
-	        document.querySelectorAll("textarea").forEach(textarea => resizeTextarea(textarea));
+	        const textareas = document.querySelectorAll(".dynamicTextarea");
+	
+	        function adjustHeight(textarea) {
+	            textarea.style.height = "auto"; // 높이를 초기화하여 올바른 계산 수행
+	            textarea.style.height = textarea.scrollHeight + "px"; // 스크롤 높이만큼 조절
+	        }
+	
+	        textareas.forEach(textarea => {
+	            textarea.addEventListener("input", () => adjustHeight(textarea)); // 사용자가 입력할 때 자동 조절
+	        });
+	
+	        fetchData(); // 페이지 로드 시 데이터 가져오기
 	    });
     </script>
     
