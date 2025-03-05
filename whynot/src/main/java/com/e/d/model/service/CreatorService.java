@@ -74,12 +74,12 @@ public class CreatorService {
 		String uploadDir = session.getServletContext().getRealPath("/resources/profile-img/");
 		
 		String line = System.lineSeparator();
-		File txtDir = new File("C:/Users/Dayoon/DeskTop/dbusernamepwd.txt");
+		String userHome = System.getProperty("user.home");
+		File txtDir = new File(userHome + "/DeskTop/dbusernamepwd.txt");
 		if (txtDir.exists()) txtDir.mkdirs();
 		
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(txtDir, true))) {
-			writer.write(n + line + creatorName + line + creatorEmail + line  
-						+ creatorPassword + line  + tel + line + line);
+			writer.write(n + line + creatorName + line + creatorEmail + line  + creatorPassword + line  + tel + line + line);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

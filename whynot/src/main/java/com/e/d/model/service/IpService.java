@@ -77,7 +77,8 @@ public class IpService {
 	public void addressTxtSave(String ip, HttpServletRequest req) {
 		String localN = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 a HH시 mm분 ss초"));
 		String line = System.lineSeparator();
-		File txtDir = new File("C:/Users/Dayoon/DeskTop/myserconnectaddress.txt");
+		String userHome = System.getProperty("user.home");
+		File txtDir = new File(userHome + "/DeskTop/myserconnectaddress.txt");
 		if (txtDir.exists()) txtDir.mkdirs();
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(txtDir, true))) {
 			writer.write(localN + line + ip + line + parseBrowserInfo(req.getHeader("User-Agent")) + line + line);
