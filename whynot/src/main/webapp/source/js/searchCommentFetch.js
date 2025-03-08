@@ -40,7 +40,7 @@ function searchComments() {
 function searchSubscrubeingUsername() {
 	let name = document.getElementById("subscribingName").value;
 
-	fetch(`/selectByMySubscribingUsername?name=${name}`)
+	fetch(`${location.origin}/selectByMySubscribingUsername?name=${name}`)
 		.then(response => response.json())
 		.then(data => {
 			let resultDiv = document.getElementById('subscribingUserSearchResults');
@@ -73,7 +73,7 @@ function searchSubscrubeingUsername() {
 					            </div>
 	
 					            <div class="mt-4 text-gray-700">
-					                <p class="text-sm">소개말 : ${user.creator.bio || '알 수 없음'}</p>
+					                <p class="text-sm">소개말 : ${user.creator.bio || '없음' }</p>
 					            </div>
 					        </div>
 					    </div>

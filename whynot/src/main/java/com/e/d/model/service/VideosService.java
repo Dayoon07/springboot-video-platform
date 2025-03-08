@@ -50,7 +50,7 @@ public class VideosService {
 		CreatorEntity creator = (CreatorEntity) session.getAttribute("creatorSession");
 		Optional<CreatorEntity> user = creatorRepository.findByCreatorName(creator.getCreatorName());
 		if (user.isEmpty() || user.get().getCreatorName() == null || user.get().getCreatorName().isEmpty()) {
-			throw new IllegalArgumentException("Creator not found");
+			throw new IllegalArgumentException("크리에이터를 찾을 수가 없습니다");
 		}
 
 		String thumbnailDir = session.getServletContext().getRealPath("/resources/video-img/");
@@ -66,10 +66,8 @@ public class VideosService {
 		File imgDir = new File(thumbnailDir);
 		File vdoDir = new File(videoDir);
 
-		if (!imgDir.exists())
-			imgDir.mkdirs();
-		if (!vdoDir.exists())
-			vdoDir.mkdirs();
+		if (!imgDir.exists()) imgDir.mkdirs();
+		if (!vdoDir.exists()) vdoDir.mkdirs();
 
 		imgPath.transferTo(new File(thumbnailDir + imgName));
 		videoPath.transferTo(new File(videoDir + videoName));
@@ -232,6 +230,7 @@ public class VideosService {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 		if (user != null && videosRepository.findById(videoId).isPresent()) {
 			commentRepository.deleteByCommentVideo(videoId);
+			likeRepository.deleteBylikeVdoId(videoId);
 			videosRepository.deleteById(videoId);
 		}
 	}

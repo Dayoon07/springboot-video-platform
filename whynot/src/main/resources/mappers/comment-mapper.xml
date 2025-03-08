@@ -43,7 +43,6 @@
 	        <result property="videoUrl" column="video_url"/>
 	        <result property="views" column="views"/>
 	        <result property="likes" column="likes"/>
-	        <result property="unlikes" column="unlikes"/>
 	        <result property="commentCnt" column="comment_cnt"/>
 	        <result property="tag" column="tag"/>
 	    </association>
@@ -62,6 +61,31 @@
 		JOIN whynot_comment B 
 		ON A.video_id = B.comment_video
 		WHERE b.commenter_userid = #{commentId}
+	</select>
+	
+	<select id="selectByMyAllVideoCommentList" resultMap="CommentVideosResultMap">
+	    SELECT 
+	        a.video_id, a.creator, a.creator_val, a.title, a.more, a.video_name, a.video_path, 
+	        a.video_len, a.img_name, a.img_path, a.create_at, 
+	        a.front_profile_img AS front_profile_img, 
+	        a.video_url AS video_url, 
+	        a.views AS views, 
+	        a.likes AS likes, 
+	        a.comment_cnt AS comment_cnt, 
+	        a.tag AS tag, 
+	        b.comment_id AS comment_id, 
+	        b.comment_video AS comment_video, 
+	        b.comment_userid AS comment_userid, 
+	        b.commenter AS commenter, 
+	        b.commenter_userid AS commenter_userid, 
+	        b.commenter_profile AS commenter_profile, 
+	        b.commenter_profilepath AS commenter_profilepath, 
+	        b.comment_content AS comment_content, 
+	        b.datetime AS datetime 
+	    FROM WHYNOT_VIDEOS a 
+	    JOIN WHYNOT_COMMENT b ON a.video_id = b.comment_video 
+	    WHERE b.comment_userid = #{id} 
+	    ORDER BY b.datetime DESC
 	</select>
 	
 </mapper>

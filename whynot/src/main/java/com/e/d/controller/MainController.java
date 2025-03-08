@@ -249,8 +249,7 @@ public class MainController {
 
 	@PostMapping("/deleteSubscri")
 	public String deleteMySubscri(@RequestParam long subscriberId, HttpSession session) {
-		if (session.getAttribute("creatorSession") == null)
-			return "redirect:/login";
+		if (session.getAttribute("creatorSession") == null) return "redirect:/login";
 		subscriptionsService.unsubscribe(subscriberId, session);
 		return "redirect:/mySubscri";
 	}
@@ -307,7 +306,7 @@ public class MainController {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 		if (user == null) return "creator/login";
 		
-		m.addAttribute("myVideoCommentList", commentRepository.findByCommentUserid(user.getCreatorId()));
+		m.addAttribute("myVideoCommentList", commentService.selectByMyAllVideoCommentList(user.getCreatorId()));
 		return "dashboard/videoAllComment";
 	}
 

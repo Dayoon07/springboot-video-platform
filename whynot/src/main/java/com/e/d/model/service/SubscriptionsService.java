@@ -47,11 +47,8 @@ public class SubscriptionsService {
 
 		// 구독자 수 업데이트
 		long subscriberCount = subscriptionsRepository.countBySubscriberId(subscriberId);
-		CreatorEntity updatedSubscriber = CreatorEntity.builder().creatorId(subscriberId)
-				.creatorName(subscriber.getCreatorName()).creatorEmail(subscriber.getCreatorEmail())
-				.creatorPassword(subscriber.getCreatorPassword()).createAt(subscriber.getCreateAt())
-				.bio(subscriber.getBio()).tel(subscriber.getTel()).profileImg(subscriber.getProfileImg())
-				.profileImgPath(subscriber.getProfileImgPath()).subscribe(subscriberCount).build();
+		CreatorEntity updatedSubscriber = creatorRepository.findById(subscriberId).get();
+		updatedSubscriber.setSubscribe(subscriberCount);
 		creatorRepository.save(updatedSubscriber);
 
 		log.info("{}님이 {}님을 구독했습니다.", subscribing.getCreatorName(), subscriber.getCreatorName());
@@ -127,10 +124,8 @@ public class SubscriptionsService {
 		List<SubscriptionsEntity> mySubscribers = subscriptionsRepository.findBySubscribingId(user.getCreatorId());
 
 		// 나를 구독한 사람들의 creatorId 가져오기
-		List<Long> subscriberIds = mySubscribers.stream().map(SubscriptionsEntity::getSubscriberId) // subscriberId가 나를
-																									// 구독한 사람들의
-																									// creatorId
-				.collect(Collectors.toList());
+		// subscriberId가 나를 구독한 채널들의 pk(creatorId)
+		List<Long> subscriberIds = mySubscribers.stream().map(SubscriptionsEntity::getSubscriberId).collect(Collectors.toList());
 
 		// 나를 구독한 사람들의 상세 정보 조회 (한 번에)
 		List<CreatorEntity> subscribers = creatorRepository.findByCreatorIdIn(subscriberIds);

@@ -43,17 +43,22 @@
                 	<c:forEach var="mvcl" items="${ myVideoCommentList }">
 						<div class="p-4 hover:bg-gray-100 transition">
 							<div class="flex items-start space-x-4">
-						    	<img src="${ mvcl.commenterProfilepath }" class="w-10 h-10 rounded-full">
+						    	<img src="${ mvcl.commentVo.commenterProfilepath }" class="w-10 h-10 rounded-full">
 						
 						        <div class="w-full flex justify-between">
 					            	<div>
-					                	<span class="text-sm text-gray-500">${ mvcl.datetime }</span><br>
-							            <span class="font-semibold text-md">${ mvcl.commenter }</span>
-								        <p class="mt-1 text-gray-700 w-4/5">${ mvcl.commentContent }</p>
+					                	<span class="text-sm text-gray-500">
+					                		${ mvcl.commentVo.datetime }
+					                		<c:if test="${ mvcl.videosVo.title.length() < 9 }"> • </c:if>
+					                		<c:if test="${ mvcl.videosVo.title.length() > 9 }"><br></c:if>
+					                		<a href="${ cl }/${ mvcl.videosVo.videoUrl }" class="hover:text-black">${ mvcl.videosVo.title }</a>
+					                	</span><br>
+							            <span class="font-semibold text-md">${ mvcl.commentVo.commenter }</span>
+								        <p class="mt-1 text-gray-700 whitespace-pre-wrap w-4/5">${ mvcl.commentVo.commentContent }</p>
 					                </div>
 									<div>
 					                	<form action="${ cl }/deleteCommentButAdminAccount" method="post" autocomplete="off">
-											<input type="hidden" name="commentId" id="commentId" value="${ mvcl.commentId }" required readonly>
+											<input type="hidden" name="commentId" id="commentId" value="${ mvcl.commentVo.commentId }" required readonly>
 			                        		<button type="submit" class="hover:underline hover:text-red-500 mr-5">댓글 삭제</button>
 										</form>
 									</div>

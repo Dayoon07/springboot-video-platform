@@ -11,4 +11,5 @@ import com.e.d.model.vo.CommentVo;
 public interface CommentMapper {
 	List<CommentVo> findCommentsByKeyword(long myid, String keyword);
 	List<CommentVideosDto> findMyAllComment(long commentId);
+	List<CommentVideosDto> selectByMyAllVideoCommentList(long id);
 }

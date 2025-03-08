@@ -82,4 +82,8 @@ public class CommentService {
 				.orElse(null).getCommentContent();
     }
 	
+	public List<CommentVideosDto> selectByMyAllVideoCommentList(long id) {
+		return commentMapper.selectByMyAllVideoCommentList(id);
+	}
+	
 }

@@ -21,11 +21,13 @@
 	    <c:forEach var="mvs" items="${ myViewStory }">
 	    	<div class="hidden md:flex hover:bg-gray-200 cursor-pointer transition">
 	    		<div class="relative py-4">
-	    			<a href="${ cl }/watch?v=${ mvs.videosVo.videoUrl }">
-	    				<img src="${ mvs.videosVo.imgPath }" alt="poster 쓰고 싶다" width="300" class="px-4 object-cover cursor-pointer">
-	    			</a>
-		    		<span class="absolute bottom-4 right-4 bg-black text-white text-xs px-2 py-1 rounded">${ mvs.videosVo.videoLen }</span>
-	    		</div>
+				    <a href="${ cl }/watch?v=${ mvs.videosVo.videoUrl }">
+				        <img src="${ mvs.videosVo.imgPath }" alt="poster 쓰고 싶다" width="300" class="max-h-40 px-4 object-contain cursor-pointer">
+				    </a>
+				    <span class="absolute bottom-4 right-4 bg-black text-white text-xs px-2 py-1 rounded">
+				        ${ mvs.videosVo.videoLen }
+				    </span>
+				</div>
 	    		<div class="mx-4 py-4">
 	    			<h1 class="font-semibold text-xl"><a href="${ cl }/watch?v=${ mvs.videosVo.videoUrl }">${ mvs.videosVo.title }</a></h1>
 	    			<span class="block pt-2">
