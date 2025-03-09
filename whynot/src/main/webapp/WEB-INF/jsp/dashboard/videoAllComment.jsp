@@ -51,7 +51,7 @@
 					                		${ mvcl.commentVo.datetime }
 					                		<c:if test="${ mvcl.videosVo.title.length() < 9 }"> • </c:if>
 					                		<c:if test="${ mvcl.videosVo.title.length() > 9 }"><br></c:if>
-					                		<a href="${ cl }/${ mvcl.videosVo.videoUrl }" class="hover:text-black">${ mvcl.videosVo.title }</a>
+					                		<a href="${ cl }/watch?v=${ mvcl.videosVo.videoUrl }" class="hover:text-black">${ mvcl.videosVo.title }</a>
 					                	</span><br>
 							            <span class="font-semibold text-md">${ mvcl.commentVo.commenter }</span>
 								        <p class="mt-1 text-gray-700 whitespace-pre-wrap w-4/5">${ mvcl.commentVo.commentContent }</p>

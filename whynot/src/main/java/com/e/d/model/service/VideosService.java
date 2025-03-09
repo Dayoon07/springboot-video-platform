@@ -29,6 +29,7 @@ import com.e.d.model.repository.VideosRepository;
 import com.e.d.model.vo.VideosVo;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -226,6 +227,7 @@ public class VideosService {
 		return videosRepository.findAll();
 	}
 	
+	@Transactional
 	public void myVideoDelete(long videoId, HttpSession session) {
 		CreatorEntity user = (CreatorEntity) session.getAttribute("creatorSession");
 		if (user != null && videosRepository.findById(videoId).isPresent()) {
