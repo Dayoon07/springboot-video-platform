@@ -1,3 +1,39 @@
+function validateForm() {
+	console.log("폼 검증 시작");
+
+	if (document.getElementById("title").value.trim() === "") {
+		alert("영상 제목을 입력하세요.");
+		return false;
+	}
+
+	if (document.getElementById("tag").value.trim() === "") {
+		alert("영상 태그를 입력하세요.");
+		return false;
+	}
+
+	if (document.getElementById("more").value.trim() === "") {
+		alert("영상 설명을 입력하세요.");
+		return false;
+	}
+
+	// 이미지 프리뷰로 파일 존재 여부 확인 
+	const previewImg = document.getElementById("previewImg");
+	if (previewImg.classList.contains("hidden")) {
+		alert("섬네일 이미지를 선택하세요.");
+		return false;
+	}
+
+	// 비디오 프리뷰로 파일 존재 여부 확인
+	const previewVideo = document.getElementById("previewVideo");
+	if (previewVideo.classList.contains("hidden")) {
+		alert("영상 파일을 선택하세요.");
+		return false;
+	}
+
+	console.log("폼 검증 통과");
+	return true;
+}
+
 /**
  * 파일 업로드 처리를 위한 통합 함수
  * @param {File} file - 처리할 파일 객체
