@@ -196,10 +196,10 @@
                                         <div>
 										    <c:choose>
 										        <c:when test="${ comment.commentContent.length() > 120 }">
-										        	<pre onclick="moreBtn(event, ${ comment.commentId })" class="mt-1 text-sm short-text cursor-pointer">${ comment.commentContent.substring(0, 120) }...</pre>
+										        	<pre style="word-wrap: break-word; white-space: pre-wrap;" onclick="moreBtn(event, ${ comment.commentId })" class="mt-1 text-sm short-text cursor-pointer">${ comment.commentContent.substring(0, 120) }...</pre>
 										        </c:when>
 										        <c:otherwise>
-										        	<pre>${ comment.commentContent }</pre>
+										        	<pre style="word-wrap: break-word; white-space: pre-wrap;" class="w-[500px] ">${ comment.commentContent }</pre>
 										        </c:otherwise>
 										    </c:choose>
 										</div>
@@ -232,9 +232,19 @@
                                     ${ rec.creator }
                                 </a>
                                 <div class="text-xs text-gray-500 mt-1">
-                                    조회수 ${ rec.views == 0 ? "없음" : rec.views += "회" } | 
-                                    ${ rec.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy"))) ? 
-                                        rec.createAt.substring(6, 13) : rec.createAt.substring(0, 13) }
+                                    <c:choose>
+									    <c:when test="${ rec.views == 0 }">
+									        조회수 없음
+									    </c:when>
+									    <c:when test="${ rec.views >= 10000 }">
+									        조회수 <fmt:formatNumber value="${ rec.views / 10000 }" pattern="#"/>만회
+									    </c:when>
+									    <c:otherwise>
+									        조회수 <fmt:formatNumber value="${ rec.views }" type="number" />회
+									    </c:otherwise>
+									</c:choose> • 
+		                            ${ rec.createAt.substring(0, 4).equals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy")))
+		                            ? rec.createAt.substring(6, 13) : rec.createAt.substring(0, 13) }
                                 </div>
                             </div>
                         </div>

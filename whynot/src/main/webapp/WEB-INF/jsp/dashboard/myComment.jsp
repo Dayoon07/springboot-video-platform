@@ -39,7 +39,8 @@
 					    </h2>
 					    <button onclick="myCommentFunc(${ mac.commentVo.commentId })" class="px-4 py-1 mt-1 bg-black text-white text-md rounded-full cursor-pointer hover:opacity-70">댓글 삭제</button>
 					    <div class="mt-4 p-3 bg-gray-100 rounded-lg border-l-4 border-blue-500">
-					        <p class="text-gray-700"><span class="font-semibold">작성 댓글:</span> ${ mac.commentVo.commentContent }</p>
+					        <p class="text-gray-700"><span class="font-semibold">작성 댓글:</span></p>
+					        <pre style="word-wrap: break-word; white-space: pre-wrap;">${ mac.commentVo.commentContent }</pre>
 					    </div>
 					</div>
             	</c:forEach>
