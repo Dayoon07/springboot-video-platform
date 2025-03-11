@@ -1,5 +1,7 @@
 ## 프로젝트명 : springboot-video-platform
 
+### <a href="https://dayoon07.github.io/video/video-platform.mp4" target="_blank">테스트 영상</a>
+
 ### 목차
 1. [프로젝트 소개](#프로젝트-소개)
 2. [개발 기간](#개발-기간)
